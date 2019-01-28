@@ -5,8 +5,9 @@ var logger = require('morgan');
 const session = require('express-session');
 require('dotenv').config();
 
-var indexRouter = require('./routes/index');
+// Routes
 var usersRouter = require('./routes/users');
+var authRouter = require('./routes/auth');
 
 var app = express();
 
@@ -14,10 +15,13 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({ secret: process.env.SESSION_SECRET, cookie: { maxAge: 60000}, resave: false, saveUninitialized: false }));
+app.use(express.static(path.join(__dirname, 'client/build')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/users', usersRouter);
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname+'/client/build/index.html'));
+})
 
 module.exports = app;
