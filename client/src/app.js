@@ -2,13 +2,13 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import { Button } from 'reactstrap';
-import Testing from './components/Testing'
+import Nav from './components/Nav.js';
+import Account from './components/Account.js';
 
 const App = () => (
   <div>
-    {Testing}
-    <h1>hi</h1>
-    <Button color="danger">Danger!</Button>
+    <Nav/>
+    <Account/>
   </div>
 )
 
