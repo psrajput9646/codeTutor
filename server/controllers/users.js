@@ -49,18 +49,18 @@ module.exports = {
                     username: req.body.username,
                     password: hash,
                     email: req.body.email,
-                    tutor: req.body.isTutor
+                    tutor: req.body.tutor
                 })
                 .then(user => {
-                    if (user.tutor){
-                        tutorController.create(req.body.firstName, req.body.lastName, user.id);
-                    } else {
-                        studentController.create(req.body.firstName, req.body.lastName, user.id);
-                    }
                     let tokenBody = {
                         id: user.id,
                         username: user.username,
-                        tutor: user.tutor
+                        isTutor: user.tutor
+                    }
+                    if (user.tutor){
+                        tokenBody.tutor = tutorController.create(req.body.firstName, req.body.lastName, user.id);
+                    } else {
+                        tokenBody.student = studentController.create(req.body.firstName, req.body.lastName, user.id);
                     }
                     return jwt.sign(tokenBody, config.secret, {
                         expiresIn: 1209600 // 2 weeks
@@ -85,10 +85,15 @@ module.exports = {
                 .then((response) => {
                     // Create token and pass to user
                     if(response){
-                        tokenBody = {
+                        let tokenBody = {
                             id: user.id,
                             username: user.username,
-                            tutor: req.body.tutor
+                            isTutor: user.tutor
+                        }
+                        if (tokenBody.isTutor){
+                            tokenBody.tutor = tutorController.getTutorLogin(tokenBody.id);
+                        } else {
+                            tokenBody.student = studentController.getStudentLogin(tokenBody.id);
                         }
                         token = jwt.sign(tokenBody, config.secret, {
                             expiresIn: 1209600 // 2 weeks

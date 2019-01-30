@@ -30,5 +30,11 @@ module.exports = {
         })
         .then(res.status(200).send(studentInfo))
         .catch(err => res.status(400).send(err))
+    },
+    // When logging in, will retrieve student model
+    getStudentLogin(userId){
+        return Student.findOne({
+            where: { userId }
+        })
     }
 }

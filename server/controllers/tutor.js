@@ -29,5 +29,11 @@ module.exports = {
         })
         .then(res.status(200).send(tutorInfo))
         .catch(err => res.status(400).send(err))
+    },
+    // when logging in, will grab tutor model
+    getTutorLogin(userId) {
+        return Tutor.findOne({
+            where: { userId }
+        })
     }
 }

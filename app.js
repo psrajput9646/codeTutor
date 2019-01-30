@@ -8,6 +8,9 @@ require('dotenv').config();
 // Routes
 var usersRouter = require('./routes/users');
 var authRouter = require('./routes/auth');
+const studentRouter = require('./routes/student');
+const tutorRouter = require('./routes/tutor');
+
 
 var app = express();
 
@@ -19,6 +22,8 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/student', studentRouter);
+app.use('/api/tutor', tutorRouter);
 
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname+'/client/build/index.html'));

@@ -19,8 +19,7 @@ function verifyToken(req, res, next) {
             })
         }  
         // save to request for use in other routes
-        req.user = decoded.id;
-        req.tutor = decoded.tutor;
+        req.decoded = decoded;
         next();
     })
 }
