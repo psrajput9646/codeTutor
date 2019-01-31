@@ -4,7 +4,6 @@ import {Switch, Route} from 'react-router-dom';
 import './App.css';
 import Nav from './components/Nav.js';
 import Account from './components/Account.js';
-// import Tabs from './components/Tabs.js';
 import Default from './components/Default.js';
 
 
@@ -13,7 +12,6 @@ const App = () => (
     <Nav/>
     <Switch>
       <Route exact path="/" component={Account}/>
-      {/* <Route path="/tabs" component={Tabs}/> */}
       <Route component={Default}/>
     </Switch>
   </div>
