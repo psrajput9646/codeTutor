@@ -1,16 +1,13 @@
 import React from 'react';
 import {
+Container,
 Collapse,
 Navbar,
 NavbarToggler,
 NavbarBrand,
 Nav,
 NavItem,
-NavLink,
-UncontrolledDropdown,
-DropdownToggle,
-DropdownMenu,
-DropdownItem } from 'reactstrap';
+NavLink} from 'reactstrap';
 
 export default class Navigation extends React.Component {
     constructor(props) {
@@ -29,6 +26,7 @@ export default class Navigation extends React.Component {
         return (
         <div>
             <Navbar color="dark" dark expand="md">
+            <Container>
             {/* Website name */}
             <NavbarBrand href="/">
                 <strong>WTFS</strong>
@@ -41,6 +39,7 @@ export default class Navigation extends React.Component {
                 </NavItem>
                 </Nav>
             </Collapse>
+            </Container>
             </Navbar>
         </div>
         );
