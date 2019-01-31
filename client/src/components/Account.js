@@ -3,7 +3,7 @@ import { Container, Row, Col} from 'reactstrap';
 import Profile from './Profile.js';
 import Tabs from './Tabs.js';
 
-export default class Account extends Component {
+export default class Accounts extends Component {
     render() {
         return (
         <Container>

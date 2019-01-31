@@ -3,6 +3,9 @@ const bcrypt = require('bcryptjs');
 const config = require('../config');
 const jwt = require('jsonwebtoken');
 const passwordValidator = require('password-validator');
+const emailValidator = require('email-validator');
+const tutorController = require('./tutor');
+const studentController = require('./student');
 
 // Password Validator Schema
 let schema = new passwordValidator();
@@ -24,6 +27,11 @@ module.exports = {
             return res
                     .status(400).send({error: passwordErrors})
         }
+        // Check for well-formed email
+        if(!emailValidator.validate(req.body.email)){
+            return res
+                    .status(400).send({error: "Bad email"});
+        }
         // See if username is taken
         User.findOne({
             where: {title: req.body.username}
@@ -37,14 +45,28 @@ module.exports = {
         // Encrypt password and create user
         bcrypt.genSalt(10, function(err, salt) {
             bcrypt.hash(req.body.password, salt, function(err, hash){
-                return User
-                .create({
+                return User.create({
                     username: req.body.username,
                     password: hash,
                     email: req.body.email,
-                    tutor: req.body.isTutor
+                    tutor: req.body.tutor
                 })
-                .then(user => res.status(201).send(user))
+                .then(user => {
+                    let tokenBody = {
+                        id: user.id,
+                        username: user.username,
+                        isTutor: user.tutor
+                    }
+                    if (user.tutor){
+                        tokenBody.tutor = tutorController.create(req.body.firstName, req.body.lastName, user.id);
+                    } else {
+                        tokenBody.student = studentController.create(req.body.firstName, req.body.lastName, user.id);
+                    }
+                    return jwt.sign(tokenBody, config.secret, {
+                        expiresIn: 1209600 // 2 weeks
+                    })
+                })
+                .then(token => res.status(201).send(token))
                 .catch(err => res.status(500).send(err));
             })
         })
@@ -63,10 +85,15 @@ module.exports = {
                 .then((response) => {
                     // Create token and pass to user
                     if(response){
-                        tokenBody = {
-                            id: req.body.id,
-                            username: req.body.username,
-                            tutor: req.body.tutor
+                        let tokenBody = {
+                            id: user.id,
+                            username: user.username,
+                            isTutor: user.tutor
+                        }
+                        if (tokenBody.isTutor){
+                            tokenBody.tutor = tutorController.getTutorLogin(tokenBody.id);
+                        } else {
+                            tokenBody.student = studentController.getStudentLogin(tokenBody.id);
                         }
                         token = jwt.sign(tokenBody, config.secret, {
                             expiresIn: 1209600 // 2 weeks
