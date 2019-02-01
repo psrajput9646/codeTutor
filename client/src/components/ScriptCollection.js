@@ -1,9 +1,9 @@
 import React from 'react';
-import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, ListGroup} from 'reactstrap';
+import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, ListGroup, Button, ListGroupItem} from 'reactstrap';
 import classnames from 'classnames';
 import ScriptInfo from './ScriptInfo.js';
 
-export default class Tabs extends React.Component {
+export default class ScriptCollection extends React.Component {
 constructor(props) {
     super(props);
 
@@ -44,6 +44,9 @@ render() {
                 <Row>
                     <Col sm="12">
                         <ListGroup className="mt-3" flush>
+                            <ListGroupItem className="pt-0">
+                                <Button className="float-right" size="sm" color="success">New <strong>+</strong></Button>{' '}
+                            </ListGroupItem>
                             <ScriptInfo/>
                             <ScriptInfo/>
                         </ListGroup>

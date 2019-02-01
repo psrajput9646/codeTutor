@@ -1,3 +1,4 @@
+// This component holds the content to the navbar
 import React from 'react';
 import {
 Container,
@@ -32,8 +33,14 @@ export default class Navigation extends React.Component {
                 <strong>WTFS</strong>
             </NavbarBrand>
             <NavbarToggler onClick={this.toggle} />
+            {/* Links */}
             <Collapse isOpen={this.state.isOpen} navbar>
                 <Nav className="ml-auto" navbar>
+                {/* Allows users to sign in */}
+                <NavItem>
+                    <NavLink href="/signIn/">Sign In</NavLink>
+                </NavItem>
+                {/* Allows users to sign out */}
                 <NavItem>
                     <NavLink href="/components/">Sign Out</NavLink>
                 </NavItem>

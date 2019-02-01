@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Row, Col} from 'reactstrap';
 import Profile from './Profile.js';
-import Tabs from './Tabs.js';
+import ScriptCollection from './ScriptCollection.js';
 
 export default class Accounts extends Component {
     render() {
@@ -13,7 +13,7 @@ export default class Accounts extends Component {
                 </Col>
                 <Col sm="9">
                     <div className="mt-5" flush>
-                        <Tabs/>
+                        <ScriptCollection/>
                     </div>
                 </Col>
             </Row>
