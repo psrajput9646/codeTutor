@@ -2,10 +2,13 @@ const express = require("express");
 const projectRouter = express.Router();
 const projectController = require("../server/controllers/project");
 const verifyToken = require("../server/auth/VerifyToken");
-const verifyProject = require("../server/auth/VerifyProject");
 
-// Retrieves student information - including projects and file namess
-// Parameter: userId (foreign key)
-studentRouter.get("/:id", verifyToken, verifyStudent, studentController.getStudent)
+// Retrieves Project
+// Parameter: Id
+projectRouter.get("/:id", verifyToken, projectController.getProject)
 
-module.exports = studentRouter;
+// Creates a Project
+// Parameters: name, studentId (grabbed from token)
+projectRouter.post("/create", verifyToken, projectController.create)
+
+module.exports = projectRouter;
