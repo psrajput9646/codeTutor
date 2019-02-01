@@ -5,13 +5,14 @@ import './App.css';
 import Nav from './components/Nav.js';
 import Account from './components/Account.js';
 import Default from './components/Default.js';
-
+import Editor from './components/Editor.js';
 
 const App = () => (
   <div>
     <Nav/>
     <Switch>
       <Route exact path="/" component={Account}/>
+      <Route path="/editor" component={Editor}/>
       <Route component={Default}/>
     </Switch>
   </div>
