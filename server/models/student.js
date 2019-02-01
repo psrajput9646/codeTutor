@@ -2,7 +2,8 @@
 module.exports = (sequelize, DataTypes) => {
   const Student = sequelize.define('Student', {
     firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING
+    lastName: DataTypes.STRING,
+    bio: DataTypes.STRING
   }, {});
   Student.associate = function(models) {
     Student.belongsTo(models.User);
