@@ -24,7 +24,7 @@ export default class AccountAccess extends Component {
         }
         render() {
             return (
-            <div className="stretch-container">
+            <div className="stretch-container mt-5">
                 <Container className="h-100">
                     <Row className="align-items-center h-100">
                         <Col sm={{size: 6, offset: 3}} >

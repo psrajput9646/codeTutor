@@ -19,7 +19,7 @@ export default class SignUp extends Component {
                     <Input className = "mt-3" type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Password Confirm"/>
                 </FormGroup>
             </form>
-            <Button color="success" type="submit" className="float-right">Sign Up</Button>{' '}
+            <Button color="success" type="submit" className="float-right mb-5">Sign Up</Button>{' '}
         </div>
         )
     }

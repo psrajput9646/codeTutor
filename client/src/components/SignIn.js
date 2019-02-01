@@ -17,7 +17,7 @@ export default class SignIn extends Component {
                     <Input type="password" name="password" id="password" placeholder="password" />
                 </FormGroup>
             </form>
-            <Button color="success" type="submit" className="float-right">Sign In</Button>{''}
+            <Button color="success" type="submit" className="float-right mb-5">Sign In</Button>{''}
         </div>
         )
     }
