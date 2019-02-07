@@ -8,23 +8,24 @@ import ScriptOutput from './ScriptOutput.js';
 export default class Editor extends Component {
     render() {
         return (
-        <div>
-            <Container className="mt-3">
-                <h3>ScriptName.js</h3>
+        <div className="full-content-height">
+            <Container>
+                <h3 className="mt-3">ScriptName.js</h3>
                 <Row className="mt-3">
-                    <Col sm="6">
+                    <Col sm="8 h6">
                         <TextArea/>
                     </Col>
-                    <Col sm="6">
+                    <Col sm="4">
                         <Comment/>
                     </Col>
+                    <Col sm="6">
+                        <ScriptInput/>
+                    </Col>
+                    <Col sm="6">
+                        <ScriptOutput/>
+                    </Col>
                 </Row>
-                <div>
-                    <ScriptInput/>
-                </div>
-                <div>
-                    <ScriptOutput/>
-                </div>
+                
             </Container>
         </div>
         )

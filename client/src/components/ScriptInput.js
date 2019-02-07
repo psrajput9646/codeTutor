@@ -7,7 +7,7 @@ export default class ScriptInput extends Component {
         <div>
             <FormGroup>
                 <Label for="exampleText">Input</Label>
-                <Input type="textarea" name="text" id="exampleText"/>
+                <Input className="no-scale-textarea" type="textarea" name="text" id="exampleText"/>
             </FormGroup>
         </div>
         )

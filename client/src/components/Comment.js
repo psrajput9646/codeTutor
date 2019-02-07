@@ -7,7 +7,7 @@ export default class Comment extends Component {
         <div>
             <FormGroup>
                 <Label for="exampleSelectMulti">Code Feedback</Label>
-                <Input type="select" name="selectMulti" id="exampleSelectMulti" multiple>
+                <Input className="no-scale-textarea" type="select" name="selectMulti" id="exampleSelectMulti" multiple>
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>

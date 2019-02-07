@@ -7,7 +7,7 @@ export default class TextArea extends Component {
         <div>
             <FormGroup>
                 <Label for="exampleText">Script Input</Label>
-                <Input type="textarea" name="text" id="exampleText" />
+                <Input className="no-scale-textarea h5 d-block" type="textarea" name="text" id="exampleText" />
             </FormGroup>
         </div>
         )

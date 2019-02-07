@@ -6,7 +6,24 @@
 .stretch-container{
     height: 82vh;
 }
+
+.full-content-height{
+    height: 88vh;
+}
 .script-name{
     font-size: 1.25rem;
     margin-right: 1rem;
+}
+
+.no-scale-textarea{
+    resize: none; 
+    height: 100% !important;
+}
+
+.h6{
+    height: 58vh !important;
+}
+
+.h3{
+    height: 80%;
 }
