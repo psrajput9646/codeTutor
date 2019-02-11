@@ -24,8 +24,9 @@ export default class Navigation extends React.Component {
         });
     }
     render() {
+        
         return (
-        <div>
+        <div id="navBar">
             <Navbar color="dark" dark expand="md">
             <Container>
             {/* Website name */}

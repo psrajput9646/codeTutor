@@ -33,8 +33,8 @@ export default class SignUp extends Component {
                     <Input type="password" name="password" id="password" placeholder="Password"/>
                     <Input className = "mt-3" type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Password Confirm"/>
                 </FormGroup>
-                <FormGroup tag="accountType">
-                    <Label for="accountType">Account Status</Label>
+                <FormGroup>
+                    <Label>Account Status</Label>
                     <Row>
                         <Col sm={6}>
                             <FormGroup check>
