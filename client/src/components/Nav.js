@@ -31,12 +31,16 @@ export default class Navigation extends React.Component {
             <Container>
             {/* Website name */}
             <NavbarBrand href="/">
-                <strong>WTFS</strong>
+                <strong>CodeIt</strong>
             </NavbarBrand>
             <NavbarToggler onClick={this.toggle} />
             {/* Links */}
             <Collapse isOpen={this.state.isOpen} navbar>
                 <Nav className="ml-auto" navbar>
+                {/* Profile */}
+                <NavItem>
+                    <NavLink href="/">Profile</NavLink>
+                </NavItem>
                 {/* Allows users to sign in */}
                 <NavItem>
                     <NavLink href="/signIn/">Sign In</NavLink>

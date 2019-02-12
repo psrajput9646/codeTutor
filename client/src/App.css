@@ -17,10 +17,32 @@
     height: 100% !important;
 }
 
-.h6{
-    height: 58vh !important;
+.comments-list{
+    background: white;
+    min-height: 200px;
+    width:100%;
+    overflow:hidden; 
+    overflow-y:scroll;
 }
 
-.h3{
-    height: 80%;
+.round-div{
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
 }
+
+.text-smaller{
+    font-size: .8em;
+}
+
+.text-like{
+    font-size: .7em;
+}
+
+.comment-box{
+    border-top: .3em solid white;
+}
+
+
+

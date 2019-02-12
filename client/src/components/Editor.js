@@ -8,26 +8,25 @@ import ScriptOutput from './ScriptOutput.js';
 export default class Editor extends Component {
     render() {
         return (
-        <div className=" bg-warning" id="editorWindow" onload="resizeEditor()">
+        <div id="editorWindow" onload="resizeEditor()">
             <Container>
-                <h3 className="pt-3">ScriptName.js</h3>
-                <Row className="mt-3">
-                    <Col sm="8 h6 bg-success" className="h-100">
+                <h3 className="pt-3" id="editorName">ScriptName.js</h3>
+                <Row className="mt-3 mb-0">
+                    <Col sm="12" md="8" className="h-100" id="editorRight">
                         <ScriptArea/>
-                        <Row>
-                            <Col sm="6">
+                        <Row className ="" id="ioField">
+                            <Col sm="12" md="6">
                                 <ScriptInput/>
                             </Col>
-                            <Col sm="6">
+                            <Col sm="12" md="6">
                                 <ScriptOutput/> 
                             </Col>
                         </Row>
                     </Col>
-                    <Col sm="4" className="bg-danger">
+                    <Col sm="12" md="4">
                         <Comment/>
                     </Col>
                 </Row>
-                
             </Container>
         </div>
         )

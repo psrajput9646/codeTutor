@@ -9,11 +9,41 @@ $(document).ready(function(){
         { //if the container is visible on the page
             resizeEditor();  //Adds a grid to the html
         }
-	});
+    });
+    
+    $(".likeComment").click(function(){
+        if($(this).hasClass("text-secondary"))
+        {
+            $(this).addClass("text-success");
+            $(this).removeClass("text-secondary");
+
+            // Get the count object and increment its count
+            upVoteCount = $(this).next()
+            $(upVoteCount).html(+$(upVoteCount).html() + 1);
+        }
+        else
+        {
+            $(this).addClass("text-secondary");
+            $(this).removeClass("text-success");
+
+            // Get the count object and decrement its count
+            upVoteCount = $(this).next()
+            $(upVoteCount).html(+$(upVoteCount).html() - 1);
+        }
+    }); 
     
 });
 function resizeEditor(){
-    console.log($("#navBar").height());
-    $("#editorWindow").css('min-height', $(window).height() - $("#navBar").height());
     
+    // Change the height of the space below the navbar
+    $("#editorWindow").css('height', $(window).height() - $("#navBar").height());
+
+    // Give height to the script area
+    $("#scriptArea").css('min-height', ($("#editorWindow").height() - $("#ioField").height() - 140));
+
+    // Give height to the commentsSection
+    $("#commentsSection").css('height', "500px");
+
+    editorRight = $("#editorRight").height()
+    $("#commentsSection").height(editorRight - 75)
 }
