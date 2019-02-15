@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Dropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
 
 export default class ProjectFile extends Component {
     constructor(props) {
@@ -15,6 +15,10 @@ export default class ProjectFile extends Component {
         this.setState({
             dropdownOpen: !this.state.dropdownOpen
         });
+    }
+
+    print(){
+        console.log(this);
     }
     render() {
         return (
