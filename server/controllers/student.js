@@ -1,5 +1,8 @@
 const Student = require('../models/student');
 
+
+// DEPRECATED ****
+
 module.exports = {
     create(firstName, lastName, userId){
         return Student.create({

@@ -5,12 +5,11 @@ var logger = require('morgan');
 require('dotenv').config();
 
 // Routes
-var usersRouter = require('./routes/users');
-var authRouter = require('./routes/auth');
-const studentRouter = require('./routes/student');
-const tutorRouter = require('./routes/tutor');
+const usersRouter = require('./routes/users');
+const authRouter = require('./routes/auth');
 const projectRouter = require('./routes/project');
 const fileRouter = require('./routes/file');
+const commentRouter = require('./routes/comment');
 
 var app = express();
 
@@ -22,8 +21,7 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
-app.use('/api/student', studentRouter);
-app.use('/api/tutor', tutorRouter);
+app.use('/api/comment', commentRouter);
 app.use('/api/project', projectRouter);
 app.use('/api/file', fileRouter);
 

@@ -1,17 +1,12 @@
 const File = require('../models/file');
 
 module.exports = {
-    // Requires name for project and student Id (grabbed from token)
+    // Requires name for file, projectId and user Id (grabbed from token)
     create(req, res){
-        try {
-            if(!req.decoded.student.projects.some(project => project.id === req.body.projectId))
-                throw "Not allowed";
-        } catch (error) {
-            res.status(401).send({err: "Not allowed to create a file in this project"});
-        }
         return File.create({
             name: req.body.name,
             type: req.body.type,
+            path: req.decoded.id + "/" + req.body.projectId + "/" + req.body.name + req.body.type,
             projectId: req.body.projectId
         })
         .then(file => res.status(200).send(file))
