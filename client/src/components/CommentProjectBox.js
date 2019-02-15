@@ -5,10 +5,10 @@ export default class CommentProjectBox extends Component {
         return (
         <div className="bg-light comment-box">
             <div className="ml-2">
-                <span className="font-weight-light text-smaller pl-2 text-primary">
+                <span className="font-weight-light text-smaller text-primary">
                     <a href="/editor">Project name</a>
                 </span>
-                <span className="font-weight-light text-smaller pl-2 text-primary">
+                <span className="font-weight-light text-smaller text-primary">
                     - <a href="/">User Name</a>
                 </span>
                 <div>

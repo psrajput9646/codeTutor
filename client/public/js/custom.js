@@ -42,8 +42,8 @@ function resizeEditor(){
     $("#scriptArea").css('min-height', ($("#editorWindow").height() - $("#ioField").height() - 140));
 
     // Give height to the commentsSection
-    $("#commentsSection").css('height', "500px");
+    $(".list-box").css('height', "500px");
 
     editorRight = $("#editorRight").height()
-    $("#commentsSection").height(editorRight - 75)
+    $(".list-box").height(editorRight - 75)
 }
