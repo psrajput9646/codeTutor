@@ -6,9 +6,13 @@ module.exports = (sequelize, DataTypes) => {
     username: {type: Sequelize.STRING, unique: true }, 
     password: DataTypes.STRING,
     email: DataTypes.STRING,
-    tutor: DataTypes.BOOLEAN
+    firstName: DataTypes.STRING,
+    lastName: DataTypes.STRING,
+    bio: DataTypes.STRING
   }, {});
   User.associate = function(models) {
+    User.hasMany(models.Project);
+    User.hasMany(models.Comment);
     // associations can be defined here
   };
   return User;

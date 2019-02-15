@@ -4,8 +4,9 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING
   }, {});
   Project.associate = function(models) {
-    Project.belongsTo(models.Student);
+    Project.belongsTo(models.User);
     Project.hasMany(models.File);
+    Project.hasMany(models.Comment);
   };
   return Project;
 };

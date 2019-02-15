@@ -4,8 +4,6 @@ const config = require('../config');
 const jwt = require('jsonwebtoken');
 const passwordValidator = require('password-validator');
 const emailValidator = require('email-validator');
-const tutorController = require('./tutor');
-const studentController = require('./student');
 
 // Password Validator Schema
 let schema = new passwordValidator();
@@ -49,18 +47,13 @@ module.exports = {
                     username: req.body.username,
                     password: hash,
                     email: req.body.email,
-                    tutor: req.body.tutor
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
                 })
                 .then(user => {
                     let tokenBody = {
                         id: user.id,
-                        username: user.username,
-                        isTutor: user.tutor
-                    }
-                    if (user.tutor){
-                        tokenBody.tutor = tutorController.create(req.body.firstName, req.body.lastName, user.id);
-                    } else {
-                        tokenBody.student = studentController.create(req.body.firstName, req.body.lastName, user.id);
+                        username: user.username
                     }
                     return jwt.sign(tokenBody, config.secret, {
                         expiresIn: 1209600 // 2 weeks
@@ -87,13 +80,7 @@ module.exports = {
                     if(response){
                         let tokenBody = {
                             id: user.id,
-                            username: user.username,
-                            isTutor: user.tutor
-                        }
-                        if (tokenBody.isTutor){
-                            tokenBody.tutor = tutorController.getTutorLogin(tokenBody.id);
-                        } else {
-                            tokenBody.student = studentController.getStudentLogin(tokenBody.id);
+                            username: user.username
                         }
                         token = jwt.sign(tokenBody, config.secret, {
                             expiresIn: 1209600 // 2 weeks
@@ -114,4 +101,6 @@ module.exports = {
             }
         })
     }
+
+
 }

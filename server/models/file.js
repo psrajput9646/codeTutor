@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   const File = sequelize.define('File', {
     name: DataTypes.STRING,
     type: DataTypes.STRING,
-    content: DataTypes.BLOB
+    path: DataTypes.STRING
   }, {});
   File.associate = function(models) {
     File.belongsTo(models.Project);
