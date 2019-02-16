@@ -59,7 +59,7 @@ module.exports = {
                         expiresIn: 1209600 // 2 weeks
                     })
                 })
-                .then(token => res.status(201).send(token))
+                .then(token => res.status(201).send({auth: true, token}))
                 .catch(err => res.status(500).send(err));
             })
         })
