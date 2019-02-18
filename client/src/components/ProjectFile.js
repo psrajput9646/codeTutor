@@ -17,9 +17,6 @@ export default class ProjectFile extends Component {
         });
     }
 
-    print(){
-        console.log(this);
-    }
     render() {
         return (
         <div className="bg-light comment-box">
