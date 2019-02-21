@@ -3,6 +3,7 @@ import React from 'react';
 import {Switch, Route} from 'react-router-dom';
 import './App.css';
 import Nav from './components/Nav.js';
+import Home from './components/Home.js';
 import Account from './components/Account.js';
 import Default from './components/Default.js';
 import Editor from './components/Editor.js';
@@ -13,8 +14,10 @@ const App = () => (
     {/* Displays nav component */}
     <Nav/>
     <Switch>
-      {/* Home page is the account page that displays the user's account info & code*/}
-      <Route exact path="/" component={Account}/>
+      {/* Home is the page that displays a feed of all ongoing projects */}
+      <Route exact path="/" component={Home}/>
+      {/* Account is the account page that displays the user's account info & code*/}
+      <Route path="/account" component={Account}/>
       {/* Editor page allows users to mess with code */}
       <Route path="/editor" component={Editor}/>
       {/* Account Access page allows user to gain access or create account */}

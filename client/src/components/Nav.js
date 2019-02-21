@@ -39,7 +39,7 @@ export default class Navigation extends React.Component {
                 <Nav className="ml-auto" navbar>
                 {/* Profile */}
                 <NavItem>
-                    <NavLink href="/">Profile</NavLink>
+                    <NavLink href="/account/">Profile</NavLink>
                 </NavItem>
                 {/* Allows users to sign in */}
                 <NavItem>
