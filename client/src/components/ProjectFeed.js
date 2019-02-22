@@ -5,7 +5,7 @@ import ScriptInfo from './ScriptInfo.js';
 export default class ProjectFeed extends Component {
     render() {
         return (
-        <ListGroup>
+        <ListGroup flush>
             <ScriptInfo/>
             <ScriptInfo/>
         </ListGroup>
