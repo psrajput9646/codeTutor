@@ -68,7 +68,7 @@ module.exports = {
     login(req, res) {
         // Find user
         User.findOne({
-            where: {title: req.body.username}
+            where: {username: req.body.username}
         }).then(user => {
             if(!user){
                 res.status(401).send({auth: false, error: "Invalid Username / Password"});
