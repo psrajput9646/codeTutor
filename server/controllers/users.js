@@ -32,7 +32,7 @@ module.exports = {
         }
         // See if username is taken
         User.findOne({
-            where: {title: req.body.username}
+            where: {username: req.body.username}
         }).then(user => {
             if(user){
                 return res
