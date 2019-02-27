@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ListGroup, ListGroupItem } from 'reactstrap';
+import { ListGroup } from 'reactstrap';
 import ScriptInfo from './ScriptInfo.js';
 
 export default class ProjectFeed extends Component {
