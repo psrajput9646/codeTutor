@@ -4,6 +4,7 @@ const config = require('../config');
 const jwt = require('jsonwebtoken');
 const passwordValidator = require('password-validator');
 const emailValidator = require('email-validator');
+const mkdirp = require('mkdirp');
 
 // Password Validator Schema
 let schema = new passwordValidator();
@@ -63,6 +64,11 @@ module.exports = {
                 .catch(err => res.status(500).send(err));
             })
         })
+
+        //Create user folder to store projects
+        mkdirp('projects/'+req.body.username, function(err) {
+            // path exists unless there was an error
+        });
     },
 
     login(req, res) {
