@@ -12,7 +12,7 @@ export default class Accounts extends Component {
                     <Profile/>
                 </Col>
                 <Col sm="9">
-                    <div className="mt-5" flush>
+                    <div className="mt-5">
                         <ScriptCollection/>
                     </div>
                 </Col>

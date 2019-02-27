@@ -9,8 +9,8 @@ export default class Home extends Component {
             <Container>
                 <Row>
                     <Col sm="10">
-                        <h1>Project Feed</h1>
                         <div className="mt-5" flush>
+                        <h1>Project Feed</h1>
                             <ProjectFeed/>
                         </div>
                     </Col>
