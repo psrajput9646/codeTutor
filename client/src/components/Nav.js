@@ -1,59 +1,78 @@
 // This component holds the content to the navbar
-import React from 'react';
+import React from 'react'
 import {
-Container,
-Collapse,
-Navbar,
-NavbarToggler,
-NavbarBrand,
-Nav,
-NavItem,
-NavLink} from 'reactstrap';
+  Container,
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  NavLink
+} from 'reactstrap'
+import AuthService from './AuthService';
 
 export default class Navigation extends React.Component {
-    constructor(props) {
-        super(props);
-        this.toggle = this.toggle.bind(this);
-        this.state = {
-        isOpen: false
-        };
+  constructor(props) {
+    super(props)
+    this.Auth = new AuthService();
+    this.toggle = this.toggle.bind(this)
+    this.state = {
+      isOpen: false
     }
-    toggle() {
-        this.setState({
-        isOpen: !this.state.isOpen
-        });
-    }
-    render() {
-        
-        return (
-        <div id="navBar">
-            <Navbar color="dark" dark expand="md">
-            <Container>
+  }
+  toggle() {
+    this.setState({
+      isOpen: !this.state.isOpen
+    })
+  }
+
+  handleLogout = () => {
+      this.Auth.logout();
+  }
+
+  render() {
+    return (
+      <div id="navBar">
+        <Navbar color="dark" dark expand="md">
+          <Container>
             {/* Website name */}
             <NavbarBrand href="/">
-                <strong>CodeIt</strong>
+              <strong>CodeIt</strong>
             </NavbarBrand>
             <NavbarToggler onClick={this.toggle} />
             {/* Links */}
             <Collapse isOpen={this.state.isOpen} navbar>
-                <Nav className="ml-auto" navbar>
+              <Nav className="ml-auto" navbar>
                 {/* Profile */}
-                <NavItem>
-                    <NavLink href="/">Profile</NavLink>
-                </NavItem>
-                {/* Allows users to sign in */}
-                <NavItem>
-                    <NavLink href="/signIn/">Sign In</NavLink>
-                </NavItem>
-                {/* Allows users to sign out */}
-                <NavItem>
-                    <NavLink href="/components/">Sign Out</NavLink>
-                </NavItem>
-                </Nav>
+               <SignInNav isLoggedIn={this.Auth.isLoggedIn()} handleLogout={this.handleLogout}/>
+              </Nav>
             </Collapse>
-            </Container>
-            </Navbar>
-        </div>
-        );
-    }
+          </Container>
+        </Navbar>
+      </div>
+    )
+  }
+}
+
+const SignInNav = props => {
+  const isLoggedIn = props.isLoggedIn
+  if (!isLoggedIn) {
+    return (
+      <NavItem>
+        <NavLink href="/signIn/">Sign In</NavLink>
+      </NavItem>
+    )
+  } else {
+    return (
+      <div>
+        <NavItem>
+          <NavLink href="/account/">Profile</NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink href="/signIn/" onClick={props.handleLogout}>Sign Out</NavLink>
+        </NavItem>
+      </div>
+    )
+  }
 }

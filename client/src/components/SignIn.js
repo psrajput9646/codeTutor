@@ -1,24 +1,80 @@
 // Allows the user to sign into their account
-import React, { Component } from 'react';
-import { FormGroup, Label, Input, Button } from 'reactstrap';
+import React, { Component } from 'react'
+import { FormGroup, Label, Input, Button } from 'reactstrap'
+import AuthService from './AuthService'
 
 export default class SignIn extends Component {
-    render() {
-        return (
-        <div className="mx-3">
-            <form>
-                <h3 className="mt-3">Sign In</h3>
-                <FormGroup className="mt-3">
-                    <Label for="exampleEmail">Email</Label>
-                    <Input type="email" name="email" id="email" placeholder="Email" />
-                </FormGroup>
-                <FormGroup>
-                    <Label for="examplePassword">Password</Label>
-                    <Input type="password" name="password" id="password" placeholder="password" />
-                </FormGroup>
-            </form>
-            <Button color="success" type="submit" className="float-right mb-5">Sign In</Button>{''}
-        </div>
-        )
+  constructor(props) {
+    super(props)
+    this.state = {
+      username: '',
+      password: ''
     }
+    this.Auth = new AuthService()
+  }
+
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value })
+  }
+
+  handleSubmit = () => {
+    const { password, username } = this.state
+
+    this.Auth.fetchAuth('/api/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({
+        password,
+        username
+      })
+    })
+      .then(res => {
+        if (!res.OK) {
+          this.Auth.setToken(res.token)
+          this.props.history.push('/')
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+  render() {
+    const { username, password } = this.state
+    return (
+      <div className="mx-3">
+        <form>
+          <h3 className="mt-3">Sign In</h3>
+          <FormGroup className="mt-3">
+            <Label for="exampleUsername">Username</Label>
+            <Input
+              type="username"
+              name="username"
+              id="username"
+              placeholder="Username"
+              onChange={this.handleChange}
+              value={username}
+            />
+          </FormGroup>
+          <FormGroup>
+            <Label for="examplePassword">Password</Label>
+            <Input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="password"
+              value={password}
+              onChange={this.handleChange}
+            />
+          </FormGroup>
+        </form>
+        <Button
+          color="success"
+          type="submit"
+          className="float-right mb-5"
+          onClick={this.handleSubmit}>
+          Sign In
+        </Button>
+        {''}
+      </div>
+    )
+  }
 }

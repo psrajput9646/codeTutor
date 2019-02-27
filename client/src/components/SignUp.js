@@ -45,7 +45,8 @@ export default class SignUp extends Component {
             })
         })
         .then(res => {
-            this.Auth.setToken(res.token)
+            this.Auth.setToken(res.token);
+            this.props.history.push('/');
         })
     }
 

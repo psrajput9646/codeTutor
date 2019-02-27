@@ -4,6 +4,7 @@ const config = require('../config');
 const jwt = require('jsonwebtoken');
 const passwordValidator = require('password-validator');
 const emailValidator = require('email-validator');
+const mkdirp = require('mkdirp');
 
 // Password Validator Schema
 let schema = new passwordValidator();
@@ -32,7 +33,7 @@ module.exports = {
         }
         // See if username is taken
         User.findOne({
-            where: {title: req.body.username}
+            where: {username: req.body.username}
         }).then(user => {
             if(user){
                 return res
@@ -63,12 +64,17 @@ module.exports = {
                 .catch(err => res.status(500).send(err));
             })
         })
+
+        //Create user folder to store projects
+        mkdirp('projects/'+req.body.username, function(err) {
+            // path exists unless there was an error
+        });
     },
 
     login(req, res) {
         // Find user
         User.findOne({
-            where: {title: req.body.username}
+            where: {username: req.body.username}
         }).then(user => {
             if(!user){
                 res.status(401).send({auth: false, error: "Invalid Username / Password"});
