@@ -2,13 +2,15 @@
 import React, { Component } from 'react'
 import { FormGroup, Label, Input, Button } from 'reactstrap'
 import AuthService from './AuthService'
+import {Redirect} from 'react-router-dom';
 
 export default class SignIn extends Component {
   constructor(props) {
     super(props)
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      redirect: false,
     }
     this.Auth = new AuthService()
   }
@@ -30,7 +32,9 @@ export default class SignIn extends Component {
       .then(res => {
         if (!res.OK) {
           this.Auth.setToken(res.token)
-          this.props.history.push('/')
+          this.setState({
+            redirect: true
+          })
         }
       })
       .catch(err => {
@@ -38,7 +42,11 @@ export default class SignIn extends Component {
       })
   }
   render() {
-    const { username, password } = this.state
+    const { username, password, redirect } = this.state
+    if (redirect) {
+      return <Redirect to='/' />
+    }
+    
     return (
       <div className="mx-3">
         <form>

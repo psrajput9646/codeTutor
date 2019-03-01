@@ -10,12 +10,12 @@ import {
   NavItem,
   NavLink
 } from 'reactstrap'
-import AuthService from './AuthService';
+import AuthService from './AuthService'
 
 export default class Navigation extends React.Component {
   constructor(props) {
     super(props)
-    this.Auth = new AuthService();
+    this.Auth = new AuthService()
     this.toggle = this.toggle.bind(this)
     this.state = {
       isOpen: false
@@ -28,7 +28,7 @@ export default class Navigation extends React.Component {
   }
 
   handleLogout = () => {
-      this.Auth.logout();
+    this.Auth.logout()
   }
 
   render() {
@@ -43,10 +43,11 @@ export default class Navigation extends React.Component {
             <NavbarToggler onClick={this.toggle} />
             {/* Links */}
             <Collapse isOpen={this.state.isOpen} navbar>
-              <Nav className="ml-auto" navbar>
                 {/* Profile */}
-               <SignInNav isLoggedIn={this.Auth.isLoggedIn()} handleLogout={this.handleLogout}/>
-              </Nav>
+                <SignInNav
+                  isLoggedIn={this.Auth.isLoggedIn()}
+                  handleLogout={this.handleLogout}
+                />
             </Collapse>
           </Container>
         </Navbar>
@@ -59,20 +60,24 @@ const SignInNav = props => {
   const isLoggedIn = props.isLoggedIn
   if (!isLoggedIn) {
     return (
-      <NavItem>
-        <NavLink href="/signIn/">Sign In</NavLink>
-      </NavItem>
+      <Nav className="ml-auto" navbar>
+        <NavItem>
+          <NavLink href="/signIn/">Sign In</NavLink>
+        </NavItem>
+      </Nav>
     )
   } else {
     return (
-      <div>
+      <Nav className="ml-auto" navbar>
         <NavItem>
           <NavLink href="/account/">Profile</NavLink>
         </NavItem>
         <NavItem>
-          <NavLink href="/signIn/" onClick={props.handleLogout}>Sign Out</NavLink>
+          <NavLink href="/signIn/" onClick={props.handleLogout}>
+            Sign Out
+          </NavLink>
         </NavItem>
-      </div>
+      </Nav>
     )
   }
 }

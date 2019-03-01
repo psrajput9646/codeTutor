@@ -20,6 +20,11 @@ toggle(tab) {
         });
     }
 }
+
+handleClick = () => {
+    console.log("Here");
+}
+
 render() {
     return (
         <div className="mb-4">
@@ -45,7 +50,8 @@ render() {
                     <Col sm="12">
                         <ListGroup className="mt-3" flush>
                             <ListGroupItem className="pt-0">
-                                <Button className="float-right" size="sm" color="success">New <strong>+</strong></Button>{' '}
+                                <Button className="float-right" size="sm" color="success"
+                                onClick={this.handleClick}>New <strong>+</strong></Button>{' '}
                             </ListGroupItem>
                             <ScriptInfo/>
                             <ScriptInfo/>
