@@ -23,11 +23,12 @@ export default class FileExplorer extends Component {
         return (
         <div>
             <div>
-                <Label for="scriptArea" className="mb-3">Script Input</Label>
+                <Label for="scriptArea" className="mb-3">Explorer</Label>
 
                 {/* Popup form to create a new project */}
                 <Button color="success" onClick={this.toggle} className="float-right" size="sm">
-                <i className="fa fa-plus" aria-hidden="true"></i></Button>
+                    <i className="fa fa-plus" aria-hidden="true"></i>
+                </Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalHeader toggle={this.toggle}>Add a Project</ModalHeader>
                     <ModalBody>

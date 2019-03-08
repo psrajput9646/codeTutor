@@ -4,13 +4,14 @@ import ProjectFeed from './ProjectFeed.js';
 
 export default class Home extends Component {
     render() {
+        
         return (
         <div>
             <Container>
                 <Row>
-                    <Col sm="10">
+                    <Col sm="12">
                         <div className="mt-5">
-                        <h1>Project Feed</h1>
+                        <h1>Help New Projects </h1>
                             <ProjectFeed/>
                         </div>
                     </Col>

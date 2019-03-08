@@ -7,7 +7,7 @@ export default class Comment extends Component {
     render() {
         return (
         <div>
-            <Label for="exampleSelectMulti" className="mb-3">Code Feedback</Label>
+            <Label for="exampleSelectMulti" className="mb-3">Script Feedback</Label>
             {/* Create round border and padding around main comment section */}
             <div className="round-div bg-white py-2 pl-2 border">
                 {/* Main comment section*/}
