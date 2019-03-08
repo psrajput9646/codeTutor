@@ -2,11 +2,7 @@ import React, { Component } from 'react'
 
 export default class CommentBox extends Component {
     render() {
-        const comment = {
-            text:'I am placing some comments here you little punka\nasdfasdf\nasdfasdfasdf\nasdfasdfasdfa\nasdfasdf\nasdfasdf',
-            userName:'joe4294',
-            likes:123
-        }
+        const comment = this.props;
         return (
         <div className="bg-light comment-box">
             <div className="ml-2">
