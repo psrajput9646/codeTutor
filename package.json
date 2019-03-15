@@ -17,14 +17,10 @@
     "mkdirp": "^0.5.1",
     "morgan": "~1.9.0",
     "password-validator": "^4.1.1",
-    "pg": "^7.8.1",
+    "pg": "^7.9.0",
     "pg-hstore": "^2.3.2",
-<<<<<<< HEAD
-    "sequelize": "^4.42.1",
-=======
     "rimraf": "^2.6.3",
-    "sequelize": "^4.42.0",
->>>>>>> fc8d3f0c35be7c04c9702ddd537f5fe3f2ca8d37
+    "sequelize": "^4.43.0",
     "sequelize-auto-migrations": "^1.0.3"
   }
 }
