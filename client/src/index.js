@@ -1,10 +1,8 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { Provider } from 'react-redux'
-import { ConnectedRouter } from 'connected-react-router'
-import store, { history } from './store'
 import App from './app.js'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter } from 'react-router-dom'
 
 import 'sanitize.css/sanitize.css'
 import './index.css'
@@ -12,10 +10,8 @@ import './index.css'
 const target = document.querySelector('#root')
 
 render(
-  <Provider store={store}>
-    <ConnectedRouter history={history}>
+    <BrowserRouter>
         <App />
-    </ConnectedRouter>
-  </Provider>,
+    </BrowserRouter>,
   target
 )

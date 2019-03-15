@@ -1,6 +1,6 @@
 // Allows the user to sign up for an account
 import React, { Component } from 'react';
-import { FormGroup, Label, Input, Button, Row, Col} from 'reactstrap';
+import { FormGroup, Label, Input, Button, Row, Col, Alert} from 'reactstrap';
 import AuthService from './AuthService';
 import Form from '../../node_modules/reactstrap/lib/Form';
 import { Redirect } from 'react-router-dom'
@@ -52,11 +52,17 @@ export default class SignUp extends Component {
                 redirect: true
             })
         })
+        .catch(err => {
+            console.log(err)
+            this.setState({
+                err
+            })
+        })
     }
 
     render() {
         
-        const { firstName, lastName, password, email, username, redirect} = this.state; 
+        const { firstName, lastName, password, email, username, redirect, err} = this.state; 
 
         if (redirect) {
             return <Redirect to='/' />
@@ -119,6 +125,7 @@ export default class SignUp extends Component {
                     <Input className = "mt-3" type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Password Confirm"/>
                 </FormGroup>
             </Form>
+            {err && <Alert color="danger">{err}</Alert>}
             <Button color="success" type="submit" className="float-right mb-5" onClick={this.handleSubmit}>Sign Up</Button>{' '}
         </div>
         )

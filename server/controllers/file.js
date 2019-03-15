@@ -1,5 +1,6 @@
 const File = require('../models').File;
 const fs = require('fs')
+const mkdirp = require('mkdirp');
 
 module.exports = {
     // Requires name for file, projectId and user Id (grabbed from token)
