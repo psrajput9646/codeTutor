@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import decode from 'jwt-decode'
-=======
 // Login & token functions
 import decode from 'jwt-decode';
->>>>>>> dacf47c1bedc25b0407b682118c2a3a3d404330d
 
 export default class AuthService {
   constructor() {
