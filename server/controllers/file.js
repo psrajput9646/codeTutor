@@ -12,6 +12,17 @@ module.exports = {
         .then(file => res.status(200).send(file))
         .catch(err => res.status(400).send(err));
     },
+    
+    // Requires name for folder (grabbed from token)
+    createRoot(req, res){
+        return File.create({
+            name: req.body.name,
+            path: req.decoded.id + "/",
+        })
+        .then(file => res.status(200).send(file))
+        .catch(err => res.status(400).send(err));
+    },
+
     // Parameter: id
     getFile(req, res) {
         return File.findOne({

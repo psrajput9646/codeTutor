@@ -13,6 +13,8 @@ projectRouter.get("/projects:userId", verifyToken, projectController.getProjects
 
 // Creates a Project
 // Parameters: name, userId (grabbed from token)
-projectRouter.post("/create", verifyToken, projectController.create)
+projectRouter.post("/create", verifyToken, function(req, res, next) {
+    projectController.create(req, res);
+  })
 
 module.exports = projectRouter;

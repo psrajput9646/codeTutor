@@ -1,11 +1,18 @@
-const Project = require('../models/project');
+const Project = require('../models').Project;
+const mkdirp = require('mkdirp');
 
 module.exports = {
     // Requires name for project and student Id (grabbed from token)
     create(req, res){
         return Project.create({
             name: req.body.name,
-            userId: req.decoded.id
+            userId: req.decoded.username
+        })
+        .then(req => {
+            //Create user folder to store projects
+            mkdirp('projects/'+req.body.username+'/'+req.body.name, function(err) {
+                // path exists unless there was an error
+            });
         })
         .then(project => res.status(200).send(project))
         .catch(err => res.status(400).send(err));

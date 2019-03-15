@@ -11,4 +11,6 @@ fileRouter.get("/:id", verifyToken, fileController.getFile)
 // Parameter: Name, Type, projectId
 fileRouter.post("/create", verifyToken, projectController.getProjectByIdAndUserId, fileController.create)
 
+fileRouter.post("/createRoot", verifyToken, fileController.createRoot)
+
 module.exports = fileRouter;
