@@ -17,4 +17,8 @@ projectRouter.post("/create", verifyToken, function(req, res, next) {
     projectController.create(req, res);
   })
 
+// Deletes a Project and its files
+// Parameter: projectId, userId (grabbed from token)
+projectRouter.post("/delete", verifyToken, projectController.delete)
+
 module.exports = projectRouter;

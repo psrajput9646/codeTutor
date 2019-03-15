@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { FormGroup, Label, Input, Button, Row, Col} from 'reactstrap';
 import AuthService from './AuthService';
 import Form from '../../node_modules/reactstrap/lib/Form';
+import { Redirect } from 'react-router-dom'
 
 export default class SignUp extends Component {
     constructor(props){
@@ -15,7 +16,8 @@ export default class SignUp extends Component {
         password: "",
         firstName: "",
         lastName: "",
-        email: ""
+        email: "",
+        redirect: false
     }
 
 
@@ -31,7 +33,7 @@ export default class SignUp extends Component {
             lastName,
             password,
             username,
-            email
+            email,
         } = this.state;
 
         this.Auth.fetchAuth("/api/user/create", {
@@ -46,13 +48,19 @@ export default class SignUp extends Component {
         })
         .then(res => {
             this.Auth.setToken(res.token);
-            this.props.history.push('/');
+            this.setState({
+                redirect: true
+            })
         })
     }
 
     render() {
         
-        const { firstName, lastName, password, email, username } = this.state; 
+        const { firstName, lastName, password, email, username, redirect} = this.state; 
+
+        if (redirect) {
+            return <Redirect to='/' />
+        }
 
         return (
         <div className="mx-3">
