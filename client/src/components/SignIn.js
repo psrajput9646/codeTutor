@@ -21,7 +21,6 @@ export default class SignIn extends Component {
 
   handleSubmit = () => {
     const { password, username } = this.state
-
     this.Auth.fetchAuth('/api/auth/login', {
       method: 'POST',
       body: JSON.stringify({
