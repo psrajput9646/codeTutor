@@ -1,6 +1,7 @@
 const Project = require("../models").Project;
 const mkdirp = require('mkdirp');
 const rimraf = require('rimraf');
+const mkdirp = require('mkdirp');
 
 module.exports = {
   // Requires name for project and student Id (grabbed from token)
