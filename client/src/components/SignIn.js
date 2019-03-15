@@ -67,7 +67,7 @@ export default class SignIn extends Component {
               type="password"
               name="password"
               id="password"
-              placeholder="password"
+              placeholder="Password"
               value={password}
               onChange={this.handleChange}
             />
