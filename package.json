@@ -19,6 +19,7 @@
     "password-validator": "^4.1.1",
     "pg": "^7.8.0",
     "pg-hstore": "^2.3.2",
+    "rimraf": "^2.6.3",
     "sequelize": "^4.42.0",
     "sequelize-auto-migrations": "^1.0.3"
   }
