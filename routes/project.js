@@ -15,4 +15,8 @@ projectRouter.get("/projects:userId", verifyToken, projectController.getProjects
 // Parameters: name, userId (grabbed from token)
 projectRouter.post("/create", verifyToken, projectController.create)
 
+// Deletes a Project and its files
+// Parameter: projectId, userId (grabbed from token)
+projectRouter.post("/delete", verifyToken, projectController.delete)
+
 module.exports = projectRouter;

@@ -1,3 +1,7 @@
+/* Section to the right of editor. Main content div has className="list-box" and id="commentsSection".
+ * First section is submitted solutions, id="solutionSection". next section is current user's starred projects, id="starSection".
+ * Third section is comments on the current project, id="remarksSection".
+ */
 import React, { Component } from 'react';
 import {Label} from 'reactstrap';
 import CommentBox from './CommentBox';
@@ -64,7 +68,7 @@ export default class Comment extends Component {
             <div className="round-div bg-white py-2 pl-2 border">
                 {/* Main comment section*/}
                 <div className="list-box" id="commentsSection">
-                    {/* Holds starred projects */}
+                    {/* Holds submitted solutions */}
                     <div id="solutionSection">
                         <div className="bg-dark text-light">
                             <i className="fas fa-hands-helping pl-2"> Solutions</i>

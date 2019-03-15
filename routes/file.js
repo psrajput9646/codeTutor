@@ -12,4 +12,8 @@ fileRouter.get("/:id", verifyToken, fileController.getFile)
 // Parameter: Name, Type, projectId
 fileRouter.post("/create", verifyToken, projectController.getProjectByIdAndUserId, fileController.create)
 
+// Deletes a file
+// Parameter: fileName, type, projectId, fileId, userId (grabbed from token)
+fileRouter.post("/delete", verifyToken, fileController.delete)
+
 module.exports = fileRouter;
