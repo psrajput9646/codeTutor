@@ -19,6 +19,7 @@
     "bootstrap": "^4.2.1",
     "connected-react-router": "4.5.0",
     "jwt-decode": "^2.2.0",
+    "pg": "^7.9.0",
     "react": "16.7.0",
     "react-dom": "16.7.0",
     "react-redux": "5.1.1",
