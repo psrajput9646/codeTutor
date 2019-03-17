@@ -23,11 +23,11 @@ export default class SignUp extends Component {
     //Submits the form when Enter key is pressed
     onKeyDown = (event) => {
         if (event.key === 'Enter') {
-          event.preventDefault();
-          event.stopPropagation();
-          this.handleSubmit();
+            event.preventDefault();
+            event.stopPropagation();
+            this.handleSubmit();
         }
-      }
+    }
 
     // Handles values in form
     handleChange = event => {
@@ -132,7 +132,7 @@ export default class SignUp extends Component {
                     />
                     <Input className = "mt-3" type="email" name="emailConfirm" id="emailConfirm" placeholder="Email Confirm"/>
                 </FormGroup>
-                <FormGroup id="passwordGroup">
+                <FormGroup id="SignUpPasswordGroup">
                     <Label for="password">Password</Label>
                     <Input
                         type="password"
@@ -145,15 +145,18 @@ export default class SignUp extends Component {
                     />
                     <Input className = "mt-3" type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Password Confirm"/>
                 </FormGroup>
+                <UncontrolledTooltip placement="top" target="SignUpPasswordGroup">
+                    Min. 8 char, max 100 char, 1 uppercase, 1 lowercase, 1 digit, 1 symbol, and no spaces
+                </UncontrolledTooltip>
             </Form>
             {err && <Alert color="danger">{err}</Alert>}
-            <Button 
+            <Button     
                 color="success"
                 type="submit"
                 className="float-right mb-5"
                 onClick={this.handleSubmit}
             >Sign Up
-            </Button>{' '}
+            </Button>
         </div>
         )
     }

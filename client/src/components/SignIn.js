@@ -1,6 +1,6 @@
 // Allows the user to sign into their account
 import React, { Component } from 'react'
-import { FormGroup, Label, Input, Button } from 'reactstrap'
+import { FormGroup, Label, Input, Button, UncontrolledTooltip} from 'reactstrap'
 import AuthService from './AuthService'
 import {Redirect} from 'react-router-dom';
 
@@ -73,7 +73,7 @@ export default class SignIn extends Component {
               onKeyDown={this.onKeyDown}
               />
           </FormGroup>
-          <FormGroup>
+          <FormGroup id="SignInPasswordGroup">
             <Label for="examplePassword">Password</Label>
             <Input
               type="password"
@@ -85,16 +85,17 @@ export default class SignIn extends Component {
               onKeyDown={this.onKeyDown}
             />
           </FormGroup>
+          <UncontrolledTooltip placement="top" target="SignInPasswordGroup">
+              Case sensitive
+          </UncontrolledTooltip>
         </form>
         <Button
           color="success"
           type="submit"
           className="float-right mb-5"
           onClick={this.handleSubmit}
-          >
-          Sign In
+          >Sign In
         </Button>
-        {''}
       </div>
     )
   }

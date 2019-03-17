@@ -1,9 +1,9 @@
-/* Section to the right of editor. Main content div has className="list-box" and id="commentsSection".
- * First section is submitted solutions, id="solutionSection". next section is current user's starred projects, id="starSection".
- * Third section is comments on the current project, id="remarksSection".
+/* Section to the right of editor. Main content div has className="list-box" and id="CommentsSection".
+ * First section is submitted solutions, id="solutionSection". next section is current user's starred projects, id="StarSection".
+ * Third section is comments on the current project, id="RemarksSection".
  */
-import React, { Component } from 'react';
-import {Label} from 'reactstrap';
+import React, {Component} from 'react';
+import {Label, UncontrolledTooltip} from 'reactstrap';
 import CommentBox from './CommentBox';
 import CommentProjectBox from './CommentProjectBox';
 
@@ -67,33 +67,37 @@ export default class Comment extends Component {
             {/* Create round border and padding around main comment section */}
             <div className="round-div bg-white py-2 pl-2 border">
                 {/* Main comment section*/}
-                <div className="list-box" id="commentsSection">
+                <div className="list-box" id="CommentsSection">
                     {/* Holds submitted solutions */}
-                    <div id="solutionSection">
-                        <div className="bg-dark text-light">
+                    <div id="SolutionSection" className="mt-2">
+                        <div className="bg-dark text-light" id="SolutionSectionHead">
                             <i className="fas fa-hands-helping pl-2"> Solutions</i>
-                            <span className="float-right mr-2"><i className="fa fa-plus" aria-hidden="true"></i></span>
                         </div>
+                        <UncontrolledTooltip placement="left" target="SolutionSectionHead">
+                            Submitted solutions
+                        </UncontrolledTooltip>
                         {solutionList.map((project)=>
                             <CommentProjectBox key={project.id} {...project}/>
                         )}
                     </div>
                     {/* Holds starred projects */}
-                    <div id="starSection">
+                    <div id="StarSection">
                         <div className="bg-dark text-light">
                             <i className="fas fa-star pl-2"> Star Project</i>
-                            <span className="float-right mr-2"><i className="fa fa-plus" aria-hidden="true"></i></span>
                         </div>
                         {starList.map((project)=>
                             <CommentProjectBox key={project.id} {...project}/>
                         )}
                     </div>
                     {/* Holds remarks */}
-                    <div id="remarksSection">
-                        <div className="bg-dark text-light">
+                    <div id="RemarksSection">
+                        <div className="bg-dark text-light" id="RemarksSectionHead">
                             <i className="fas fa-comments pl-2"> Remarks</i>
                             <span className="float-right mr-2"><i className="fa fa-plus" aria-hidden="true"></i></span>
                         </div>
+                        <UncontrolledTooltip placement="left" target="RemarksSectionHead">
+                            Community remarks
+                        </UncontrolledTooltip>
                         {commentList.map((comment) =>
                             <CommentBox key={comment.id} {...comment}/>
                         )}

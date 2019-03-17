@@ -8,7 +8,11 @@ export default class ProjectInfo extends Component {
         return (
         
         <ListGroupItem className="pb-0">
-            <span className="script-name">{projectInfo.name}</span>
+            <span className="script-name">
+                <i className="far fa-star" aria-hidden="true"></i>
+                {' '}
+                {projectInfo.name}
+            </span>
             <a href="/editor/">edit</a>
             <p>{projectInfo.description}</p>
         </ListGroupItem>

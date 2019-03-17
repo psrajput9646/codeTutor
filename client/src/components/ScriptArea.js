@@ -27,21 +27,27 @@ export default class ScriptArea extends Component {
                     {/* Buttons for script inputs */}
                     <Button color="success" size="sm" className="float-right" id="ExecuteCode">
                         <i className="fa fa-play" aria-hidden="true"></i>
-                    </Button>{' '}
+                    </Button>
                     <UncontrolledTooltip placement="top" target="ExecuteCode">
                         Execute code
                     </UncontrolledTooltip>
                     <Button color="success" size="sm" className="float-right mr-1" id="SaveProject">
                         <i className="fa fa-save" aria-hidden="true"></i>
-                    </Button>{' '}
+                    </Button>
                     <UncontrolledTooltip placement="top" target="SaveProject">
                         Save your project
                     </UncontrolledTooltip>
                     <Button color="success" size="sm" className="float-right mr-1" id="HelpingHand">
                         <i className="fa fa-hands-helping" aria-hidden="true"></i>
-                    </Button>{' '}
+                    </Button>
                     <UncontrolledTooltip placement="top" target="HelpingHand">
                         Submit for help!
+                    </UncontrolledTooltip>
+                    <Button color="success" size="sm" className="float-right mr-1" id="CodeFork">
+                        <i className="fa fa-code-branch" aria-hidden="true"></i>
+                    </Button>{' '}
+                    <UncontrolledTooltip placement="top" target="CodeFork">
+                        Fork Project
                     </UncontrolledTooltip>
                 </div>
                 {/* Input field for scripts */}

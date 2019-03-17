@@ -88,18 +88,16 @@ export default class FileExplorer extends Component {
 
                 <div className="round-div bg-white py-2 pl-2 border">
                     <div className="list-box">
-                        <div id="projectOne">
-                            <div className="bg-dark text-light">
-                                {projectList.map((project)=>
-                                    <div key={project.id}>
-                                        <i className="fas fa-folder pl-2" >{' '}{project.name}</i>
-                                        <span className="float-right mr-2"><i className="fa fa-plus" aria-hidden="true"></i></span>
-                                        {project.fileList.map((file)=>
-                                            <ProjectFile key={file.id} name={file.name}/>
-                                        )}
-                                    </div>
-                                )}
-                            </div>
+                        <div className="bg-dark text-light mt-2">
+                            {projectList.map((project)=>
+                                <div key={project.id}>
+                                    <i className="fas fa-folder pl-2" >{' '}{project.name}</i>
+                                    <span className="float-right mr-2"><i className="fa fa-plus" aria-hidden="true"></i></span>
+                                    {project.fileList.map((file)=>
+                                        <ProjectFile key={file.id} name={file.name}/>
+                                    )}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
