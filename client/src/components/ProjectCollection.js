@@ -2,6 +2,7 @@ import React from 'react';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, ListGroup, Button, ListGroupItem} from 'reactstrap';
 import classnames from 'classnames';
 import ProjectInfo from './ProjectInfo.js';
+import SolutionInfo from './SolutionInfo.js';
 
 export default class ProjectCollection extends React.Component {
 constructor(props) {
@@ -60,6 +61,15 @@ render() {
             description : 'script Description 1 Description about the script imply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently'
         }
     ]
+    const pendingSolutionList = [
+        {
+            id : 'solution1',
+            name : 'My Project Name 1', // Name of your (logged-in user) project
+            // Description is from the solution submitter. It should briefly say what was done to solve the problem.
+            description : 'script Description 1 Description about the script imply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently',
+            author : 'taylor10094' // Author of the submitted solution. That author's profile rank should be shown next to name.
+        }
+    ]
     return (
         
         <div className="mb-4">
@@ -76,6 +86,13 @@ render() {
                         className={classnames({ active: this.state.activeTab === '2' })}
                         onClick={() => { this.toggle('2'); }}>
                         Star
+                    </NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink 
+                        className={classnames({ active: this.state.activeTab === '3' })}
+                        onClick={() => { this.toggle('3'); }}>
+                        Pending Solutions
                     </NavLink>
                 </NavItem>
             </Nav>
@@ -101,6 +118,17 @@ render() {
                         <ListGroup className="mt-3" flush>
                             {favoritedProjectList.map((project)=>
                                 <ProjectInfo key = {project.id} {...project}/>
+                            )}
+                        </ListGroup>
+                    </Col>
+                </Row>
+            </TabPane>
+            <TabPane tabId="3">
+                <Row>
+                    <Col sm="12">
+                        <ListGroup className="mt-3" flush>
+                            {pendingSolutionList.map((project)=>
+                                <SolutionInfo key = {project.id} {...project}/>
                             )}
                         </ListGroup>
                     </Col>
