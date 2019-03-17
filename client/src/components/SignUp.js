@@ -20,6 +20,14 @@ export default class SignUp extends Component {
         redirect: false
     }
 
+    //Submits the form when Enter key is pressed
+    onKeyDown = (event) => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          event.stopPropagation();
+          this.handleSubmit();
+        }
+      }
 
     // Handles values in form
     handleChange = event => {
@@ -27,8 +35,7 @@ export default class SignUp extends Component {
     }
 
     // Submits form
-    handleSubmit = (event) => {
-        event.preventDefault();
+    handleSubmit = () => {
         const {
             firstName,
             lastName,
@@ -71,71 +78,82 @@ export default class SignUp extends Component {
 
         return (
         <div className="mx-3">
-            <Form onSubmit={this.handleSubmit}>
+            <Form>
                 <h3 className="mt-3">Sign Up</h3>
                 <FormGroup className="mt-3">
                     <Label for="firstname">Name</Label>
                     <Row>
                         <Col md={6} sm={12}>
                             <Input 
-                            type="text" 
-                            name="firstName" 
-                            id="fname" 
-                            onChange={this.handleChange}
-                            value={firstName}
-                            placeholder="First Name"/>
+                                type="text" 
+                                name="firstName" 
+                                id="fname" 
+                                placeholder="First Name"
+                                value={firstName}
+                                onChange={this.handleChange}
+                            />
                         </Col>
                         <Col md={6} sm={12}>
-                            <Input type="text" 
-                            className="mt-3 mt-md-0" 
-                            name="lastName" id="lastName" 
-                            placeholder="Last Name"
-                            onChange={this.handleChange}
-                            value={lastName}/>
+                            <Input
+                                className="mt-3 mt-md-0"
+                                type="text" 
+                                name="lastName"
+                                id="lastName"
+                                placeholder="Last Name"
+                                value={lastName}
+                                onChange={this.handleChange}
+                                onKeyDown={this.onKeyDown}
+                            />
                         </Col>
                     </Row>
                 </FormGroup>
                 <FormGroup className="mt-3">
                     <Label for="userName">Username</Label>
-                    <Input type="text" 
-                    name="username" 
-                    id="username" 
-                    onChange={this.handleChange} 
-                    placeholder="Username"
-                    value={username}/>
+                    <Input 
+                        type="text"
+                        name="username"
+                        id="username"
+                        placeholder="Username"
+                        value={username}
+                        onChange={this.handleChange}
+                        onKeyDown={this.onKeyDown}
+                    />
                 </FormGroup>
                 <FormGroup className="mt-3">
                     <Label for="email">Email</Label>
-                    <Input type="email" 
-                    name="email" 
-                    id="email" 
-                    placeholder="Email"
-                    onChange = {this.handleChange}
-                    value = {email}
+                    <Input 
+                        type="email"
+                        name="email"
+                        id="email"
+                        placeholder="Email"
+                        value = {email}
+                        onChange = {this.handleChange}
+                        onKeyDown={this.onKeyDown}
                     />
                     <Input className = "mt-3" type="email" name="emailConfirm" id="emailConfirm" placeholder="Email Confirm"/>
                 </FormGroup>
                 <FormGroup id="passwordGroup">
                     <Label for="password">Password</Label>
-                    <Input type="password"
-                    name="password" 
-                    id="password" 
-                    placeholder="Password"
-                    onChange={this.handleChange}
-                    value={password}
+                    <Input
+                        type="password"
+                        name="password" 
+                        id="password" 
+                        placeholder="Password"
+                        value={password}
+                        onChange={this.handleChange}
+                        onKeyDown={this.onKeyDown}
                     />
-                    <UncontrolledTooltip placement="top" target="passwordGroup">
-                    Create New Project
-                    </UncontrolledTooltip>
                     <Input className = "mt-3" type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Password Confirm"/>
                 </FormGroup>
-                <Button 
-                    color="success" 
-                    className="float-right mb-5">
-                    Sign Up
-                </Button>
             </Form>
             {err && <Alert color="danger">{err}</Alert>}
+            <Button 
+                color="success"
+                type="submit"
+                className="float-right mb-5"
+                onClick={this.handleSubmit}
+            >Sign Up
+            </Button>{' '}
         </div>
         )
     }

@@ -1,6 +1,6 @@
 // Allows the user to sign into their account
 import React, { Component } from 'react'
-import { FormGroup, Label, Input, Button, Form } from 'reactstrap'
+import { FormGroup, Label, Input, Button } from 'reactstrap'
 import AuthService from './AuthService'
 import {Redirect} from 'react-router-dom';
 
@@ -15,12 +15,21 @@ export default class SignIn extends Component {
     this.Auth = new AuthService()
   }
 
+  //Submits the form when Enter key is pressed
+  onKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      event.stopPropagation();
+      this.handleSubmit();
+    }
+  }
+
+  //Updates the state when an input field is updated
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value })
   }
 
-  handleSubmit = (event) => {
-    event.preventDefault();
+  handleSubmit = () => {
     const { password, username } = this.state
     this.Auth.fetchAuth('/api/auth/login', {
       method: 'POST',
@@ -41,6 +50,7 @@ export default class SignIn extends Component {
         console.log(err)
       })
   }
+
   render() {
     const { username, password, redirect } = this.state
     if (redirect) {
@@ -49,7 +59,7 @@ export default class SignIn extends Component {
     
     return (
       <div className="mx-3">
-        <Form onSubmit={this.handleSubmit}>
+        <form>
           <h3 className="mt-3">Sign In</h3>
           <FormGroup className="mt-3">
             <Label for="exampleUsername">Username</Label>
@@ -58,9 +68,10 @@ export default class SignIn extends Component {
               name="username"
               id="username"
               placeholder="Username"
-              onChange={this.handleChange}
               value={username}
-            />
+              onChange={this.handleChange}
+              onKeyDown={this.onKeyDown}
+              />
           </FormGroup>
           <FormGroup>
             <Label for="examplePassword">Password</Label>
@@ -71,15 +82,19 @@ export default class SignIn extends Component {
               placeholder="Password"
               value={password}
               onChange={this.handleChange}
+              onKeyDown={this.onKeyDown}
             />
           </FormGroup>
-          <Button
-            color="success"
-            className="float-right mb-5">
-            Sign In
-          </Button>
-        </Form>
-        
+        </form>
+        <Button
+          color="success"
+          type="submit"
+          className="float-right mb-5"
+          onClick={this.handleSubmit}
+          >
+          Sign In
+        </Button>
+        {''}
       </div>
     )
   }
