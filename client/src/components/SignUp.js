@@ -35,8 +35,7 @@ export default class SignUp extends Component {
     }
 
     // Submits form
-    handleSubmit = (event) => {
-        event.preventDefault();
+    handleSubmit = () => {
         const {
             firstName,
             lastName,
@@ -79,7 +78,7 @@ export default class SignUp extends Component {
 
         return (
         <div className="mx-3">
-            <Form onSubmit={this.handleSubmit}>
+            <Form>
                 <h3 className="mt-3">Sign Up</h3>
                 <FormGroup className="mt-3">
                     <Label for="firstname">Name</Label>
@@ -146,11 +145,6 @@ export default class SignUp extends Component {
                     />
                     <Input className = "mt-3" type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Password Confirm"/>
                 </FormGroup>
-                <Button 
-                    color="success" 
-                    className="float-right mb-5">
-                    Sign Up
-                </Button>
             </Form>
             {err && <Alert color="danger">{err}</Alert>}
             <Button 
