@@ -7,7 +7,7 @@ export default class ScriptOutput extends Component {
         <div>
             <FormGroup>
                 <Label for="outputText">Output</Label>
-                <Input className="no-scale-textarea" type="textarea" name="outputText" id="outputText" disabled/>
+                <Input className="no-scale-textarea" type="textarea" name="outputText" id="OutputText" disabled/>
             </FormGroup>
         </div>
         )

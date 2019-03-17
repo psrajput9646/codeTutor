@@ -13,7 +13,7 @@ export default class CommentProjectBox extends Component {
                     - <a href="/account/">{project.userName}</a>
                 </span>
                 <div>
-                    <span className="likeComment text-secondary">
+                    <span className="like-comment text-secondary">
                         <i className="fas fa-check-circle fa-xs"></i>
                     </span>
                     <span className="font-weight-light smallerText pl-2 text-like">{project.likes}</span>

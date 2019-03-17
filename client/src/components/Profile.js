@@ -13,7 +13,7 @@ export default class Profile extends Component {
             <Container>
                 <Row>
                     <Col className="col-10 offset-1">
-                        <img className="profilePic mx-auto d-block" src={user.img} alt="Profile"/> 
+                        <img className="profile-pic mx-auto d-block" src={user.img} alt="Profile"/> 
                     </Col>
                 </Row>
             </Container>

@@ -12,9 +12,9 @@ export default class Editor extends Component {
             name: "ScriptName.java"
         }
         return (
-        <div id="editorWindow">
+        <div id="EditorWindow">
             <Container fluid>
-                <h3 className="pt-3" id="editorName">
+                <h3 className="pt-3" id="EditorName">
                     {scriptInfo.name}{' '}
                     <i className="far fa-star" aria-hidden="true" id="FavoriteProjectStar"></i>
                 </h3>
@@ -25,9 +25,9 @@ export default class Editor extends Component {
                     <Col sm="12" md="2" className="">
                         <FileExplorer/>
                     </Col>
-                    <Col sm="12" md="7" className="h-100" id="editorRight">
+                    <Col sm="12" md="7" className="h-100" id="EditorRight">
                         <ScriptArea/>
-                        <Row className ="" id="ioField">
+                        <Row className ="" id="IoField">
                             <Col sm="12" md="6">
                                 <ScriptInput/>
                             </Col>

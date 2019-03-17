@@ -66,7 +66,7 @@ export default class SignIn extends Component {
             <Input
               type="username"
               name="username"
-              id="username"
+              id="SignInUsername"
               placeholder="Username"
               value={username}
               onChange={this.handleChange}
@@ -78,7 +78,7 @@ export default class SignIn extends Component {
             <Input
               type="password"
               name="password"
-              id="password"
+              id="SignInPassword"
               placeholder="Password"
               value={password}
               onChange={this.handleChange}
