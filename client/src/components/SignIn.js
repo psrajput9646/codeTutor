@@ -15,6 +15,16 @@ export default class SignIn extends Component {
     this.Auth = new AuthService()
   }
 
+  //Submits the form when Enter key is pressed
+  onKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      event.stopPropagation();
+      this.handleSubmit();
+    }
+  }
+
+  //Updates the state when an input field is updated
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value })
   }
@@ -40,6 +50,7 @@ export default class SignIn extends Component {
         console.log(err)
       })
   }
+
   render() {
     const { username, password, redirect } = this.state
     if (redirect) {
@@ -57,9 +68,10 @@ export default class SignIn extends Component {
               name="username"
               id="username"
               placeholder="Username"
-              onChange={this.handleChange}
               value={username}
-            />
+              onChange={this.handleChange}
+              onKeyDown={this.onKeyDown}
+              />
           </FormGroup>
           <FormGroup>
             <Label for="examplePassword">Password</Label>
@@ -70,6 +82,7 @@ export default class SignIn extends Component {
               placeholder="Password"
               value={password}
               onChange={this.handleChange}
+              onKeyDown={this.onKeyDown}
             />
           </FormGroup>
         </form>
@@ -77,7 +90,8 @@ export default class SignIn extends Component {
           color="success"
           type="submit"
           className="float-right mb-5"
-          onClick={this.handleSubmit}>
+          onClick={this.handleSubmit}
+          >
           Sign In
         </Button>
         {''}
