@@ -1,6 +1,6 @@
 // Allows the user to sign up for an account
 import React, { Component } from 'react';
-import { FormGroup, Label, Input, Button, Row, Col, Alert} from 'reactstrap';
+import { FormGroup, Label, Input, Button, Row, Col, Alert, UncontrolledTooltip} from 'reactstrap';
 import AuthService from './AuthService';
 import Form from '../../node_modules/reactstrap/lib/Form';
 import { Redirect } from 'react-router-dom'
@@ -115,14 +115,18 @@ export default class SignUp extends Component {
                     />
                     <Input className = "mt-3" type="email" name="emailConfirm" id="emailConfirm" placeholder="Email Confirm"/>
                 </FormGroup>
-                <FormGroup>
+                <FormGroup id="passwordGroup">
                     <Label for="password">Password</Label>
                     <Input type="password"
                     name="password" 
                     id="password" 
                     placeholder="Password"
                     onChange={this.handleChange}
-                    value={password}/>
+                    value={password}
+                    />
+                    <UncontrolledTooltip placement="top" target="passwordGroup">
+                    Create New Project
+                    </UncontrolledTooltip>
                     <Input className = "mt-3" type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Password Confirm"/>
                 </FormGroup>
                 <Button 
