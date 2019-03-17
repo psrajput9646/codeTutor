@@ -1,6 +1,6 @@
 // Allows the user to sign into their account
 import React, { Component } from 'react'
-import { FormGroup, Label, Input, Button } from 'reactstrap'
+import { FormGroup, Label, Input, Button, Form } from 'reactstrap'
 import AuthService from './AuthService'
 import {Redirect} from 'react-router-dom';
 
@@ -29,7 +29,8 @@ export default class SignIn extends Component {
     this.setState({ [event.target.name]: event.target.value })
   }
 
-  handleSubmit = () => {
+  handleSubmit = (event) => {
+    event.preventDefault();
     const { password, username } = this.state
     this.Auth.fetchAuth('/api/auth/login', {
       method: 'POST',
@@ -59,7 +60,7 @@ export default class SignIn extends Component {
     
     return (
       <div className="mx-3">
-        <form>
+        <Form onSubmit={this.handleSubmit}>
           <h3 className="mt-3">Sign In</h3>
           <FormGroup className="mt-3">
             <Label for="exampleUsername">Username</Label>
