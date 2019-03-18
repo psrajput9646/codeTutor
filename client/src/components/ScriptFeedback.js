@@ -3,27 +3,26 @@
  * Third section is comments on the current project, id="RemarksSection".
  */
 import React, {Component} from 'react';
-import {Label, UncontrolledTooltip, Modal, ModalHeader, ModalBody, FormGroup, Input, Button} from 'reactstrap';
+import {Label, Modal, ModalHeader, ModalBody, FormGroup, Input, Button} from 'reactstrap';
 import CommentBox from './CommentBox';
 import CommentProjectBox from './CommentProjectBox';
 
-export default class Comment extends Component {
+export default class ScriptFeedback extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
         modal: false
         };
-    
         this.toggle = this.toggle.bind(this);
     }
-    
+
     toggle() {
         this.setState(prevState => ({
         modal: !prevState.modal
         }));
     }
-
+    
     render() {
 
         const solutionList = [
@@ -89,9 +88,6 @@ export default class Comment extends Component {
                         <div className="bg-dark text-light" id="SolutionSectionHead">
                             <i className="fas fa-hands-helping pl-2"> Solutions</i>
                         </div>
-                        <UncontrolledTooltip placement="left" target="SolutionSectionHead">
-                            Submitted solutions
-                        </UncontrolledTooltip>
                         {solutionList.map((project)=>
                             <CommentProjectBox key={project.id} {...project}/>
                         )}
@@ -101,9 +97,6 @@ export default class Comment extends Component {
                         <div className="bg-dark text-light" id="StarredSectionHead">
                             <i className="fas fa-star pl-2"> Star Project</i>
                         </div>
-                        <UncontrolledTooltip placement="left" target="StarredSectionHead">
-                            Favorite projects
-                        </UncontrolledTooltip>
                         {starList.map((project)=>
                             <CommentProjectBox key={project.id} {...project}/>
                         )}
@@ -128,9 +121,6 @@ export default class Comment extends Component {
                                 </ModalBody>
                             </Modal>
                         </div>
-                        <UncontrolledTooltip target="RemarksSectionHead">
-                            Community remarks
-                        </UncontrolledTooltip>
                         {commentList.map((comment) =>
                             <CommentBox key={comment.id} {...comment}/>
                         )}

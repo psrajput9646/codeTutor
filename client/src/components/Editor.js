@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, UncontrolledTooltip, Modal, ModalBody, FormGroup, Label, Input , Button } from 'reactstrap';
 import ScriptArea from './ScriptArea.js';
-import Comment from './Comment.js';
+import ScriptFeedback from './ScriptFeedback.js';
 import ScriptInput from './ScriptInput.js';
 import ScriptOutput from './ScriptOutput.js';
 import FileExplorer from './FileExplorer.js';
@@ -64,7 +64,7 @@ export default class Editor extends Component {
                         </Row>
                     </Col>
                     <Col sm="12" md="3">
-                        <Comment/>
+                        <ScriptFeedback/>
                     </Col>
                 </Row>
             </Container>
