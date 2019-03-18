@@ -131,7 +131,7 @@
                     "field": "updatedAt",
                     "seqType": "Sequelize.DATE"
                 },
-                "UserId": {
+                "userId": {
                     "allowNull": true,
                     "references": {
                         "model": "Users",

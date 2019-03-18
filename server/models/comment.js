@@ -1,6 +1,6 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const Comment = sequelize.define('Comment', {
+  const Comment = sequelize.define('comment', {
     content: DataTypes.TEXT,
     votes: DataTypes.INTEGER,
     favorited: DataTypes.BOOLEAN,
@@ -8,8 +8,8 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Comment.associate = function(models) {
     // associations can be defined here
-    Comment.belongsTo(models.User);
-    Comment.belongsTo(models.Project);
+    Comment.belongsTo(models.user);
+    Comment.belongsTo(models.project);
   };
   return Comment;
 };

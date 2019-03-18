@@ -2,7 +2,7 @@
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
+  const User = sequelize.define('user', {
     username: {type: Sequelize.STRING, unique: true }, 
     password: DataTypes.STRING,
     email: DataTypes.STRING,
@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
     bio: DataTypes.STRING
   }, {});
   User.associate = function(models) {
-    User.hasMany(models.Project);
-    User.hasMany(models.Comment);
+    User.hasMany(models.project);
+    User.hasMany(models.comment);
     // associations can be defined here
   };
   return User;

@@ -97,9 +97,9 @@ var migrationCommands = [{
                     "field": "updatedAt",
                     "allowNull": false
                 },
-                "UserId": {
+                "userId": {
                     "type": Sequelize.INTEGER,
-                    "field": "UserId",
+                    "field": "userId",
                     "onUpdate": "CASCADE",
                     "onDelete": "SET NULL",
                     "references": {
@@ -150,9 +150,9 @@ var migrationCommands = [{
                     "field": "updatedAt",
                     "allowNull": false
                 },
-                "UserId": {
+                "userId": {
                     "type": Sequelize.INTEGER,
-                    "field": "UserId",
+                    "field": "userId",
                     "onUpdate": "CASCADE",
                     "onDelete": "SET NULL",
                     "references": {
@@ -161,9 +161,9 @@ var migrationCommands = [{
                     },
                     "allowNull": true
                 },
-                "ProjectId": {
+                "projectId": {
                     "type": Sequelize.INTEGER,
-                    "field": "ProjectId",
+                    "field": "projectId",
                     "onUpdate": "CASCADE",
                     "onDelete": "SET NULL",
                     "references": {
@@ -210,7 +210,7 @@ var migrationCommands = [{
                     "field": "updatedAt",
                     "allowNull": false
                 },
-                "ProjectId": {
+                "projectId": {
                     "type": Sequelize.INTEGER,
                     "field": "ProjectId",
                     "onUpdate": "CASCADE",
