@@ -29,7 +29,7 @@ export default class SolutionInfo extends Component {
             <Button color="link" onClick={this.toggle} size="sm" id="ViewSolution">
                 <span className="script-name">{solutionInfo.name}</span>
             </Button>
-            {solutionInfo.author} <Badge pill>117</Badge>
+            {solutionInfo.author} <Badge pill>117</Badge> {/* Badge pill specifies user rank */}
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                 <ModalHeader toggle={this.toggle}>{solutionInfo.name}</ModalHeader>
                 <ModalBody>
