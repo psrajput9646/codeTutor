@@ -87,7 +87,7 @@ export default class SignUp extends Component {
                             <Input 
                                 type="text" 
                                 name="firstName" 
-                                id="fname" 
+                                id="Fname" 
                                 placeholder="First Name"
                                 value={firstName}
                                 onChange={this.handleChange}
@@ -98,7 +98,7 @@ export default class SignUp extends Component {
                                 className="mt-3 mt-md-0"
                                 type="text" 
                                 name="lastName"
-                                id="lastName"
+                                id="LastName"
                                 placeholder="Last Name"
                                 value={lastName}
                                 onChange={this.handleChange}
@@ -112,7 +112,7 @@ export default class SignUp extends Component {
                     <Input 
                         type="text"
                         name="username"
-                        id="username"
+                        id="SignUpUsername"
                         placeholder="Username"
                         value={username}
                         onChange={this.handleChange}
@@ -124,26 +124,38 @@ export default class SignUp extends Component {
                     <Input 
                         type="email"
                         name="email"
-                        id="email"
+                        id="Email"
                         placeholder="Email"
                         value = {email}
                         onChange = {this.handleChange}
                         onKeyDown={this.onKeyDown}
                     />
-                    <Input className = "mt-3" type="email" name="emailConfirm" id="emailConfirm" placeholder="Email Confirm"/>
+                    <Input 
+                        className = "mt-3" 
+                        type="email" 
+                        name="emailConfirm" 
+                        id="EmailConfirm" 
+                        placeholder="Email Confirm"
+                    />
                 </FormGroup>
                 <FormGroup id="SignUpPasswordGroup">
                     <Label for="password">Password</Label>
                     <Input
                         type="password"
                         name="password" 
-                        id="password" 
+                        id="Password" 
                         placeholder="Password"
                         value={password}
                         onChange={this.handleChange}
                         onKeyDown={this.onKeyDown}
                     />
-                    <Input className = "mt-3" type="password" name="passwordConfirm" id="passwordConfirm" placeholder="Password Confirm"/>
+                    <Input
+                        className = "mt-3"
+                        type="password"
+                        name="passwordConfirm"
+                        id="PasswordConfirm"
+                        placeholder="Password Confirm"
+                    />
                 </FormGroup>
                 <UncontrolledTooltip placement="top" target="SignUpPasswordGroup">
                     Min. 8 char, max 100 char, 1 uppercase, 1 lowercase, 1 digit, 1 symbol, and no spaces

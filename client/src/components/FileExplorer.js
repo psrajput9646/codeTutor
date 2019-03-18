@@ -75,11 +75,11 @@ export default class FileExplorer extends Component {
                         <Form>
                             <FormGroup>
                                 <Label for="projectName">Project Name</Label>
-                                <Input type="text" id="projectName"></Input>
+                                <Input type="text" id="ProjectName"></Input>
                             </FormGroup>
                             <FormGroup>
                                 <Label for="description">Description (optional)</Label>
-                                <Input type="textarea" rows="4" id="description"></Input>
+                                <Input type="textarea" rows="4" id="Description"></Input>
                             </FormGroup>
                             <Button color="primary" onClick={this.toggle}>Submit</Button>{' '}
                         </Form>

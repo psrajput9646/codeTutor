@@ -1,4 +1,4 @@
-const File = require('../models').File;
+const File = require('../models').file;
 const fs = require('fs')
 const mkdirp = require('mkdirp');
 

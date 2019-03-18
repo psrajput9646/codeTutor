@@ -51,7 +51,7 @@ export default class ScriptArea extends Component {
                     </UncontrolledTooltip>
                 </div>
                 {/* Input field for scripts */}
-                <Input className="no-scale-textarea d-block" type="textarea" name="text" id="scriptArea" />
+                <Input className="no-scale-textarea d-block" type="textarea" rows="10" name="text" id="ScriptArea" />
             </FormGroup>
         </div>
         )

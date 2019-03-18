@@ -2,13 +2,13 @@
 const Sequelize = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  const Project = sequelize.define('Project', {
+  const Project = sequelize.define('project', {
     name: DataTypes.STRING
   }, {});
   Project.associate = function(models) {
-    Project.belongsTo(models.User);
-    Project.hasMany(models.File);
-    Project.hasMany(models.Comment);
+    Project.belongsTo(models.user);
+    Project.hasMany(models.file);
+    Project.hasMany(models.comment);
   };
   return Project;
 };

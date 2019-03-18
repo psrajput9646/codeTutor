@@ -1,4 +1,4 @@
-const Comment = require('../models/comment');
+const Comment = require('../models').comment;
 
 module.exports = {
     // Requires content for comment, projectId and user Id (grabbed from token)

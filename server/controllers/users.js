@@ -1,4 +1,4 @@
-const User = require("../models").User;
+const User = require("../models").user;
 const bcrypt = require("bcryptjs");
 const config = require("../config");
 const jwt = require("jsonwebtoken");
@@ -9,21 +9,13 @@ const mkdirp = require("mkdirp");
 // Password Validator Schema
 let schema = new passwordValidator();
 schema
-  .is()
-  .min(8)
-  .is()
-  .max(100)
-  .has()
-  .uppercase()
-  .has()
-  .lowercase()
-  .has()
-  .digits()
-  .has()
-  .not()
-  .spaces()
-  .has()
-  .symbols();
+  .is().min(8)
+  .is().max(100)
+  .has().uppercase()
+  .has().lowercase()
+  .has().digits()
+  .has().not().spaces()
+  .has().symbols();
 
 module.exports = {
   create(req, res) {
