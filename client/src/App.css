@@ -1,0 +1,46 @@
+.profile-pic{
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+}
+
+.stretch-container{
+    height: 82vh;
+}
+
+.script-name{
+    font-size: 1.25rem;
+    margin-right: 1rem;
+}
+
+.no-scale-textarea{
+    resize: none; 
+    height: 100% !important;
+}
+
+.list-box{
+    background: white;
+    min-height: 200px;
+    width:100%;
+    overflow:hidden; 
+    overflow-y:scroll;
+}
+
+.round-div{
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.text-smaller{
+    font-size: .8em;
+}
+
+.text-like{
+    font-size: .7em;
+}
+
+.comment-box{
+    border-top: .3em solid white;
+}
