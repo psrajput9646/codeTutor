@@ -27,19 +27,19 @@ createScript = () => {
     this.Auth.fetchAuth('/api/project/create', {
         method: 'POST',
         body: JSON.stringify({
-          name: "test",
-          username: this.username
+            name: "test",
+            username: this.username
+            })
         })
-      })
-        .then(res => {
-          if (!res.OK) {
-            this.Auth.setToken(res.token)
-            this.props.history.push('/')
-          }
-        })
-        .catch(err => {
-          console.log(err)
-        })
+            .then(res => {
+            if (!res.OK) {
+                this.Auth.setToken(res.token)
+                this.props.history.push('/')
+            }
+            })
+            .catch(err => {
+            console.log(err)
+            })
 }
 
 render() {
