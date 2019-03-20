@@ -3,11 +3,26 @@
  * Third section is comments on the current project, id="RemarksSection".
  */
 import React, {Component} from 'react';
-import {Label, UncontrolledTooltip} from 'reactstrap';
+import {Label, Modal, ModalHeader, ModalBody, FormGroup, Input, Button} from 'reactstrap';
 import CommentBox from './CommentBox';
 import CommentProjectBox from './CommentProjectBox';
 
-export default class Comment extends Component {
+export default class ScriptFeedback extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+        modal: false
+        };
+        this.toggle = this.toggle.bind(this);
+    }
+
+    toggle() {
+        this.setState(prevState => ({
+        modal: !prevState.modal
+        }));
+    }
+    
     render() {
 
         const solutionList = [
@@ -73,16 +88,13 @@ export default class Comment extends Component {
                         <div className="bg-dark text-light" id="SolutionSectionHead">
                             <i className="fas fa-hands-helping pl-2"> Solutions</i>
                         </div>
-                        <UncontrolledTooltip placement="left" target="SolutionSectionHead">
-                            Submitted solutions
-                        </UncontrolledTooltip>
                         {solutionList.map((project)=>
                             <CommentProjectBox key={project.id} {...project}/>
                         )}
                     </div>
-                    {/* Holds starred projects */}
+                    {/* Holds signed-in user's starred projects */}
                     <div id="StarSection">
-                        <div className="bg-dark text-light">
+                        <div className="bg-dark text-light" id="StarredSectionHead">
                             <i className="fas fa-star pl-2"> Star Project</i>
                         </div>
                         {starList.map((project)=>
@@ -93,11 +105,22 @@ export default class Comment extends Component {
                     <div id="RemarksSection">
                         <div className="bg-dark text-light" id="RemarksSectionHead">
                             <i className="fas fa-comments pl-2"> Remarks</i>
-                            <span className="float-right mr-2"><i className="fa fa-plus" aria-hidden="true"></i></span>
+                            {/* Popup form to add a comment */}
+                            <span className="float-right mr-2">
+                            <Button color="link" onClick={this.toggle} size="sm" id="AddComment">
+                                <i className="fa fa-plus" aria-hidden="true"></i>
+                            </Button></span>
+                            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+                                <ModalHeader toggle={this.toggle}>Add a Comment</ModalHeader>
+                                <ModalBody>
+                                    <FormGroup>
+                                        <Label for="comment">Comment</Label>
+                                        <Input type="textarea" rows="6" id="comment"></Input>
+                                    </FormGroup>
+                                    <Button color="primary" onClick={this.toggle}>Submit</Button>{' '}
+                                </ModalBody>
+                            </Modal>
                         </div>
-                        <UncontrolledTooltip placement="left" target="RemarksSectionHead">
-                            Community remarks
-                        </UncontrolledTooltip>
                         {commentList.map((comment) =>
                             <CommentBox key={comment.id} {...comment}/>
                         )}

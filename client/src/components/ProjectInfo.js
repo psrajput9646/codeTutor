@@ -1,6 +1,6 @@
 // Provides script information
 import React, { Component } from 'react';
-import { ListGroupItem, Button, Modal, ModalHeader, ModalBody, UncontrolledTooltip, Form, FormGroup, Label, Input } from 'reactstrap';
+import { ListGroupItem, Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input } from 'reactstrap';
 
 export default class ProjectInfo extends Component {
     
@@ -25,24 +25,22 @@ export default class ProjectInfo extends Component {
         
         <ListGroupItem className="pb-0">
             <a href="/editor/">{projectInfo.name} </a>
-            <Button outline color="secondary" onClick={this.toggle} size="sm" id="EditProjectInfo">
+            {/* <Button outline color="secondary"  size="sm" >
                 Edit Description
-            </Button>
+            </Button> */}
+            <a herf="#" onClick={this.toggle}>edit</a>
             <p>{projectInfo.description}</p>
-            <UncontrolledTooltip placement="top" target="EditProjectInfo">
-                Edit project name and description
-            </UncontrolledTooltip>
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-                <ModalHeader toggle={this.toggle}>Add a Project</ModalHeader>
+                <ModalHeader toggle={this.toggle}>{projectInfo.name}</ModalHeader>
                 <ModalBody>
                     <Form>
                         <FormGroup>
                             <Label for="projectName">Project Name</Label>
-                            <Input type="text" id="projectName" value={projectInfo.name}></Input>
+                            <Input type="text" id="projectName" placeholder={projectInfo.name}></Input>
                         </FormGroup>
                         <FormGroup>
                             <Label for="description">Description</Label>
-                            <Input type="textarea" rows="4" id="description" value={projectInfo.description}></Input>
+                            <Input type="textarea" rows="4" id="description" placeholder={projectInfo.description}></Input>
                         </FormGroup>
                         <Button color="primary" onClick={this.toggle}>Submit</Button>{' '}
                     </Form>
