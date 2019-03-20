@@ -8,6 +8,7 @@ module.exports = {
   create(req, res) {
     return Project.create({
       name: req.body.name,
+      description: req.body.description,
       userId: req.decoded.id
     })
       .then(project => {

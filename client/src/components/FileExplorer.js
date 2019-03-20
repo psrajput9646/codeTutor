@@ -8,10 +8,10 @@ export default class FileExplorer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-        modal: false,
-        projectName: '',
-        description: '',
-        projectList: []
+            modal: false,
+            projectName: '',
+            description: '',
+            projectList: []
         };
     
         this.getProjects = this.getProjects.bind(this);
@@ -19,17 +19,19 @@ export default class FileExplorer extends Component {
         this.toggle = this.toggle.bind(this);
         this.Auth = new AuthService();
     }
+
     componentDidMount(){
         this.getProjects()
     }
 
     createProject = () =>{
-        const {projectName, projectList} = this.state;
+        const {projectName, description, projectList} = this.state;
         let newList = projectList;
         this.Auth.fetchAuth('/api/project/create', {
             method: 'POST',
             body: JSON.stringify({
-                name: projectName
+                name: projectName,
+                description
             })
         })
         .then(res => {
