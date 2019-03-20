@@ -1,63 +1,97 @@
 import React, { Component } from 'react';
 import { Label, Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, UncontrolledTooltip } from 'reactstrap';
 import ProjectFile from './ProjectFile';
+import AuthService from './AuthService';
 
 export default class FileExplorer extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-        modal: false
+        modal: false,
+        projectName: '',
+        description: '',
+        projectList: []
         };
     
+        this.getProjects = this.getProjects.bind(this);
+        this.createProject = this.createProject.bind(this);
         this.toggle = this.toggle.bind(this);
+        this.Auth = new AuthService();
     }
-    
-    toggle() {
+    componentDidMount(){
+        this.getProjects()
+    }
+
+    createProject = () =>{
+        const {projectName, projectList} = this.state;
+        let newList = projectList;
+        this.Auth.fetchAuth('/api/project/create', {
+            method: 'POST',
+            body: JSON.stringify({
+                name: projectName
+            })
+        })
+        .then(res => {
+            res.files=[];
+            newList.push(res);
+            this.setState({
+                projectList: newList
+            });
+        })
+        .catch(err => {
+            console.log(err)
+        })
+            this.toggle();
+    }
+
+    createFile = () =>{
+        this.Auth.fetchAuth('/api/file/create', {
+            method: 'POST',
+            body: JSON.stringify({
+                name: 'boogaloo',
+                type: 'py',
+                projectId: 1
+            })
+        })
+        .then(res => {
+            if (!res.OK) {
+                console.log("File Successfully Created");
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
+    getProjects = () =>{
+        let user = this.Auth.getProfile();
+        this.Auth.fetchAuth('/api/project/projects/'+user.id, {
+          method: 'GET'
+        })
+          .then(res => {
+            this.setState({
+                projectList: res
+            });
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    }
+
+    handleChange = event => {
+        this.setState({ [event.target.name]: event.target.value })
+    }
+
+    toggle = () => {
         this.setState(prevState => ({
         modal: !prevState.modal
         }));
     }
 
     render() {
-        const projectList = [
-            {
-                id: 'ProjectID1',
-                name : 'Project 1',
-                fileList: [
-                    {
-                        id : 'p1f1',
-                        name : 'p1file1',
-                    },
-                    {
-                        id: 'p1f2',
-                        name : 'p1file2',
-                    }
-                ]
-                    
-            },
-            {
-                id: 'ProjectID2',
-                name : 'Project 2',
-                fileList: [
-                    {
-                        id : 'p2f1',
-                        name : 'p2file2',
-                    },
-                    {
-                        id: 'p2f2',
-                        name : 'p2file2',
-                    },
-                    {
-                        id: 'p2f3',
-                        name : 'p2file3',
-                    }
-                ]
-                    
-            }
-        ]
+        const { projectName, description, projectList } = this.state;
         return (
-        
         <div>
             <div>
                 <Label for="scriptArea" className="mb-3">Explorer</Label>
@@ -75,13 +109,26 @@ export default class FileExplorer extends Component {
                         <Form>
                             <FormGroup>
                                 <Label for="projectName">Project Name</Label>
-                                <Input type="text" id="ProjectName"></Input>
+                                <Input 
+                                    type="text"
+                                    name="projectName"
+                                    id="ProjectName"
+                                    value={projectName}
+                                    onChange={this.handleChange}
+                                ></Input>
                             </FormGroup>
                             <FormGroup>
                                 <Label for="description">Description (optional)</Label>
-                                <Input type="textarea" rows="4" id="Description"></Input>
+                                <Input
+                                    type="textarea"
+                                    name="description"
+                                    id="Description"
+                                    rows="4"
+                                    value={description}
+                                    onChange={this.handleChange}
+                                ></Input>
                             </FormGroup>
-                            <Button color="primary" onClick={this.toggle}>Submit</Button>{' '}
+                            <Button color="primary" onClick={this.createProject}>Submit</Button>{' '}
                         </Form>
                     </ModalBody>
                 </Modal>
@@ -93,8 +140,8 @@ export default class FileExplorer extends Component {
                                 <div key={project.id}>
                                     <i className="fas fa-folder pl-2" >{' '}{project.name}</i>
                                     <span className="float-right mr-2"><i className="fa fa-plus" aria-hidden="true"></i></span>
-                                    {project.fileList.map((file)=>
-                                        <ProjectFile key={file.id} name={file.name}/>
+                                    {project.files.map(file =>
+                                        <ProjectFile key={file.id} name={file.name+'.'+file.type}/>
                                     )}
                                 </div>
                             )}
