@@ -3,7 +3,7 @@
  * Third section is comments on the current project, id="RemarksSection".
  */
 import React, {Component} from 'react';
-import {Label, Modal, ModalHeader, ModalBody, FormGroup, Input, Button} from 'reactstrap';
+import {Label, Modal, ModalHeader, ModalBody, FormGroup, Input, Button, UncontrolledTooltip} from 'reactstrap';
 import CommentBox from './CommentBox';
 import CommentProjectBox from './CommentProjectBox';
 
@@ -105,10 +105,12 @@ export default class ScriptFeedback extends Component {
                         <div className="bg-dark text-light" id="RemarksSectionHead">
                             <i className="fas fa-comments pl-2"> Remarks</i>
                             {/* Popup form to add a comment */}
-                            <span className="float-right mr-2">
-                            <Button color="link" onClick={this.toggle} size="sm" id="AddComment">
+                            <span className="float-right mr-2" onClick={this.toggle} id="AddComment">
                                 <i className="fa fa-plus" aria-hidden="true"></i>
-                            </Button></span>
+                            </span>
+                            <UncontrolledTooltip placement="top" target="AddComment">
+                                Add a Comment
+                            </UncontrolledTooltip>
                             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                                 <ModalHeader toggle={this.toggle}>Add a Comment</ModalHeader>
                                 <ModalBody>

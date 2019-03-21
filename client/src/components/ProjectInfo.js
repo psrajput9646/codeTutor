@@ -28,7 +28,7 @@ export default class ProjectInfo extends Component {
             {/* <Button outline color="secondary"  size="sm" >
                 Edit Description
             </Button> */}
-            <a herf="#" onClick={this.toggle}>edit</a>
+            <a href="#" onClick={this.toggle}>edit</a>
             <p>{projectInfo.description}</p>
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                 <ModalHeader toggle={this.toggle}>{projectInfo.name}</ModalHeader>
