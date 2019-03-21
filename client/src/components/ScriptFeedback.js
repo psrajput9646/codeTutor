@@ -12,7 +12,7 @@ export default class ScriptFeedback extends Component {
     constructor(props) {
         super(props);
         this.state = {
-        modal: false
+            modal: false
         };
         this.toggle = this.toggle.bind(this);
     }
@@ -24,7 +24,6 @@ export default class ScriptFeedback extends Component {
     }
     
     render() {
-
         const solutionList = [
             {
                 id : 1,

@@ -1,4 +1,5 @@
 const Project = require("../models").project;
+const File = require("../models").file;
 const rimraf = require('rimraf');
 const mkdirp = require('mkdirp');
 
@@ -7,6 +8,7 @@ module.exports = {
   create(req, res) {
     return Project.create({
       name: req.body.name,
+      description: req.body.description,
       userId: req.decoded.id
     })
       .then(project => {
@@ -20,9 +22,11 @@ module.exports = {
       })
       .catch(err => res.status(400).send(err));
   },
+
   // Parameter: id
   getProjectById(req, res) {
     let projectInfo = {};
+    console.log(req);
     return Project.findOne({
       where: { id: req.params.id }
     })
@@ -38,7 +42,12 @@ module.exports = {
 
   getProjectsByUserId(req, res) {
     return Project.findAll({
-      where: { id: req.decoded.id }
+      include: [
+        {
+          model: File
+        }
+      ],
+      where: { userId: req.params.userId }
     })
       .then(projects => {
         res.status(200).send(projects);

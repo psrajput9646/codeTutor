@@ -9,13 +9,11 @@ projectRouter.get("/:id", verifyToken, projectController.getProjectById)
 
 // Retrieves Projects owned by a particular user
 // Parameter: userId
-projectRouter.get("/projects:userId", verifyToken, projectController.getProjectsByUserId)
+projectRouter.get("/projects/:userId", verifyToken, projectController.getProjectsByUserId)
 
 // Creates a Project
 // Parameters: name, userId (grabbed from token)
-projectRouter.post("/create", verifyToken, function(req, res, next) {
-    projectController.create(req, res);
-  })
+projectRouter.post("/create", verifyToken, projectController.create)
 
 // Deletes a Project and its files
 // Parameter: projectId, userId (grabbed from token)

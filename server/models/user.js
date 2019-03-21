@@ -13,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
   User.associate = function(models) {
     User.hasMany(models.project);
     User.hasMany(models.comment);
-    // associations can be defined here
   };
   return User;
 };
