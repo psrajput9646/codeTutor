@@ -3,7 +3,7 @@ const fs = require('fs')
 const mkdirp = require('mkdirp');
 
 module.exports = {
-    // Requires name for file, projectId and user Id (grabbed from token)
+    // Requires name for file, type, projectId and user Id (grabbed from token)
     create(req, res){
         return File.create({
             name: req.body.name,
@@ -23,32 +23,41 @@ module.exports = {
         .catch(err => res.status(400).send(err));
     },
 
-    // Parameter: fileName, fileType, projectId, content, userId (grabbed from token)
+    // Parameter: (file)id, content, userId (grabbed from token)
     save(req, res){
-        let filePath = `projects/${req.decoded.id}/${req.body.projectId}/${req.body.fileName}.${req.body.type}`;
-        fs.writeFile(filePath, req.body.content, (err) => {
-            if (err) {
-                res.status(500).send({ success: false, err: err})
-            } else {
-                res.status(202).send({success: true})
-            }
+        File.findOne({
+            where: { id: req.params.id }
         })
+        .then(file => {
+            fs.writeFile(file.path, req.body.content, (err) => {
+                if (err) {
+                    res.status(500).send({ success: false, err: err})
+                } else {
+                    res.status(202).send({success: true})
+                }
+            })
+        })
+        .catch(err => {
+            res.status(500).send({success: false, err: err})
+        })
+
     },
 
-    // Parameter: fileName, type, projectId, fileId, userId (grabbed from token)
+    // Parameter: (file)id, userId (grabbed from token)
     delete(req, res){
-        let filePath = `projects/${req.decoded.id}/${req.body.projectId}/${req.body.fileName}.${req.body.type}`;
-        File.destroy({
-            where: {
-                id: req.body.fileId
-            }
+        File.findOne({
+            where: { id: req.params.id }
         })
-        .then(() => {
-            fs.unlink(filePath, (err) => {
+        .then(file => {
+            fs.unlink(file.path, (err) => {
                 if (err){
                     res.status(500).send({success: false, err})
                 } else {
-                    res.status(202).send({success: true})
+                    file.destroy()
+                    .then(()=>{
+                        res.status(202).send({success: true})
+                    })
+                    .catch(err => res.status(500).send({success: false, err}))
                 }
             })
         })
@@ -59,9 +68,10 @@ module.exports = {
 
     // Parameter: id
     getFile(req, res) {
-        return File.findOne({
+        File.findOne({
             where: { id: req.params.id }
         })
+        .then(file => res.status(200).send(file))
         .catch(err => res.status(400).send(err))
     }
 }

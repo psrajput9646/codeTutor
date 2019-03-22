@@ -10,10 +10,14 @@ fileRouter.get("/:id", verifyToken, fileController.getFile)
 
 // Creates a file
 // Parameter: Name, Type, projectId
-fileRouter.post("/create", verifyToken, projectController.getProjectByIdAndUserId, fileController.create)
+fileRouter.post("/create", verifyToken, fileController.create)
+
+// Saves a file
+   // Parameter: (file)id, content, userId (grabbed from token)
+fileRouter.post("/save", verifyToken, fileController.save)
 
 // Deletes a file
-// Parameter: fileName, type, projectId, fileId, userId (grabbed from token)
+   // Parameter: (file)id, userId (grabbed from token)
 fileRouter.post("/delete", verifyToken, fileController.delete)
 
 module.exports = fileRouter;
