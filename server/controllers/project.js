@@ -4,7 +4,7 @@ const rimraf = require('rimraf');
 const mkdirp = require('mkdirp');
 
 module.exports = {
-  // Requires name for project and student Id (grabbed from token)
+  // Requires name for project, description, userId(grabbed from token)
   create(req, res) {
     return Project.create({
       name: req.body.name,
@@ -25,23 +25,23 @@ module.exports = {
 
   // Parameter: id
   getProjectById(req, res) {
-    let projectInfo = {};
-    console.log(req);
-    return Project.findOne({
-      where: { id: req.params.id }
+    Project.findOne({
+      where: { id: req.params.id },
+      include: [
+        {
+          model: File
+        }
+      ]
     })
       .then(project => {
-        projectInfo.project = project;
-        project.getFiles().then(files => {
-          projectInfo.files = files;
-        });
+        res.status(200).send(project)
       })
-      .then(res.status(200).send(projectInfo))
       .catch(err => res.status(400).send(err));
   },
 
+  // Parameter: userId
   getProjectsByUserId(req, res) {
-    return Project.findAll({
+     Project.findAll({
       include: [
         {
           model: File
@@ -56,7 +56,7 @@ module.exports = {
   },
 
   getProjectByIdAndUserId(req, res, next) {
-    return Project.findOne({
+     Project.findOne({
       where: { id: req.body.projectId, userId: req.decoded.id }
     })
       .then(project => {
