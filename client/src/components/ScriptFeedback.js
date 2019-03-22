@@ -118,7 +118,7 @@ export default class ScriptFeedback extends Component {
                                         <Label for="comment">Comment</Label>
                                         <Input type="textarea" rows="6" id="comment"></Input>
                                     </FormGroup>
-                                    <Button color="primary" onClick={this.toggle}>Submit</Button>{' '}
+                                    <Button color="success" onClick={this.toggle}>Submit</Button>{' '}
                                 </ModalBody>
                             </Modal>
                         </div>

@@ -73,7 +73,7 @@ export default class Profile extends Component {
                                 onChange={this.handleChange}
                             ></Input>
                         </FormGroup>
-                        <Button color="primary">Submit</Button>{' '}
+                        <Button color="success">Submit</Button>{' '}
                     </Form>
                 </ModalBody>
             </Modal>
