@@ -130,7 +130,7 @@ export default class FileExplorer extends Component {
                                     onChange={this.handleChange}
                                 ></Input>
                             </FormGroup>
-                            <Button color="primary" onClick={this.createProject}>Submit</Button>{' '}
+                            <Button color="success" onClick={this.createProject}>Submit</Button>{' '}
                         </Form>
                     </ModalBody>
                 </Modal>
