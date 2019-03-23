@@ -14,9 +14,9 @@ export default class Accounts extends Component {
     constructor(props){
         super(props);
         this.AuthService = new AuthService();
-
+        let profile = this.AuthService.getProfile();
         this.state = {
-            user: {}
+            user: profile
         }
     }
 
@@ -31,7 +31,11 @@ export default class Accounts extends Component {
         const user = {
             firstName: 'Peter',
             lastName: 'Harlan',
+<<<<<<< HEAD
             username: 'ptr35244',
+=======
+            userName: this.state.user.username,
+>>>>>>> abee45e30507dadae16eea7ca087a2a9c93d70c6
             likes: 123,
             bio: ' bio goes here Descrippsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially u'
         };

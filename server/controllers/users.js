@@ -1,4 +1,5 @@
 const User = require("../models").user;
+const Project = require("../models").project;
 const bcrypt = require("bcryptjs");
 const config = require("../config");
 const jwt = require("jsonwebtoken");
@@ -64,6 +65,20 @@ module.exports = {
           .catch(err => res.status(500).send(err));
       });
     });
+  },
+
+  // Parameter: id
+  get(req, res) {
+    User.findOne({
+      where: { id: req.params.id },
+      include: [
+        {
+          model: Project
+        }
+      ]
+    })
+    .then(user => res.status(200).send(user))
+    .catch(err => res.status(500).send(err))
   },
 
   login(req, res) {

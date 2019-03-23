@@ -25,10 +25,7 @@ export default class ProjectInfo extends Component {
         
         <ListGroupItem className="pb-0">
             <a href="/editor/">{projectInfo.name} </a>
-            {/* <Button outline color="secondary"  size="sm" >
-                Edit Description
-            </Button> */}
-            <a herf="#" onClick={this.toggle}>edit</a>
+            <a href="#" onClick={this.toggle}>edit</a>
             <p>{projectInfo.description}</p>
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                 <ModalHeader toggle={this.toggle}>{projectInfo.name}</ModalHeader>
@@ -42,7 +39,7 @@ export default class ProjectInfo extends Component {
                             <Label for="description">Description</Label>
                             <Input type="textarea" rows="4" id="description" placeholder={projectInfo.description}></Input>
                         </FormGroup>
-                        <Button color="primary" onClick={this.toggle}>Submit</Button>{' '}
+                        <Button color="success" onClick={this.toggle}>Submit</Button>{' '}
                     </Form>
                 </ModalBody>
             </Modal>
