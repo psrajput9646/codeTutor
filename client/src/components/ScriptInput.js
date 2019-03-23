@@ -4,12 +4,10 @@ import {FormGroup, Label, Input } from 'reactstrap';
 export default class ScriptInput extends Component {
     render() {
         return (
-        <div>
-            <FormGroup>
-                <Label for="exampleText">Input</Label>
-                <Input className="no-scale-textarea" type="textarea" name="text" id="ExampleText"/>
-            </FormGroup>
-        </div>
+        <FormGroup>
+            <Label for="exampleText">Input</Label>
+            <Input className="no-scale-textarea script-io-height" type="textarea" name="text" id="ExampleText"/>
+        </FormGroup>
         )
     }
 }

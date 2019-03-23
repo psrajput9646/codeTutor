@@ -29,16 +29,18 @@ export default class Editor extends Component {
         return (
         <div id="EditorWindow">
             <Container fluid>
-                <h3 className="pt-3" id="EditorName">
-                    {scriptInfo.name}{' '}
-                    <i className="far fa-star" aria-hidden="true" id="FavoriteProjectStar"></i>
-                    <UncontrolledTooltip placement="left" target="FavoriteProjectStar">
-                        Favorite Project!
-                    </UncontrolledTooltip>
-                    <Button outline color="secondary" onClick={this.toggle} size="sm" id="EditScriptInfo">
-                        Rename
-                    </Button>
-                </h3>
+                <Row>
+                    <h3 className="pt-3" id="EditorName">
+                        {scriptInfo.name}{' '}
+                        <i className="far fa-star" aria-hidden="true" id="FavoriteProjectStar"></i>
+                        <UncontrolledTooltip placement="left" target="FavoriteProjectStar">
+                            Favorite Project!
+                        </UncontrolledTooltip>{' '}
+                        <Button outline color="secondary" onClick={this.toggle} size="sm" id="EditScriptInfo">
+                            Rename
+                        </Button>
+                    </h3>
+                </Row>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                     <ModalBody>
                         <FormGroup>
@@ -48,13 +50,17 @@ export default class Editor extends Component {
                         <Button color="primary" onClick={this.toggle}>Submit</Button>{' '}
                     </ModalBody>
                 </Modal>
-                <Row className="mt-3 mb-0">
+                <Row className="mt-3 mb-0 editor-content-height">
                     <Col sm="12" md="2">
                         <FileExplorer/>
                     </Col>
-                    <Col sm="12" md="7" className="h-100" id="EditorRight">
-                        <ScriptArea/>
-                        <Row className ="" id="IoField">
+                    <Col sm="12" md="7" className="h-100">
+                        <Row className="script-area-height">
+                            <Col sm="12" className="h-100">
+                                <ScriptArea/>
+                            </Col>
+                        </Row>
+                        <Row className="io-area-height">
                             <Col sm="12" md="6">
                                 <ScriptInput/>
                             </Col>
@@ -62,6 +68,9 @@ export default class Editor extends Component {
                                 <ScriptOutput/> 
                             </Col>
                         </Row>
+                        {/* <Row  className="h-100">
+                            
+                        </Row> */}
                     </Col>
                     <Col sm="12" md="3">
                         <ScriptFeedback/>

@@ -7,7 +7,6 @@ function formatName(user){
 }
 
 export default class Profile extends Component {
-  
     constructor(props) {
         super(props);
         this.state = {
@@ -41,13 +40,8 @@ export default class Profile extends Component {
                 </Row>
             </Container>
             <h4 className="mt-2"><strong>{formatName(user)}</strong></h4>
-<<<<<<< HEAD
             <h6>{user.username}</h6>
-            <div>
-=======
-            <h6>{user.userName}</h6>
             <span id="likes">
->>>>>>> abee45e30507dadae16eea7ca087a2a9c93d70c6
                 <span className="text-secondary">
                     <i className="fas fa-heart fa text-danger"></i>
                 </span>

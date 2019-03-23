@@ -69,16 +69,16 @@ export default class FileExplorer extends Component {
     getProjects = () =>{
         let user = this.Auth.getProfile();
         this.Auth.fetchAuth('/api/project/projects/'+user.id, {
-          method: 'GET'
+            method: 'GET'
         })
-          .then(res => {
+        .then(res => {
             this.setState({
                 projectList: res
             });
-          })
-          .catch(err => {
+        })
+        .catch(err => {
             console.log(err)
-          })
+        })
     }
 
     handleChange = event => {
@@ -94,8 +94,7 @@ export default class FileExplorer extends Component {
     render() {
         const { projectName, description, projectList } = this.state;
         return (
-        <div>
-            <div>
+            <div className = "h-100">
                 <Label for="scriptArea" className="mb-3">Explorer</Label>
 
                 {/* Popup form to create a new project */}
@@ -135,7 +134,7 @@ export default class FileExplorer extends Component {
                     </ModalBody>
                 </Modal>
 
-                <div className="round-div bg-white py-2 pl-2 border">
+                <div className="round-div bg-white py-2 pl-2 border list-box-outer">
                     <div className="list-box">
                         <div className="bg-dark text-light mt-2">
                             {projectList.map((project)=>
@@ -151,7 +150,6 @@ export default class FileExplorer extends Component {
                     </div>
                 </div>
             </div>
-        </div>
         )
     }
 }

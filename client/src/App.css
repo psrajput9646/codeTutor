@@ -13,17 +13,44 @@
     margin-right: 1rem;
 }
 
-.no-scale-textarea{
-    resize: none; 
-    height: 100% !important;
+.script-area-height{
+    height: calc(80% - 50px);
 }
 
+.script-area-input-height{
+    height: calc(100% - 40px) !important;
+}
+
+.io-area-height{
+    height: calc(20%) !important;
+}
+.script-io-height{
+    height: calc(100% - 100px) !important;
+}
+
+.no-scale-textarea{
+    /* removes the scalable option for inputs */
+    resize: none; 
+}
+
+.testing{
+    height: calc(100% - 60px);
+}
+
+.editor-content-height{
+    height: calc(100vh - 133px);
+}
 .list-box{
     background: white;
     min-height: 200px;
     width:100%;
     overflow:hidden; 
     overflow-y:scroll;
+    height: 100%;
+}
+
+.list-box-outer{
+    height: calc(100% - 50px);
 }
 
 .round-div{

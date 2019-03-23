@@ -19,9 +19,8 @@ export default class ScriptArea extends Component {
 
     render() {
         return (
-        <div>
-            <FormGroup>
-                <div className="d-block mb-2">
+            <FormGroup className = "h-100">
+                <div className="d-block mb-2 ">
                     <Label for="scriptArea">Script Input</Label>
 
                     {/* Buttons for script inputs */}
@@ -51,9 +50,8 @@ export default class ScriptArea extends Component {
                     </UncontrolledTooltip>
                 </div>
                 {/* Input field for scripts */}
-                <Input className="no-scale-textarea d-block" type="textarea" rows="10" name="text" id="ScriptArea" />
+                <Input className="no-scale-textarea script-area-input-height" type="textarea" name="text" id="ScriptArea" />
             </FormGroup>
-        </div>
         )
     }
 }
