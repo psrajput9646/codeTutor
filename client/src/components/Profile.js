@@ -18,7 +18,7 @@ export default class Profile extends Component {
                 </Row>
             </Container>
             <h4 className="mt-2"><strong>{formatName(user)}</strong></h4>
-            <h6>{user.userName}</h6>
+            <h6>{user.username}</h6>
             <div>
                 <span className="text-secondary">
                     <i className="fas fa-heart fa text-danger"></i>

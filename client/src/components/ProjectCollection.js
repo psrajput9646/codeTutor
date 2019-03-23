@@ -46,16 +46,16 @@ handleChange = event => {
 getProjects = () =>{
     let user = this.Auth.getProfile();
     this.Auth.fetchAuth('/api/project/projects/'+user.id, {
-      method: 'GET'
-    })
-      .then(res => {
-        this.setState({
-            projectList: res
-        });
-      })
-      .catch(err => {
-        console.log(err)
-      })
+        method: 'GET'
+        })
+        .then(res => {
+            this.setState({
+                projectList: res
+            });
+        })
+        .catch(err => {
+            console.log(err)
+        })
 }
 
 createProject = () =>{
