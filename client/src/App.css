@@ -14,27 +14,23 @@
 }
 
 .script-area-height{
-    height: calc(80% - 50px);
+    height: calc(67vh - 60px);
 }
 
 .script-area-input-height{
-    height: calc(100% - 40px) !important;
+    height: calc(57vh - 50px) !important;
 }
 
 .io-area-height{
     height: calc(20%) !important;
 }
 .script-io-height{
-    height: calc(100% - 100px) !important;
+    height: calc(26vh - 85px) !important;
 }
 
 .no-scale-textarea{
     /* removes the scalable option for inputs */
     resize: none; 
-}
-
-.testing{
-    height: calc(100% - 60px);
 }
 
 .editor-content-height{

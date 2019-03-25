@@ -94,7 +94,7 @@ export default class FileExplorer extends Component {
     render() {
         const { projectName, description, projectList } = this.state;
         return (
-            <div className = "h-100">
+            <div className="h-100">
                 <Label for="scriptArea" className="mb-3">Explorer</Label>
 
                 {/* Popup form to create a new project */}
