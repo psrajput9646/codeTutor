@@ -4,7 +4,7 @@ const Comment = require('../models').comment;
 module.exports = {
     // Requires content for comment, projectId and user Id (grabbed from token)
     create(req, res){
-        return Comment.create({
+        Comment.create({
             content: req.body.content,
             votes: 0,
             votedBy: [],

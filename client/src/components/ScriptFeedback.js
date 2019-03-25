@@ -39,7 +39,7 @@ export default class ScriptFeedback extends Component {
             method: 'POST',
             body: JSON.stringify({
                 content: comment,
-                projectId: 1 //THIS NEEDS TO BE CHANGED TO SPECIFIC PROJECT ID
+                projectId: 1        //THIS NEEDS TO BE CHANGED TO SPECIFIC PROJECT ID
             })
         })
         .then(res => {
@@ -72,7 +72,7 @@ export default class ScriptFeedback extends Component {
     }
 
     render() {
-        const { commentList } = this.state;
+        const { comment, commentList } = this.state;
         const solutionList = [
             {
                 id : 1,
@@ -144,9 +144,16 @@ export default class ScriptFeedback extends Component {
                                 <ModalBody>
                                     <FormGroup>
                                         <Label for="comment">Comment</Label>
-                                        <Input type="textarea" rows="6" id="comment"></Input>
+                                        <Input
+                                            type="textarea"
+                                            name="comment"
+                                            id="Comment"
+                                            value={comment}
+                                            onChange={this.handleChange}
+                                            rows="6"
+                                        ></Input>
                                     </FormGroup>
-                                    <Button color="success" onClick={this.toggle}>Submit</Button>{' '}
+                                    <Button color="success" onClick={this.createComment}>Submit</Button>{' '}
                                 </ModalBody>
                             </Modal>
                         </div>
