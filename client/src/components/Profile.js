@@ -49,7 +49,7 @@ export default class Profile extends Component {
                     {user.likes}
                 </span>
             </span>
-            <UncontrolledTooltip placement="top" target="likes">
+            <UncontrolledTooltip placement="top" target="Likes">
                 Total Likes
             </UncontrolledTooltip>
             <hr className="mb-1"/>
