@@ -1,10 +1,11 @@
+const User = require('../models').user;
 const Comment = require('../models').comment;
 
 module.exports = {
     // Requires content for comment, projectId and user Id (grabbed from token)
     create(req, res){
         return Comment.create({
-            name: req.body.content,
+            content: req.body.content,
             votes: 0,
             userId: req.decoded.id,
             projectId: req.body.projectId,
@@ -13,14 +14,35 @@ module.exports = {
         .then(comment => res.status(200).send(comment))
         .catch(err => res.status(400).send(err));
     },
+
     // Parameter: project id
     getComments(req, res) {
-        return Comment.findAll({
-            where: { projectId: req.params.projectId }
+        Comment.findAll({
+            include: [
+                {
+                    model: User
+                }
+            ],
+           where: { projectId: req.params.projectId }
         })
-        .then(comments => res.status(200).send(comments))
+        .then(comments => {
+            const resObj = comments.map(comment => {
+                return Object.assign(
+                    {},
+                    {
+                      id: comment.id,
+                      content: comment.content,
+                      votes: comment.votes,
+                      favorited: comment.favorited,
+                      createdAt: comment.createdAt,
+                      username: comment.user.username
+                    }
+                  ) 
+            });
+            res.status(200).send(resObj)})
         .catch(err => res.status(400).send(err))
     },
+
     // requires commentId
     vote(req, res){
         return Comment.findOne({

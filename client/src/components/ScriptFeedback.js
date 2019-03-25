@@ -6,24 +6,76 @@ import React, {Component} from 'react';
 import {Label, Modal, ModalHeader, ModalBody, FormGroup, Input, Button, UncontrolledTooltip} from 'reactstrap';
 import CommentBox from './CommentBox';
 import CommentProjectBox from './CommentProjectBox';
+import AuthService from './AuthService';
 
 export default class ScriptFeedback extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            modal: false
+            modal: false,
+            comment: "",
+            commentList: []
         };
         this.toggle = this.toggle.bind(this);
+        this.getComments = this.getComments.bind(this);
+        this.createComment = this.createComment.bind(this);
+        this.Auth = new AuthService();
+    }
+
+    componentDidMount(){
+        this.getComments();
     }
 
     toggle() {
         this.setState(prevState => ({
-        modal: !prevState.modal
+            modal: !prevState.modal
         }));
     }
+
+    createComment = () =>{
+        const {comment, commentList} = this.state;
+        let newList = commentList;
+        this.Auth.fetchAuth('/api/comment/create', {
+            method: 'POST',
+            body: JSON.stringify({
+                content: comment,
+                projectId: 1 //THIS NEEDS TO BE CHANGED TO SPECIFIC PROJECT ID
+            })
+        })
+        .then(res => {
+           this.getComments();
+        })
+        .catch(err => {
+            console.log(err)
+        })
+        
+        this.toggle();
+    }
+
+    //GETS ALL COMMENTS CURRENTLY. MUST BE MODIFIED TO GET COMMENTS FROM A SINGLE PROJECT
+    getComments = () =>{
+        const { commentList } = this.state;
+        this.Auth.fetchAuth('/api/comment/comments/'+1, {
+            method: 'GET'
+        })
+        .then(res => {
+            this.setState({
+                commentList: res
+            });
+            console.log(res);
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
     
+    handleChange = event => {
+        this.setState({ [event.target.name]: event.target.value })
+    }
+
     render() {
+        const { comment, commentList } = this.state;
         const solutionList = [
             {
                 id : 1,
@@ -54,38 +106,46 @@ export default class ScriptFeedback extends Component {
             }
         ]
         
-        const commentList = [
-            {
-                id:1, 
-                text:'I am placing some comments here you little punka\nasdfasdf\nasdfasdfasdf\nasdfasdfasdfa\nasdfasdf\nasdfasdf',
-                userName:'taylor10094',
-                likes:123
-            }, 
-            {
-                id:2, 
-                text:'You need to code better in react\nasdfasdf\nasdfasdfasdf\nasdfasdfasdfa\nasdfasdf\nasdfasdf',
-                userName:'baily0394',
-                likes:123
-            }, 
-            {
-                id:3, 
-                text:'who wants to set up some docker containers?\nasdfasdf\nasdfasdfasdf\nasdfasdfasdfa\nasdfasdf\nasdfasdf',
-                userName:'robert904',
-                likes:123
-            }
-        ]
-        
         return (
-
         <div className="h-100">
             <Label for="exampleSelectMulti" className="mb-3">Script Feedback</Label>
             {/* Create round border and padding around main comment section */}
             <div className="round-div bg-white py-2 pl-2 border list-box-outer">
                 {/* Main comment section*/}
                 <div className="list-box" id="CommentsSection">
-                    <div>test</div>
-                    <div>test</div>
-                    <div>test</div>
+                     {/* Holds remarks */}
+                     <div id="RemarksSection">
+                        <div className="bg-dark text-light" id="RemarksSectionHead">
+                            <i className="fas fa-comments pl-2"> Remarks</i>
+                            {/* Popup form to add a comment */}
+                            <span className="float-right mr-2" onClick={this.toggle} id="AddComment">
+                                <i className="fa fa-plus" aria-hidden="true"></i>
+                            </span>
+                            <UncontrolledTooltip placement="top" target="AddComment">
+                                Add a Comment
+                            </UncontrolledTooltip>
+                            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+                                <ModalHeader toggle={this.toggle}>Add a Comment</ModalHeader>
+                                <ModalBody>
+                                    <FormGroup>
+                                        <Label for="comment">Comment</Label>
+                                        <Input
+                                            type="textarea"
+                                            name="comment"
+                                            id="Comment"
+                                            rows="6"
+                                            value={comment}
+                                            onChange={this.handleChange}
+                                        ></Input>
+                                    </FormGroup>
+                                    <Button color="success" onClick={this.createComment}>Submit</Button>{' '}
+                                </ModalBody>
+                            </Modal>
+                        </div>
+                        {commentList.map((comment) =>
+                            <CommentBox key={comment.id} {...comment}/>
+                        )}
+                    </div>
                     <div>test</div>
                     <div>test</div>
                     <div>test</div>
