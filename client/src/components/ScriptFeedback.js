@@ -34,8 +34,7 @@ export default class ScriptFeedback extends Component {
     }
 
     createComment = () =>{
-        const {comment, commentList} = this.state;
-        let newList = commentList;
+        const {comment} = this.state;
         this.Auth.fetchAuth('/api/comment/create', {
             method: 'POST',
             body: JSON.stringify({
@@ -55,7 +54,6 @@ export default class ScriptFeedback extends Component {
 
     //GETS ALL COMMENTS CURRENTLY. MUST BE MODIFIED TO GET COMMENTS FROM A SINGLE PROJECT
     getComments = () =>{
-        const { commentList } = this.state;
         this.Auth.fetchAuth('/api/comment/comments/'+1, {
             method: 'GET'
         })
@@ -74,7 +72,7 @@ export default class ScriptFeedback extends Component {
     }
 
     render() {
-        const { comment, commentList } = this.state;
+        const { commentList } = this.state;
         const solutionList = [
             {
                 id : 1,
