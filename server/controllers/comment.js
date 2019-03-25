@@ -56,24 +56,27 @@ module.exports = {
             if(comment.votedBy.includes(req.decoded.id)){
                 let index = comment.votedBy.indexOf(req.decoded.id);
                 comment.votedBy.splice(index, 1);
-                comment.update({
-                    votes: --comment.votes,
-                    votedBy: comment.votedBy
-                });
-                res.status(202).send()
-                // .then(comment => {res.status(200).send(comment.votes)})
-                // .catch(err => res.status(500).send(err))
+                comment.votes--;
+                
             } else {
+                comment.votes++
                 comment.votedBy.push(req.decoded.id);
-                comment.update({
-                    votes: ++comment.votes,
-                    votedBy: comment.votedBy
-                })
-                res.status(202).send()
-                // .then(comment => res.status(200).send(comment.votes))
-                // .catch(err => res.status(500).send(err))
             }
+            
+            comment.update({
+                votes: comment.votes,
+                votedBy: comment.votedBy
+            })
+            .then(resu => {
+                res.status(200).send(resu)
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).send(err)
+            });
+
+           
         })
-        .catch((err) => res.status(500).send(err))
+        .catch((err) => {console.log(err);res.status(500).send(err)})
     }
 }
