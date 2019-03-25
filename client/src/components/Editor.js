@@ -51,12 +51,12 @@ export default class Editor extends Component {
                     </ModalBody>
                 </Modal>
                 <Row className="mt-3 mb-0 editor-content-height">
-                    <Col sm="12" md="2">
+                    <Col sm="12" md="2" className="h-100">
                         <FileExplorer/>
                     </Col>
-                    <Col sm="12" md="7" className="h-100">
+                    <Col sm="12" md="7">
                         <Row className="script-area-height">
-                            <Col sm="12" className="h-100">
+                            <Col sm="12">
                                 <ScriptArea/>
                             </Col>
                         </Row>
@@ -68,11 +68,8 @@ export default class Editor extends Component {
                                 <ScriptOutput/> 
                             </Col>
                         </Row>
-                        {/* <Row  className="h-100">
-                            
-                        </Row> */}
                     </Col>
-                    <Col sm="12" md="3">
+                    <Col sm="12" md="3" className="h-100">
                         <ScriptFeedback/>
                     </Col>
                 </Row>

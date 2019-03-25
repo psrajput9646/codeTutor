@@ -107,82 +107,58 @@ export default class ScriptFeedback extends Component {
         
         return (
         <div className="h-100">
-            <Label for="exampleSelectMulti" className="mb-3">Script Feedback</Label>
-            {/* Create round border and padding around main comment section */}
-            <div className="round-div bg-white py-2 pl-2 border list-box-outer">
-                {/* Main comment section*/}
-                <div className="list-box" id="CommentsSection">
-                    <div>test</div>
-                    <div>test</div>
-                    <div>test</div>
-                    <div>test</div>
-                    <div>test</div>
-                    <div>test</div>
-                    <div>test</div>
-                    <div>test</div>
-                    <div>test</div>
-                    <div>test</div>
-                    <div>test</div>
-                    <div>test</div>
-                    <div>test</div>
-                    <div>test</div>
-                    <div>test</div>
+        <Label for="exampleSelectMulti" className="mb-3">Script Feedback</Label>
+        {/* Create round border and padding around main comment section */}
+        <div className="round-div bg-white py-2 pl-2 border list-box-outer">
+            {/* Main comment section*/}
+            <div className="list-box" id="CommentsSection">
+                    {/* Holds submitted solutions */}
+                    <div id="SolutionSection" className="mt-2">
+                        <div className="bg-dark text-light" id="SolutionSectionHead">
+                            <i className="fas fa-hands-helping pl-2"> Solutions</i>
+                        </div>
+                        {solutionList.map((project)=>
+                            <CommentProjectBox key={project.id} {...project}/>
+                        )}
+                    </div>
+                    {/* Holds signed-in user's starred projects */}
+                    <div id="StarSection">
+                        <div className="bg-dark text-light" id="StarredSectionHead">
+                            <i className="fas fa-star pl-2"> Star Project</i>
+                        </div>
+                        {starList.map((project)=>
+                            <CommentProjectBox key={project.id} {...project}/>
+                        )}
+                    </div>
+                    {/* Holds remarks */}
+                    <div id="CommentsSection">
+                        <div className="bg-dark text-light" id="CommentsSectionHead">
+                            <i className="fas fa-comments pl-2"> Comments</i>
+                            {/* Popup form to add a comment */}
+                            <span className="float-right mr-2" onClick={this.toggle} id="AddComment">
+                                <i className="fa fa-plus" aria-hidden="true"></i>
+                            </span>
+                            <UncontrolledTooltip placement="top" target="AddComment">
+                                Add a Comment
+                            </UncontrolledTooltip>
+                            <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
+                                <ModalHeader toggle={this.toggle}>Add a Comment</ModalHeader>
+                                <ModalBody>
+                                    <FormGroup>
+                                        <Label for="comment">Comment</Label>
+                                        <Input type="textarea" rows="6" id="comment"></Input>
+                                    </FormGroup>
+                                    <Button color="success" onClick={this.toggle}>Submit</Button>{' '}
+                                </ModalBody>
+                            </Modal>
+                        </div>
+                        {commentList.map((comment) =>
+                            <CommentBox key={comment.id} {...comment}/>
+                        )}
+                    </div>
                 </div>
             </div>
         </div>
-        // <div>
-        //     <Label for="exampleSelectMulti" className="mb-3">Script Feedback</Label>
-        //     {/* Create round border and padding around main comment section */}
-        //     <div className="round-div bg-white py-2 pl-2 border">
-        //         {/* Main comment section*/}
-        //         <div className="list-box" id="CommentsSection">
-        //             {/* Holds submitted solutions */}
-        //             <div id="SolutionSection" className="mt-2">
-        //                 <div className="bg-dark text-light" id="SolutionSectionHead">
-        //                     <i className="fas fa-hands-helping pl-2"> Solutions</i>
-        //                 </div>
-        //                 {solutionList.map((project)=>
-        //                     <CommentProjectBox key={project.id} {...project}/>
-        //                 )}
-        //             </div>
-        //             {/* Holds signed-in user's starred projects */}
-        //             <div id="StarSection">
-        //                 <div className="bg-dark text-light" id="StarredSectionHead">
-        //                     <i className="fas fa-star pl-2"> Star Project</i>
-        //                 </div>
-        //                 {starList.map((project)=>
-        //                     <CommentProjectBox key={project.id} {...project}/>
-        //                 )}
-        //             </div>
-        //             {/* Holds remarks */}
-        //             <div id="RemarksSection">
-        //                 <div className="bg-dark text-light" id="RemarksSectionHead">
-        //                     <i className="fas fa-comments pl-2"> Remarks</i>
-        //                     {/* Popup form to add a comment */}
-        //                     <span className="float-right mr-2" onClick={this.toggle} id="AddComment">
-        //                         <i className="fa fa-plus" aria-hidden="true"></i>
-        //                     </span>
-        //                     <UncontrolledTooltip placement="top" target="AddComment">
-        //                         Add a Comment
-        //                     </UncontrolledTooltip>
-        //                     <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-        //                         <ModalHeader toggle={this.toggle}>Add a Comment</ModalHeader>
-        //                         <ModalBody>
-        //                             <FormGroup>
-        //                                 <Label for="comment">Comment</Label>
-        //                                 <Input type="textarea" rows="6" id="Comment"></Input>
-        //                             </FormGroup>
-        //                             <Button color="success" onClick={this.toggle}>Submit</Button>{' '}
-        //                         </ModalBody>
-        //                     </Modal>
-        //                 </div>
-        //                 {commentList.map((comment) =>
-        //                     <CommentBox key={comment.id} {...comment}/>
-        //                 )}
-        //             </div>
-        //         </div>
-        //     </div>
-        // </div>
         )
     }
 }
