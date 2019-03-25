@@ -88,24 +88,24 @@ render() {
     const { projectName, description, projectList } = this.state;
     const favoritedProjectList = [
         {   
-            id : 'favProject1',
+            id : 'FavProject1',
             name : 'Fav Project Name 1',
             description : 'script Description 1 Description about the script imply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently'
         },
         {
-            id : 'favProject2',
+            id : 'FavProject2',
             name : 'Fav Project Name 2',
             description : 'script Description 1 Description about the script imply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently'
         },
         {
-            id : 'favProject3',
+            id : 'FavProject3',
             name : 'Fav Project Name 3',
             description : 'script Description 1 Description about the script imply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently'
         }
     ]
     const pendingSolutionList = [
         {
-            id : 'solution1',
+            id : 'Solution1',
             name : 'My Project Name 1', // Name of your (logged-in user) project
             // Description is from the solution submitter. It should briefly say what was done to solve the problem.
             description : 'script Description 1 Description about the script imply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently',

@@ -1,11 +1,13 @@
+const User = require('../models').user;
 const Comment = require('../models').comment;
 
 module.exports = {
     // Requires content for comment, projectId and user Id (grabbed from token)
     create(req, res){
         return Comment.create({
-            name: req.body.content,
+            content: req.body.content,
             votes: 0,
+            votedBy: [],
             userId: req.decoded.id,
             projectId: req.body.projectId,
             favorited: false
@@ -13,40 +15,68 @@ module.exports = {
         .then(comment => res.status(200).send(comment))
         .catch(err => res.status(400).send(err));
     },
+
     // Parameter: project id
     getComments(req, res) {
-        return Comment.findAll({
-            where: { projectId: req.params.projectId }
+        Comment.findAll({
+            include: [
+                {
+                    model: User
+                }
+            ],
+           where: { projectId: req.params.projectId }
         })
-        .then(comments => res.status(200).send(comments))
-        .catch(err => res.status(400).send(err))
+        .then(comments => {
+            const resObj = comments.map(comment => {
+                return Object.assign(
+                    {},
+                    {
+                      id: comment.id,
+                      content: comment.content,
+                      votes: comment.votes,
+                      favorited: comment.favorited,
+                      createdAt: comment.createdAt,
+                      username: comment.user.username
+                    }
+                  ) 
+            });
+            //Sort comments by newest first
+            resObj.sort(function(a,b){return a.createdAt < b.createdAt})
+            res.status(200).send(resObj)})
+        .catch(err => {console.log(err);res.status(400).send(err)})
     },
+
     // requires commentId
     vote(req, res){
-        return Comment.findOne({
-            where: { id: req.params.id }
+        Comment.findOne({
+            where: { id: req.params.commentId }
         })
         .then(comment => {
-            if(comment.votedBy.contains(req.decoded.id)){
+            console.log(comment.votedBy);
+            if(comment.votedBy.includes(req.decoded.id)){
                 let index = comment.votedBy.indexOf(req.decoded.id);
                 comment.votedBy.splice(index, 1);
-                comment.update({
-                    votes: comment.votes--,
-                    votedBy: comment.votedBy
-                })
-                .then(() => {
-                    res.status(202).send()
-                })
-                .catch((err) => res.status(500).send(err))
+                comment.votes--;
+                
             } else {
+                comment.votes++
                 comment.votedBy.push(req.decoded.id);
-                comment.update({
-                    votes: comment.votes++,
-                    votedBy: comment.votedBy
-                })
-                .then(() => res.status(202).send())
-                .catch((err) => res.status(500).send(err))
             }
+            
+            comment.update({
+                votes: comment.votes,
+                votedBy: comment.votedBy
+            })
+            .then(resu => {
+                res.status(200).send(resu)
+            })
+            .catch(err => {
+                console.log(err);
+                res.status(500).send(err)
+            });
+
+           
         })
+        .catch((err) => {console.log(err);res.status(500).send(err)})
     }
 }
