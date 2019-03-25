@@ -33,7 +33,7 @@ export default class Navigation extends React.Component {
 
   render() {
     return (
-      <div id="navBar">
+      <div id="NavBar">
         <Navbar color="dark" dark expand="md">
           <Container>
             {/* Website name */}

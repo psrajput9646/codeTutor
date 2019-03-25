@@ -45,7 +45,7 @@ export default class Editor extends Component {
                     <ModalBody>
                         <FormGroup>
                             <Label for="projectName">Script Name</Label>
-                            <Input type="text" id="projectName" placeholder={scriptInfo.name}></Input>
+                            <Input type="text" id="ProjectName" placeholder={scriptInfo.name}></Input>
                         </FormGroup>
                         <Button color="primary" onClick={this.toggle}>Submit</Button>{' '}
                     </ModalBody>

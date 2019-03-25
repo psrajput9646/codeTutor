@@ -33,11 +33,11 @@ export default class ProjectInfo extends Component {
                     <Form>
                         <FormGroup>
                             <Label for="projectName">Project Name</Label>
-                            <Input type="text" id="projectName" placeholder={projectInfo.name}></Input>
+                            <Input type="text" id="ProjectName" placeholder={projectInfo.name}></Input>
                         </FormGroup>
                         <FormGroup>
                             <Label for="description">Description</Label>
-                            <Input type="textarea" rows="4" id="description" placeholder={projectInfo.description}></Input>
+                            <Input type="textarea" rows="4" id="Description" placeholder={projectInfo.description}></Input>
                         </FormGroup>
                         <Button color="success" onClick={this.toggle}>Submit</Button>{' '}
                     </Form>
