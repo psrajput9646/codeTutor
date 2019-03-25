@@ -13,6 +13,6 @@ commentRouter.post("/create", verifyToken, commentController.create)
 
 // Modifies Vote on a comment
 //Parameters: userId, commentId
-commentRouter.post("/vote", verifyToken, commentController.vote)
+commentRouter.post("/vote/:commentId", verifyToken, commentController.vote)
 
 module.exports = commentRouter;
