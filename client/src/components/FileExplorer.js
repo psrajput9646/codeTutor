@@ -8,16 +8,26 @@ export default class FileExplorer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            modal: false,
+            modalIsOpen: false,
+            secondModalIsOpen: false,
             projectName: '',
             description: '',
-            projectList: []
+            projectList: [],
+            fileName: ''
         };
     
         this.getProjects = this.getProjects.bind(this);
         this.createProject = this.createProject.bind(this);
-        this.toggle = this.toggle.bind(this);
+        this.toggle = this.toggleModal.bind(this);
         this.Auth = new AuthService();
+    }
+
+    toggleModal = () => {
+        this.setState(prevState => ({modalIsOpen: !prevState.modalIsOpen}));
+    }
+
+    toggleSecondModal = () => {
+        this.setState(prevState => ({secondModalIsOpen: !prevState.secondModalIsOpen}));
     }
 
     componentDidMount(){
@@ -48,12 +58,13 @@ export default class FileExplorer extends Component {
     }
 
     createFile = () =>{
+        const {fileName} = this.state;
         this.Auth.fetchAuth('/api/file/create', {
             method: 'POST',
             body: JSON.stringify({
-                name: 'boogaloo',
-                type: 'py',
-                projectId: 1
+                name: fileName,
+                type: 'py', // Is file type necessary? The compile script checks for type
+                projectId: 1 // NEED TO MAKE THIS THE ACTUAL PROJECT ID
             })
         })
         .then(res => {
@@ -85,27 +96,20 @@ export default class FileExplorer extends Component {
         this.setState({ [event.target.name]: event.target.value })
     }
 
-    toggle = () => {
-        this.setState(prevState => ({
-        modal: !prevState.modal
-        }));
-    }
-
     render() {
-        const { projectName, description, projectList } = this.state;
+        const { projectName, description, projectList, fileName } = this.state;
         return (
             <div className="h-100">
                 <Label for="scriptArea" className="mb-3">Explorer</Label>
-
                 {/* Popup form to create a new project */}
-                <Button color="success" onClick={this.toggle} className="float-right" size="sm" id="CreateNewProject">
+                <Button color="success" onClick={this.toggleModal} className="float-right" size="sm" id="CreateNewProject">
                     <i className="fa fa-plus" aria-hidden="true"></i>
                 </Button>
                 <UncontrolledTooltip placement="top" target="CreateNewProject">
                     Create New Project
                 </UncontrolledTooltip>
-                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-                    <ModalHeader toggle={this.toggle}>Add a Project</ModalHeader>
+                <Modal isOpen={this.state.modalIsOpen} toggle={this.toggleModal} className={this.props.className}>
+                    <ModalHeader toggle={this.toggleModal}>Add a Project</ModalHeader>
                     <ModalBody>
                         <Form>
                             <FormGroup>
@@ -140,7 +144,29 @@ export default class FileExplorer extends Component {
                             {projectList.map((project)=>
                                 <div key={project.id}>
                                     <i className="fas fa-folder pl-2" >{' '}{project.name}</i>
-                                    <span className="float-right mr-2"><i className="fa fa-plus" aria-hidden="true"></i></span>
+                                    {/* Popup form to add a file to project */}
+                                    <span className="float-right mr-2" onClick={this.toggleSecondModal} id="AddFile">
+                                        <i className="fa fa-plus" aria-hidden="true"></i>
+                                    </span>
+                                    <UncontrolledTooltip placement="top" target="AddFile">
+                                        Add a File
+                                    </UncontrolledTooltip>
+                                    <Modal isOpen={this.state.secondModalIsOpen} toggle={this.toggleSecondModal} className={this.props.className}>
+                                        <ModalHeader toggle={this.toggleSecondModal}>Add a File</ModalHeader>
+                                        <ModalBody>
+                                            <FormGroup>
+                                                <Label for="fileName">File Name</Label>
+                                                <Input
+                                                    type="text"
+                                                    name="fileName"
+                                                    id="fileName"
+                                                    value={fileName}
+                                                    onChange={this.handleChange}
+                                                ></Input>
+                                            </FormGroup>
+                                            <Button color="success" onClick={this.createFile}>Submit</Button>{' '}
+                                        </ModalBody>
+                                    </Modal>
                                     {project.files.map(file =>
                                         <ProjectFile key={file.id} name={file.name+'.'+file.type}/>
                                     )}
