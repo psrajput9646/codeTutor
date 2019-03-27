@@ -79,3 +79,7 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+# Visual Studio Code files
+.vscode/ipch/b841dd1964badf1e/file.ipch
+.vscode/ipch/b841dd1964badf1e/mmap_address.bin
