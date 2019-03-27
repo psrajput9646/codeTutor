@@ -1,5 +1,6 @@
 const User = require("../models").user;
 const Project = require("../models").project;
+const Comment = require("../models").comment;
 const bcrypt = require("bcryptjs");
 const config = require("../config");
 const jwt = require("jsonwebtoken");
@@ -37,6 +38,7 @@ module.exports = {
         return res.status(409).send({ error: "Username already exists" });
       }
     });
+
     // Encrypt password and create user
     bcrypt.genSalt(10, function(err, salt) {
       bcrypt.hash(req.body.password, salt, function(err, hash) {
@@ -73,12 +75,37 @@ module.exports = {
       where: { id: req.params.id },
       include: [
         {
+          model: Comment,
+          attributes: ['votes']
+        },
+        {
           model: Project
         }
       ]
     })
-    .then(user => res.status(200).send(user))
-    .catch(err => res.status(500).send(err))
+    .then(user => {
+      let sum = 0;
+      user.comments.forEach(comment => {
+        sum += comment.votes;
+      });
+
+      const resObj = Object.assign({},
+        {
+          id: user.id,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          bio: user.bio,
+          likes: sum,
+          projects: user.projects
+        }
+      );
+      res.status(200).send(resObj)
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).send(err)
+    })
   },
 
   login(req, res) {

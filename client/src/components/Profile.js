@@ -6,39 +6,12 @@ function formatName(user){
     return user.firstName + ' ' + user.lastName;
 }
 
-export default class Profile extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            modal: false,
-            bio: '',
-        };
-    
-        this.toggle = this.toggle.bind(this);
-        this.Auth = new AuthService();
-    }
-    
-    handleChange = event => {
-        this.setState({ [event.target.name]: event.target.value })
-    }
-    
-    toggle = () => {
-        this.setState(prevState => ({
-        modal: !prevState.modal
-        }));
-    }
-
-    render() {
-        const user = this.props;
+function Loading(props) {
+    const user = props.user;
+    if (user.likes != undefined){
+        console.log(user.likes === undefined);
         return (
-        <div>
-            <Container>
-                <Row>
-                    <Col className="col-10 offset-1">
-                        <img className="profile-pic mx-auto d-block" src='../img/profile.png' alt="Profile"/> 
-                    </Col>
-                </Row>
-            </Container>
+            <div>
             <h4 className="mt-2"><strong>{formatName(user)}</strong></h4>
             <h6>{user.username}</h6>
             <span id="Likes">
@@ -56,6 +29,48 @@ export default class Profile extends Component {
             <p>
                 <small>{user.bio}</small>
             </p>
+            </div>
+        )
+    }
+    return  <h6>Loading...</h6>;
+}
+
+export default class Profile extends Component {
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+            modal: false,
+            bio: ''
+        };
+    
+        this.toggle = this.toggle.bind(this);
+        this.Auth = new AuthService();
+    }
+    
+    handleChange = event => {
+        this.setState({ [event.target.name]: event.target.value })
+    }
+    
+    toggle = () => {
+        this.setState(prevState => ({
+            modal: !prevState.modal
+        }));
+    }
+
+    render() {
+        const user = this.props;
+        const { bio } = this.state;
+        return (
+        <div>
+            <Container>
+                <Row>
+                    <Col className="col-10 offset-1">
+                        <img className="profile-pic mx-auto d-block" src='../img/profile.png' alt="Profile"/> 
+                    </Col>
+                </Row>
+            </Container>
+            <Loading user={user} />
             <Button color="secondary" className="btn-sm btn-block" onClick={this.toggle}>Edit</Button>{' '}
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                 <ModalHeader toggle={this.toggle}>Edit Bio</ModalHeader>
@@ -68,7 +83,7 @@ export default class Profile extends Component {
                                 name="bio"
                                 id="Bio"
                                 rows="4"
-                                value={user.bio}
+                                value={bio}
                                 onChange={this.handleChange}
                             ></Input>
                         </FormGroup>
