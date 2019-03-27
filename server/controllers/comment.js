@@ -24,7 +24,10 @@ module.exports = {
                     model: User
                 }
             ],
-           where: { projectId: req.params.projectId }
+            where: { projectId: req.params.projectId },
+            order: [[
+                'createdAt','DESC'
+            ]],
         })
         .then(comments => {
             const resObj = comments.map(comment => {
@@ -40,8 +43,6 @@ module.exports = {
                     }
                   ) 
             });
-            //Sort comments by newest first
-            resObj.sort(function(a,b){return a.createdAt < b.createdAt})
             res.status(200).send(resObj)})
         .catch(err => {console.log(err);res.status(400).send(err)})
     },
