@@ -36,9 +36,9 @@ export default class Editor extends Component {
                         <UncontrolledTooltip placement="left" target="FavoriteProjectStar">
                             Favorite Project!
                         </UncontrolledTooltip>{' '}
-                        <Button outline color="secondary" onClick={this.toggle} size="sm" id="EditScriptInfo">
-                            Rename
-                        </Button>
+                        <span className="edit" onClick={this.toggle} size="sm" id="EditScriptInfo">
+                            edit
+                        </span>
                     </h3>
                 </Row>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
