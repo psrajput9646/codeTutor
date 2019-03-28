@@ -15,11 +15,18 @@ export default class Editor extends Component {
         };
     
         this.toggle = this.toggle.bind(this);
+        this.toggleStar = this.toggleStar.bind(this);
     }
     toggle() {
         this.setState(prevState => ({
         modal: !prevState.modal
         }));
+    }
+    /* Add functionality to toggle favorite project */
+    toggleStar() {
+        var star = document.getElementById("FavoriteProjectStar");
+        star.classList.toggle("far");
+        star.classList.toggle("fa");
     }
 
     render() {
@@ -32,7 +39,9 @@ export default class Editor extends Component {
                 <Row>
                     <h3 className="pt-3" id="EditorName">
                         {scriptInfo.name}{' '}
-                        <i className="far fa-star" aria-hidden="true" id="FavoriteProjectStar"></i>
+                        <span onClick={this.toggleStar}>
+                            <i className="far fa-star" aria-hidden="true" id="FavoriteProjectStar"></i>
+                        </span>
                         <UncontrolledTooltip placement="left" target="FavoriteProjectStar">
                             Favorite Project!
                         </UncontrolledTooltip>{' '}
