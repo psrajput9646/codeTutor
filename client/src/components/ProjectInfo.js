@@ -25,7 +25,7 @@ export default class ProjectInfo extends Component {
         
         <ListGroupItem className="pb-0">
             <a href="/editor/">{projectInfo.name} </a>
-            <a href="#" onClick={this.toggle}>edit</a>
+            <span className="edit" onClick={this.toggle}>edit</span>
             <p>{projectInfo.description}</p>
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                 <ModalHeader toggle={this.toggle}>{projectInfo.name}</ModalHeader>

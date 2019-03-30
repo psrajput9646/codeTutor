@@ -67,3 +67,12 @@
 .comment-box{
     border-top: .3em solid white;
 }
+
+.edit {
+    color: #007bff;
+    cursor: pointer;
+    font-size: 12pt;
+}
+.edit:hover {
+    text-decoration: underline;
+}
