@@ -32,7 +32,7 @@ class Navigation extends React.Component {
     return (
       <div id="NavBar">
         <Navbar color="dark" dark expand="md">
-          <Container>
+          <Container fluid>
             {/* Website name */}
             <NavbarBrand tag={Link} to="/"><strong>CodeIt</strong></NavbarBrand>
             <NavbarToggler onClick={this.toggle} />
@@ -57,7 +57,7 @@ const SignInNav = props => {
     return (
       <Nav className="ml-auto" navbar>
         <NavItem>
-          <NavLink tag={Link} to="/signIn">Sign In</NavLink>
+          <NavLink tag={Link} to="/signIn"><strong>Sign In</strong></NavLink>
         </NavItem>
       </Nav>
     )
@@ -65,10 +65,10 @@ const SignInNav = props => {
     return (
       <Nav className="ml-auto" navbar>
         <NavItem>
-          <NavLink tag={Link} to="/account">Profile</NavLink>
+          <NavLink tag={Link} to="/account"><strong>Profile</strong></NavLink>
         </NavItem>
         <NavItem>
-          <NavLink tag={Link} to="/account" onClick={props.handleLogout} replace>Sign Out</NavLink>
+          <NavLink tag={Link} to="/account" onClick={props.handleLogout} replace><strong>Sign Out</strong></NavLink>
         </NavItem>
       </Nav>
     )

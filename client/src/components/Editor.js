@@ -49,7 +49,7 @@ class Editor extends Component {
         <Container fluid>
           <Row>
             {selectedFile ? (
-              <h3 className="pt-3" id="EditorName">
+              <h3 className="pt-3 ml-3" id="EditorName">
                 {selectedFile.name}{' '}
                 <span onClick={this.toggleStar}>
                   <i
@@ -72,7 +72,7 @@ class Editor extends Component {
                 </span>
               </h3>
             ) : (
-              <h3>Select a file</h3>
+              <h3 className = "pt-3 ml-3">Select a file</h3>
             )}
           </Row>
           <Modal
