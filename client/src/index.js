@@ -9,7 +9,7 @@ import configureStore from './store/store'
 import 'sanitize.css/sanitize.css'
 import './index.css'
 
-const target = document.querySelector('#root')
+const target = document.querySelector('#Root')
 
 render(
   <Provider store={configureStore()}>

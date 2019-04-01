@@ -39,6 +39,7 @@ class Editor extends Component {
     var star = document.getElementById('FavoriteProjectStar')
     star.classList.toggle('far')
     star.classList.toggle('fa')
+    star.classList.toggle("text-warning")
   }
 
   render() {
