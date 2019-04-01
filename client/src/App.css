@@ -1,3 +1,6 @@
+a.title-link:link {color:black; text-decoration:none;}
+a.title-link:hover {color:gray;}
+
 .profile-pic{
     border-radius: 50%;
     width: 100%;
@@ -19,6 +22,7 @@
 
 .script-area-input-height{
     height: calc(57vh - 50px) !important;
+    width: 100%
 }
 
 .io-area-height{

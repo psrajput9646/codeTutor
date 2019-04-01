@@ -10,9 +10,12 @@ import {
   NavItem,
   NavLink
 } from 'reactstrap'
+import { Link } from 'react-router-dom'
 import AuthService from './AuthService'
+import { fetchCurrentUser } from '../actions/user'
+import { connect } from 'react-redux'
 
-export default class Navigation extends React.Component {
+class Navigation extends React.Component {
   constructor(props) {
     super(props)
     this.Auth = new AuthService()
@@ -32,22 +35,27 @@ export default class Navigation extends React.Component {
   }
 
   render() {
+    if (this.Auth.isLoggedIn() && this.props.user === null) {
+      this.props.fetchCurrentUser()
+    }
     return (
       <div id="NavBar">
         <Navbar color="dark" dark expand="md">
           <Container>
             {/* Website name */}
-            <NavbarBrand href="/">
-              <strong>CodeIt</strong>
-            </NavbarBrand>
+            <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
+              <NavbarBrand>
+                <strong>CodeIt</strong>
+              </NavbarBrand>
+            </Link>
             <NavbarToggler onClick={this.toggle} />
             {/* Links */}
             <Collapse isOpen={this.state.isOpen} navbar>
-                {/* Profile */}
-                <SignInNav
-                  isLoggedIn={this.Auth.isLoggedIn()}
-                  handleLogout={this.handleLogout}
-                />
+              {/* Profile */}
+              <SignInNav
+                isLoggedIn={this.Auth.isLoggedIn()}
+                handleLogout={this.handleLogout}
+              />
             </Collapse>
           </Container>
         </Navbar>
@@ -62,7 +70,9 @@ const SignInNav = props => {
     return (
       <Nav className="ml-auto" navbar>
         <NavItem>
-          <NavLink href="/signIn/">Sign In</NavLink>
+          <Link to="/signIn">
+            <NavLink>Sign In</NavLink>
+          </Link>
         </NavItem>
       </Nav>
     )
@@ -70,14 +80,29 @@ const SignInNav = props => {
     return (
       <Nav className="ml-auto" navbar>
         <NavItem>
-          <NavLink href="/account/">Profile</NavLink>
+          <Link to="/account">
+            <NavLink>Profile</NavLink>
+          </Link>
         </NavItem>
         <NavItem>
-          <NavLink href="/signIn/" onClick={props.handleLogout}>
-            Sign Out
-          </NavLink>
+          <Link to="/account" replace>
+            <NavLink onClick={props.handleLogout}>Sign Out</NavLink>
+          </Link>
         </NavItem>
       </Nav>
     )
   }
 }
+
+const mapStateToProps = state => ({
+  user: state.user
+})
+
+const mapDispatchToProps = dispatch => ({
+  fetchCurrentUser: () => dispatch(fetchCurrentUser())
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Navigation)

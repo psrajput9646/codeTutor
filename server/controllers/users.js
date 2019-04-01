@@ -1,6 +1,7 @@
 const User = require("../models").user;
 const Project = require("../models").project;
 const Comment = require("../models").comment;
+const File = require("../models").file;
 const bcrypt = require("bcryptjs");
 const config = require("../config");
 const jwt = require("jsonwebtoken");
@@ -79,7 +80,8 @@ module.exports = {
           attributes: ['votes']
         },
         {
-          model: Project
+          model: Project,
+          include: [File]
         }
       ]
     })
