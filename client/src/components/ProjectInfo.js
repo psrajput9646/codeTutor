@@ -1,6 +1,7 @@
 // Provides script information
 import React, { Component } from 'react';
 import { ListGroupItem, Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Link } from 'react-router-dom'
 
 export default class ProjectInfo extends Component {
     
@@ -24,7 +25,7 @@ export default class ProjectInfo extends Component {
         return (
         
         <ListGroupItem className="pb-0">
-            <a href="/editor/">{projectInfo.name} </a>
+            <Link to="/editor">{projectInfo.name} </Link>
             <span className="edit" onClick={this.toggle}>edit</span>
             <p>{projectInfo.description}</p>
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>

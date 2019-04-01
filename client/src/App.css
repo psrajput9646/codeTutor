@@ -19,6 +19,7 @@
 
 .script-area-input-height{
     height: calc(57vh - 50px) !important;
+    width: 100%
 }
 
 .io-area-height{
