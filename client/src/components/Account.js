@@ -15,6 +15,7 @@ export default class Accounts extends Component {
         super(props);
         this.Auth = new AuthService();
         this.getUser = this.getUser.bind(this);
+        this.updateBio = this.updateBio.bind(this);
         this.state = {
             user: null
         }
@@ -39,14 +40,22 @@ export default class Accounts extends Component {
         })
     }
 
+    updateBio = (bio) =>{
+        let user = {...this.state.user};
+        user.bio = bio;
+        this.setState({
+            user
+        })
+    }
+
     render() {
         const { user } = this.state;
-        let test = user;
+
         return (
         <Container>
             <Row>
                 <Col sm="3" className="mt-3">
-                    <Profile {...user}/>
+                    <Profile user={user} callback={this.updateBio}/>
                 </Col>
                 <Col sm="9">
                     <div className="mt-5">

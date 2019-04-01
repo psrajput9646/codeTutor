@@ -108,6 +108,27 @@ module.exports = {
     })
   },
 
+  update(req, res){
+    User.findOne({
+        where: { id: req.decoded.id }
+    })
+    .then(user => {
+        user.update({
+            bio: req.body.newBio,
+        })
+        .then(user => {
+            res.status(200).send(user)
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).send(err)
+        });
+    })
+    .catch((err) => {
+      res.status(500).send(err)
+    })
+  },
+
   login(req, res) {
     // Find user
     User.findOne({
