@@ -159,7 +159,7 @@ export default class FileExplorer extends Component {
                                                 <Input
                                                     type="text"
                                                     name="fileName"
-                                                    id="fileName"
+                                                    id="FileName"
                                                     value={fileName}
                                                     onChange={this.handleChange}
                                                 ></Input>

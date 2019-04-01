@@ -41,7 +41,6 @@ export default class Accounts extends Component {
 
     render() {
         const { user } = this.state;
-        let test = user;
         return (
         <Container>
             <Row>

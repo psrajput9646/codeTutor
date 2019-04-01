@@ -7,7 +7,7 @@ import { BrowserRouter } from 'react-router-dom'
 import 'sanitize.css/sanitize.css'
 import './index.css'
 
-const target = document.querySelector('#root')
+const target = document.querySelector('#Root')
 
 render(
     <BrowserRouter>

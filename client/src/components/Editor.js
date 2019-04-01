@@ -27,6 +27,7 @@ export default class Editor extends Component {
         var star = document.getElementById("FavoriteProjectStar");
         star.classList.toggle("far");
         star.classList.toggle("fa");
+        star.classList.toggle("text-warning")
     }
 
     render() {
@@ -37,7 +38,7 @@ export default class Editor extends Component {
         <div id="EditorWindow">
             <Container fluid>
                 <Row>
-                    <h3 className="pt-3" id="EditorName">
+                    <h3 className="pt-3 ml-3" id="EditorName">
                         {scriptInfo.name}{' '}
                         <span onClick={this.toggleStar}>
                             <i className="far fa-star" aria-hidden="true" id="FavoriteProjectStar"></i>
