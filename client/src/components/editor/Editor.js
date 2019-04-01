@@ -9,7 +9,7 @@ import 'brace/theme/monokai';
 
 import { connect } from 'react-redux'
 
- class Editor extends Component {
+class Editor extends Component {
     constructor(props) {
         super(props)
         this.state = {

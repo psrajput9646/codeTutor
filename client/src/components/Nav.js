@@ -1,15 +1,6 @@
 // This component holds the content to the navbar
 import React from 'react'
-import {
-  Container,
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink
-} from 'reactstrap'
+import {Container, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink} from 'reactstrap'
 import { Link } from 'react-router-dom'
 import AuthService from './AuthService'
 import { fetchCurrentUser } from '../actions/user'
@@ -43,11 +34,7 @@ class Navigation extends React.Component {
         <Navbar color="dark" dark expand="md">
           <Container>
             {/* Website name */}
-            <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
-              <NavbarBrand>
-                <strong>CodeIt</strong>
-              </NavbarBrand>
-            </Link>
+            <NavbarBrand tag={Link} to="/"><strong>CodeIt</strong></NavbarBrand>
             <NavbarToggler onClick={this.toggle} />
             {/* Links */}
             <Collapse isOpen={this.state.isOpen} navbar>
@@ -70,9 +57,7 @@ const SignInNav = props => {
     return (
       <Nav className="ml-auto" navbar>
         <NavItem>
-          <Link to="/signIn">
-            <NavLink>Sign In</NavLink>
-          </Link>
+          <NavLink tag={Link} to="/signIn">Sign In</NavLink>
         </NavItem>
       </Nav>
     )
@@ -80,14 +65,10 @@ const SignInNav = props => {
     return (
       <Nav className="ml-auto" navbar>
         <NavItem>
-          <Link to="/account">
-            <NavLink>Profile</NavLink>
-          </Link>
+          <NavLink tag={Link} to="/account">Profile</NavLink>
         </NavItem>
         <NavItem>
-          <Link to="/account" replace>
-            <NavLink onClick={props.handleLogout}>Sign Out</NavLink>
-          </Link>
+          <NavLink tag={Link} to="/account" onClick={props.handleLogout} replace>Sign Out</NavLink>
         </NavItem>
       </Nav>
     )

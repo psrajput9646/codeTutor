@@ -25,7 +25,7 @@ export default class ProjectInfo extends Component {
         return (
         
         <ListGroupItem className="pb-0">
-            <Link to="/editor">{projectInfo.name} </Link>
+            <Link to="/editor" className="title-link">{projectInfo.name} </Link>
             <span className="edit" onClick={this.toggle}>edit</span>
             <p>{projectInfo.description}</p>
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
