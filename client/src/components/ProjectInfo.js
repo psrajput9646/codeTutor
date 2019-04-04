@@ -4,14 +4,17 @@ import { ListGroupItem, Button, Modal, ModalHeader, ModalBody, Form, FormGroup, 
 import { Link } from 'react-router-dom'
 
 export default class ProjectInfo extends Component {
-    
+
     constructor(props) {
         super(props);
         this.state = {
-        modal: false
+            name: this.props.name,
+            description: this.props.description,
+            modal: false, 
         };
-    
         this.toggle = this.toggle.bind(this);
+        this.updateName = this.updateName.bind(this);
+        this.updateDescription = this.updateDescription.bind(this);
     }
     
     toggle() {
@@ -20,27 +23,49 @@ export default class ProjectInfo extends Component {
         }));
     }
 
+    updateName(event){
+        this.setState({name: event.target.value});
+    }
+
+    updateDescription(event){
+        this.setState({description: event.target.value});
+    }
+
     render() {
         const projectInfo = this.props;
         return (
         
         <ListGroupItem className="pb-0">
-            <Link to="/editor" className="title-link">{projectInfo.name} </Link>
+            <Link to="/editor" className="title-link">{this.state.name} </Link>
             <span className="edit" onClick={this.toggle}>edit</span>
-            <p>{projectInfo.description}</p>
+            <p>{this.state.description}</p>
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-                <ModalHeader toggle={this.toggle}>{projectInfo.name}</ModalHeader>
+                <ModalHeader toggle={this.toggle}>{this.state.name}</ModalHeader>
                 <ModalBody>
-                    <Form>
+                    <Form onSubmit={this.toggle}>
                         <FormGroup>
-                            <Label for="projectName">Project Name</Label>
-                            <Input type="text" id="ProjectName" placeholder={projectInfo.name}></Input>
+                            <Label for={"ProjectName" + projectInfo.id}>Project Name</Label>
+                            <Input
+                                type="text" 
+                                id={"ProjectName" + projectInfo.id} 
+                                value={this.state.name} 
+                                onChange={this.updateName}
+                                placeholder="Add project name"
+                            />
                         </FormGroup>
                         <FormGroup>
-                            <Label for="description">Description</Label>
-                            <Input type="textarea" rows="4" id="Description" placeholder={projectInfo.description}></Input>
+                            <Label for={"Description" + projectInfo.id}>Description (Optional)</Label>
+                            <Input 
+                                className = "no-scale-textarea" 
+                                type="textarea" 
+                                rows="4" 
+                                id={"Description" + projectInfo.id} 
+                                value={this.state.description} 
+                                onChange={this.updateDescription} 
+                                placeholder="Add short project description"
+                            />
                         </FormGroup>
-                        <Button color="success" onClick={this.toggle}>Submit</Button>{' '}
+                        <Button color="success">Submit</Button>
                     </Form>
                 </ModalBody>
             </Modal>

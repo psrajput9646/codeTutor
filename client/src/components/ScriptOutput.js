@@ -5,7 +5,7 @@ export default class ScriptOutput extends Component {
     render() {
         return (
         <FormGroup>
-            <Label for="outputText">Output</Label>
+            <Label for="OutputText">Output</Label>
             <Input className="no-scale-textarea  script-io-height" type="textarea" name="outputText" id="OutputText" disabled/>
         </FormGroup>
         )

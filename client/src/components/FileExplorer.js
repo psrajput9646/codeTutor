@@ -117,7 +117,7 @@ class FileExplorer extends Component {
           className={this.props.className}>
           <ModalHeader toggle={this.toggleModal}>Add a Project</ModalHeader>
           <ModalBody>
-            <Form>
+            <Form onSubmit={this.createProject}>
               <FormGroup>
                 <Label for="projectName">Project Name</Label>
                 <Input
@@ -139,29 +139,24 @@ class FileExplorer extends Component {
                   onChange={this.handleChange}
                 />
               </FormGroup>
-              <Button color="success" onClick={this.createProject}>
+              <Button color="success">
                 Submit
               </Button>{' '}
             </Form>
           </ModalBody>
         </Modal>
 
-        <div className="round-div bg-white py-2 pl-2 border list-box-outer">
+        <div className="round-div bg-white py-2 border list-box-outer">
           <div className="list-box">
-            <div className="bg-dark text-light mt-2">
+            <div className="text-light mt-2 bg-dark">
               {this.props.projects.map(project => (
                 <div key={project.id}>
-                  <i className="fas fa-folder pl-2"> {project.name}</i>
+                      <i className="fas fa-folder ml-2">{" " + project.name}</i>
+                      <i className="fa fa-plus" aria-hidden="true" onClick={this.toggleSecondModal} id="AddFile"/>
+                      <UncontrolledTooltip placement="top" target="AddFile">
+                        Add a File
+                      </UncontrolledTooltip>
                   {/* Popup form to add a file to project */}
-                  <span
-                    className="float-right mr-2"
-                    onClick={this.toggleSecondModal}
-                    id="AddFile">
-                    <i className="fa fa-plus" aria-hidden="true" />
-                  </span>
-                  <UncontrolledTooltip placement="top" target="AddFile">
-                    Add a File
-                  </UncontrolledTooltip>
                   <Modal
                     isOpen={this.state.secondModalIsOpen}
                     toggle={this.toggleSecondModal}
@@ -170,34 +165,34 @@ class FileExplorer extends Component {
                       Add a File
                     </ModalHeader>
                     <ModalBody>
-                      <FormGroup>
-                        <Label for="fileName">File Name</Label>
-                        <Input
-                          invalid={invalid}
-                          type="text"
-                          name="fileName"
-                          id="fileName"
-                          value={fileName}
-                          onChange={this.handleFileName}
-                        />
-                        <FormFeedback>Alphabet Characters Only!</FormFeedback>
-                      </FormGroup>
-                      <FormGroup>
-                        <Label for="fileType">File Type</Label>
-                        <Input
-                          type="select"
-                          name="fileType"
-                          value={fileType}
-                          onChange={this.handleChange}>
-                          <option value=".java">Java</option>
-                          <option value=".py">Python</option>
-                        </Input>
-                      </FormGroup>
-                      <Button
-                        color="success"
-                        onClick={() => this.createFile(project.id)}>
-                        Submit
-                      </Button>{' '}
+                        <FormGroup>
+                          <Label for="fileName">File Name</Label>
+                          <Input
+                            invalid={invalid}
+                            type="text"
+                            name="fileName"
+                            id="fileName"
+                            value={fileName}
+                            onChange={this.handleFileName}
+                          />
+                          <FormFeedback>Alphabet Characters Only!</FormFeedback>
+                        </FormGroup>
+                        <FormGroup>
+                          <Label for="fileType">File Type</Label>
+                          <Input
+                            type="select"
+                            name="fileType"
+                            value={fileType}
+                            onChange={this.handleChange}>
+                            <option value=".java">Java</option>
+                            <option value=".py">Python</option>
+                          </Input>
+                        </FormGroup>
+                        <Button
+                          color="success"
+                          onClick={() => this.createFile(project.id)}>
+                          Submit
+                        </Button>
                     </ModalBody>
                   </Modal>
                   {project.files.map(file => (
