@@ -38,9 +38,7 @@ class FileExplorer extends Component {
   }
 
   toggleSecondModal = () => {
-    this.setState(prevState => ({
-      secondModalIsOpen: !prevState.secondModalIsOpen
-    }))
+    this.setState(prevState => ({ secondModalIsOpen: !prevState.secondModalIsOpen }))
   }
 
   createProject = () => {
@@ -151,12 +149,14 @@ class FileExplorer extends Component {
             <div className="text-light mt-2 bg-dark">
               {this.props.projects.map(project => (
                 <div key={project.id}>
-                      <i className="fas fa-folder ml-2">{" " + project.name}</i>
-                      <i className="fa fa-plus" aria-hidden="true" onClick={this.toggleSecondModal} id="AddFile"/>
-                      <UncontrolledTooltip placement="top" target="AddFile">
-                        Add a File
-                      </UncontrolledTooltip>
-                  {/* Popup form to add a file to project */}
+                    <i className="fas fa-folder ml-2">{" " + project.name}</i>
+                    {/* Popup form to add a file to project */}
+                    <span className="float-right mr-2" onClick={this.toggleSecondModal} id="AddFile">
+                      <i className="fa fa-plus" aria-hidden="true"></i>
+                    </span>
+                    <UncontrolledTooltip placement="top" target="AddFile">
+                      Add a File
+                    </UncontrolledTooltip>
                   <Modal
                     isOpen={this.state.secondModalIsOpen}
                     toggle={this.toggleSecondModal}
