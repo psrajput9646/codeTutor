@@ -51,6 +51,7 @@ class FileExplorer extends Component {
   }
 
   createFile = projectId => {
+    console.log(this.state); 
     const { fileName, fileType } = this.state
     this.Auth.fetchAuth('/api/file/create', {
       method: 'POST',
@@ -139,7 +140,7 @@ class FileExplorer extends Component {
               </FormGroup>
               <Button color="success">
                 Submit
-              </Button>{' '}
+              </Button>
             </Form>
           </ModalBody>
         </Modal>
@@ -148,15 +149,24 @@ class FileExplorer extends Component {
           <div className="list-box">
             <div className="text-light mt-2 bg-dark">
               {this.props.projects.map(project => (
-                <div key={project.id}>
-                    <i className="fas fa-folder ml-2">{" " + project.name}</i>
-                    {/* Popup form to add a file to project */}
-                    <span className="float-right mr-2" onClick={this.toggleSecondModal} id="AddFile">
+                <div key={project.id} className="file-name-container">
+                  {/* Project name area*/}
+                  <div className="project-name-container">
+                    {/* Project name text*/}
+                    <div className="name-cell">
+                      <i className="fas fa-folder">{" " + project.name}</i>
+                    </div>
+                    {/* Plus Icon next to project name */}
+                    <div className="text-center button-cell" onClick={this.toggleSecondModal} id={"AddFile"+ project.id}>
                       <i className="fa fa-plus" aria-hidden="true"></i>
-                    </span>
-                    <UncontrolledTooltip placement="top" target="AddFile">
+                    </div>
+                  </div>
+                    <UncontrolledTooltip placement="top" target={"AddFile"+ project.id}>
                       Add a File
                     </UncontrolledTooltip>
+                  {project.files.map(file => (
+                    <ProjectFile key={file.id} name={file.name + file.type} file={file}/>
+                  ))}
                   <Modal
                     isOpen={this.state.secondModalIsOpen}
                     toggle={this.toggleSecondModal}
@@ -165,6 +175,7 @@ class FileExplorer extends Component {
                       Add a File
                     </ModalHeader>
                     <ModalBody>
+                      <Form>
                         <FormGroup>
                           <Label for="fileName">File Name</Label>
                           <Input
@@ -193,11 +204,9 @@ class FileExplorer extends Component {
                           onClick={() => this.createFile(project.id)}>
                           Submit
                         </Button>
+                      </Form>
                     </ModalBody>
                   </Modal>
-                  {project.files.map(file => (
-                    <ProjectFile key={file.id} name={file.name + file.type} file={file}/>
-                  ))}
                 </div>
               ))}
             </div>
