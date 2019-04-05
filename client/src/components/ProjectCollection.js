@@ -69,7 +69,7 @@ class ProjectCollection extends React.Component {
       name: projectName,
       description
     });
-    this.toggleModal()
+    this.toggleModal();
   }
 
   render() {

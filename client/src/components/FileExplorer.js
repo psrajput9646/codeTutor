@@ -9,12 +9,12 @@ import {
   FormGroup,
   Input,
   UncontrolledTooltip,
-  FormFeedback
 } from 'reactstrap'
 import ProjectFile from './ProjectFile'
 import AuthService from './AuthService'
 import { createProject } from '../actions/projects'
 import { connect } from 'react-redux'
+import CreateScriptModal from './CreateScriptModal'
 
 class FileExplorer extends Component {
   constructor(props) {
@@ -37,39 +37,32 @@ class FileExplorer extends Component {
     this.setState(prevState => ({ modalIsOpen: !prevState.modalIsOpen }))
   }
 
-  toggleSecondModal = () => {
-    this.setState(prevState => ({ secondModalIsOpen: !prevState.secondModalIsOpen }))
-  }
-
   createProject = () => {
     const { projectName, description } = this.state
     this.props.createProject({
       name: projectName,
       description
     })
-    this.toggle()
+    this.toggleModal();
   }
 
   createFile = projectId => {
-    console.log(this.state); 
-    const { fileName, fileType } = this.state
-    this.Auth.fetchAuth('/api/file/create', {
-      method: 'POST',
-      body: JSON.stringify({
-        name: fileName,
-        type: fileType,
-        projectId: projectId
+      const { fileName, fileType } = this.state
+      this.Auth.fetchAuth('/api/file/create', {
+        method: 'POST',
+        body: JSON.stringify({
+          name: fileName,
+          type: fileType,
+          projectId: projectId
+        })
       })
-    })
       .then(res => {
         console.log(res)
-        this.getProjects()
+        // this.getProjects()
       })
-      .catch(err => {
-        console.log(err)
+        .catch(err => {
+          console.log(err)
       })
-
-      this.toggleSecondModal();
   }
 
   handleChange = event => {
@@ -77,6 +70,7 @@ class FileExplorer extends Component {
   }
 
   handleFileName = event => {
+    console.log("handle file name");
     let name = event.target.value
     let valid = /^[a-zA-Z]+$/.test(name)
     this.setState({
@@ -86,13 +80,8 @@ class FileExplorer extends Component {
   }
 
   render() {
-    const {
-      projectName,
-      description,
-      fileName,
-      fileType,
-      invalid
-    } = this.state
+    const projectInfo = this.props;
+
     return (
       <div className="h-100">
         <Label for="scriptArea" className="mb-3">
@@ -123,8 +112,9 @@ class FileExplorer extends Component {
                   type="text"
                   name="projectName"
                   id="ProjectName"
-                  value={projectName}
+                  value={projectInfo.projectName}
                   onChange={this.handleChange}
+                  placeholder="Add project name"
                 />
               </FormGroup>
               <FormGroup>
@@ -134,8 +124,9 @@ class FileExplorer extends Component {
                   name="description"
                   id="Description"
                   rows="4"
-                  value={description}
+                  value={projectInfo.description}
                   onChange={this.handleChange}
+                  placeholder="Add short project description"
                 />
               </FormGroup>
               <Button color="success">
@@ -157,56 +148,20 @@ class FileExplorer extends Component {
                       <i className="fas fa-folder">{" " + project.name}</i>
                     </div>
                     {/* Plus Icon next to project name */}
-                    <div className="text-center button-cell" onClick={this.toggleSecondModal} id={"AddFile"+ project.id}>
-                      <i className="fa fa-plus" aria-hidden="true"></i>
+                    <div className="text-center button-cell">
+                      <CreateScriptModal 
+                      key={project.id}
+                      {...project} 
+                      createFile = {this.createFile} 
+                      handleChange={this.handleChange} 
+                      handleFileName={this.handleFileName}
+                      invalid = {this.state.invalid}
+                      />
                     </div>
                   </div>
-                    <UncontrolledTooltip placement="top" target={"AddFile"+ project.id}>
-                      Add a File
-                    </UncontrolledTooltip>
                   {project.files.map(file => (
                     <ProjectFile key={file.id} name={file.name + file.type} file={file}/>
                   ))}
-                  <Modal
-                    isOpen={this.state.secondModalIsOpen}
-                    toggle={this.toggleSecondModal}
-                    className={this.props.className}>
-                    <ModalHeader toggle={this.toggleSecondModal}>
-                      Add a File
-                    </ModalHeader>
-                    <ModalBody>
-                      <Form>
-                        <FormGroup>
-                          <Label for="fileName">File Name</Label>
-                          <Input
-                            invalid={invalid}
-                            type="text"
-                            name="fileName"
-                            id="fileName"
-                            value={fileName}
-                            onChange={this.handleFileName}
-                          />
-                          <FormFeedback>Alphabet Characters Only!</FormFeedback>
-                        </FormGroup>
-                        <FormGroup>
-                          <Label for="fileType">File Type</Label>
-                          <Input
-                            type="select"
-                            name="fileType"
-                            value={fileType}
-                            onChange={this.handleChange}>
-                            <option value=".java">Java</option>
-                            <option value=".py">Python</option>
-                          </Input>
-                        </FormGroup>
-                        <Button
-                          color="success"
-                          onClick={() => this.createFile(project.id)}>
-                          Submit
-                        </Button>
-                      </Form>
-                    </ModalBody>
-                  </Modal>
                 </div>
               ))}
             </div>
