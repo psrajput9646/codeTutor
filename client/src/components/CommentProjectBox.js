@@ -14,7 +14,7 @@ export default class CommentProjectBox extends Component {
                 </span>
                 <div>
                     <span className="like-comment text-secondary">
-                        <i className="fas fa-check-circle fa-xs"></i>
+                        <i className="fas fa-thumbs-up fa-xs"></i>
                     </span>
                     <span className="font-weight-light smallerText pl-2 text-like">{project.likes}</span>
                 </div>
