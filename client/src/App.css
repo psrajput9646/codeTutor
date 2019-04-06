@@ -1,3 +1,24 @@
+a.title-link:link {color:black; text-decoration:none;}
+a.title-link:hover {color:gray;}
+
+.project-name-container{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.name-cell {
+    width: calc(100% - 25px);
+    flex: 1 auto;
+    padding: 5px;
+}
+
+.button-cell {
+    width:25px;
+    flex: 1 auto;
+}
+
 .profile-pic{
     border-radius: 50%;
     width: 100%;
@@ -19,6 +40,7 @@
 
 .script-area-input-height{
     height: calc(57vh - 50px) !important;
+    width: 100%
 }
 
 .io-area-height{

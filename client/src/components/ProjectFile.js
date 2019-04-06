@@ -1,7 +1,22 @@
 import React, { Component } from 'react'
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { selectFile } from '../actions/file'
+import { fetchFile } from '../actions/fileCache'
+import { connect } from 'react-redux';
 
-export default class ProjectFile extends Component {
+class ProjectFile extends Component {
+
+    handleOpen = () => {
+        let findFile = this.props.fileCache.find(file => file.id === this.props.file.id)
+        if (!findFile) {
+            this.props.fetchFile(this.props.file)
+            .then(fetchedFile => {
+                this.props.selectFile(fetchedFile);
+            })
+        } else {
+            this.props.selectFile(findFile);
+        }
+    }
 
     render() {
         const fileName = this.props.name;
@@ -14,9 +29,9 @@ export default class ProjectFile extends Component {
                     </DropdownToggle>
                     
                     <DropdownMenu>
-                        <DropdownItem>Open</DropdownItem>
+                        <DropdownItem onClick={this.handleOpen}>Open</DropdownItem>
                         <DropdownItem divider />
-                        <DropdownItem>Delete</DropdownItem>
+                        <DropdownItem >Delete</DropdownItem>
                     </DropdownMenu>
                 </UncontrolledDropdown>
             </span>
@@ -24,3 +39,14 @@ export default class ProjectFile extends Component {
         )
     }
 }
+
+const mapStateToProps = state => ({
+    fileCache: state.fileCache
+})
+
+const mapDispatchToProps = dispatch => ({
+    selectFile: (file) => dispatch(selectFile(file)),
+    fetchFile: (file) => dispatch(fetchFile(file))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectFile);

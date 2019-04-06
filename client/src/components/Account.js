@@ -4,52 +4,40 @@
  * It also uses the <ProjectCollection> component to show the user's owned and starred projects.
  */
 import React, { Component } from 'react';
-import { Container, Row, Col} from 'reactstrap';
+import { Container, Row, Col, Spinner} from 'reactstrap';
 import Profile from './Profile.js';
 import ProjectCollection from './ProjectCollection.js';
-import AuthService from './AuthService';
+import { connect } from 'react-redux'
+import { fetchCurrentUser } from '../actions/user';
 
-export default class Accounts extends Component {
-
-    constructor(props){
-        super(props);
-        this.Auth = new AuthService();
-        this.getUser = this.getUser.bind(this);
-        this.state = {
-            user: null
-        }
-    }
+class Accounts extends Component {
 
     componentDidMount(){
-        this.getUser();
+        this.props.fetchCurrentUser();
     }
-    
-    getUser = () =>{
-        const user = this.Auth.getProfile();
-        return this.Auth.fetchAuth('/api/user/'+user.id, {
-            method: 'GET'
-        })
-        .then(res => {
-            this.setState({
-                user: res
-            })
-        })
-        .catch(err => {
-            console.log(err)
+
+    updateBio = (bio) =>{
+        let user = {...this.state.user};
+        user.bio = bio;
+        this.setState({
+            user
         })
     }
 
     render() {
-        const { user } = this.state;
         return (
         <Container>
             <Row>
                 <Col sm="3" className="mt-3">
-                    <Profile {...user}/>
+                {this.props.userLoading ? 
+                    <Spinner type="grow" color="dark" style={{width: '3rem', height: '3rem'}} />
+                :  <Profile {...this.props.user} callback={this.updateBio}/>}   
                 </Col>
                 <Col sm="9">
                     <div className="mt-5">
-                        <ProjectCollection/>
+                    {this.props.userLoading ? 
+                    <Spinner type="grow" color="dark" style={{width: '3rem', height: '3rem'}} />
+                :  <ProjectCollection projects={this.props.projects}/>} 
                     </div>
                 </Col>
             </Row>
@@ -57,3 +45,16 @@ export default class Accounts extends Component {
         )
     }
 }
+
+const mapStateToProps = state => ({
+    user: state.user,
+    userLoading: state.userLoading,
+    userErrored: state.userErrored,
+    projects: state.projects
+})
+
+const mapDispatchToProps = dispatch => ({
+    fetchCurrentUser: () => dispatch(fetchCurrentUser())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Accounts);

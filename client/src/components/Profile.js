@@ -6,32 +6,29 @@ function formatName(user){
     return user.firstName + ' ' + user.lastName;
 }
 
-function Loading(props) {
-    const user = props.user;
+function Loading(user) {
     if (user.likes !== undefined){
-        console.log(user.likes === undefined);
         return (
             <div>
-            <h4 className="mt-2"><strong>{formatName(user)}</strong></h4>
-            <h6>{user.username}</h6>
-            <span id="Likes">
-                <span className="text-secondary">
-                    <i className="fas fa-heart fa text-danger"></i>
+                <h4 className="mt-2"><strong>{formatName(user)}</strong></h4>
+                <h6>{user.username}</h6>
+                <span id="Likes">
+                    <span className="text-secondary">
+                        <i className="fas fa-heart fa text-danger"/>
+                    </span>
+                    <span className="font-weight-light pl-2">{user.likes}</span>
                 </span>
-                <span className="font-weight-light pl-2">
-                    {user.likes}
-                </span>
-            </span>
-            <UncontrolledTooltip placement="top" target="Likes">
-                Total Likes
-            </UncontrolledTooltip>
-            <hr className="mb-1"/>
-            <p>
-                <small>{user.bio}</small>
-            </p>
+                <UncontrolledTooltip placement="right" target="Likes">
+                    Total Likes
+                </UncontrolledTooltip>
+                <hr className="mb-1"/>
+                <p>
+                    <small>{user.bio}</small>
+                </p>
             </div>
         )
     }
+
     return  <h6>Loading...</h6>;
 }
 
@@ -41,14 +38,33 @@ export default class Profile extends Component {
         
         this.state = {
             modal: false,
-            bio: ''
+            newBio: ''
         };
-    
+        
         this.toggle = this.toggle.bind(this);
+        this.updateProfile = this.updateProfile.bind(this);
         this.Auth = new AuthService();
     }
     
-    handleChange = event => {
+    updateProfile = () => {
+        const { newBio } = this.state;
+        this.Auth.fetchAuth('/api/user/update', {
+            method: 'POST',
+            body: JSON.stringify({
+                newBio
+            })
+        })
+        .then(res => {
+            this.props.callback(res.bio);
+        })
+        .catch(err => {
+            console.log(err)
+        });
+
+        this.toggle();
+    }
+
+    handleChange = (event) => {
         this.setState({ [event.target.name]: event.target.value })
     }
     
@@ -59,19 +75,20 @@ export default class Profile extends Component {
     }
 
     render() {
-        const user = this.props;
-        const { bio } = this.state;
+        const user = (this.props.user === undefined) ? this.props : this.props.user;
+        let { newBio } = this.state;
+
         return (
         <div>
             <Container>
                 <Row>
                     <Col className="col-10 offset-1">
-                        <img className="profile-pic mx-auto d-block" src='../img/profile.png' alt="Profile"/> 
+                        <img className="profile-pic mx-auto d-block" src='../img/profile.png' alt="Profile"/>
                     </Col>
                 </Row>
             </Container>
-            <Loading user={user} />
-            <Button color="secondary" className="btn-sm btn-block" onClick={this.toggle}>Edit</Button>{' '}
+            <Loading {...user} />
+            <Button color="secondary" className="btn-sm btn-block" onClick={this.toggle}>Edit</Button>
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                 <ModalHeader toggle={this.toggle}>Edit Bio</ModalHeader>
                 <ModalBody>
@@ -80,14 +97,15 @@ export default class Profile extends Component {
                             <Label for="bio">Bio</Label>
                             <Input
                                 type="textarea"
-                                name="bio"
-                                id="Bio"
+                                name="newBio"
+                                id="NewBio"
                                 rows="4"
-                                value={bio}
+                                value={newBio}
                                 onChange={this.handleChange}
+                                placeholder="Add your bio"
                             ></Input>
                         </FormGroup>
-                        <Button color="success">Submit</Button>{' '}
+                        <Button color="success" onClick={this.updateProfile}>Submit</Button>{' '}
                     </Form>
                 </ModalBody>
             </Modal>

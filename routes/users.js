@@ -7,6 +7,10 @@ const verifyToken = require('../server/auth/VerifyToken');
 // Parameters: username, password, email, firstName, lastName
 router.post('/create', userController.create);
 
+// Creates user
+// Parameters: bio
+router.post('/update', verifyToken, userController.update);
+
 router.get('/:id', verifyToken, userController.get);
 
 module.exports = router;

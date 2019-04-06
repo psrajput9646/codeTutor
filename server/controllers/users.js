@@ -1,6 +1,7 @@
 const User = require("../models").user;
 const Project = require("../models").project;
 const Comment = require("../models").comment;
+const File = require("../models").file;
 const bcrypt = require("bcryptjs");
 const config = require("../config");
 const jwt = require("jsonwebtoken");
@@ -79,7 +80,8 @@ module.exports = {
           attributes: ['votes']
         },
         {
-          model: Project
+          model: Project,
+          include: [File]
         }
       ]
     })
@@ -104,6 +106,27 @@ module.exports = {
     })
     .catch(err => {
       console.log(err);
+      res.status(500).send(err)
+    })
+  },
+
+  update(req, res){
+    User.findOne({
+        where: { id: req.decoded.id }
+    })
+    .then(user => {
+        user.update({
+            bio: req.body.newBio,
+        })
+        .then(user => {
+            res.status(200).send(user)
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).send(err)
+        });
+    })
+    .catch((err) => {
       res.status(500).send(err)
     })
   },

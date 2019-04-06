@@ -1,6 +1,6 @@
 // Allows the user to sign into their account
 import React, { Component } from 'react'
-import { FormGroup, Label, Input, Button, UncontrolledTooltip} from 'reactstrap'
+import { FormGroup, Label, Input, Button, UncontrolledTooltip, Alert, Form} from 'reactstrap'
 import AuthService from './AuthService'
 import {Redirect} from 'react-router-dom';
 
@@ -47,19 +47,21 @@ export default class SignIn extends Component {
         }
       })
       .catch(err => {
-        console.log(err)
-      })
+        this.setState({
+            err
+        })
+    })
   }
 
   render() {
-    const { username, password, redirect } = this.state
+    const { username, password, redirect, err} = this.state
     if (redirect) {
       return <Redirect to='/' />
     }
     
     return (
       <div className="mx-3">
-        <form>
+        <Form>
           <h3 className="mt-3">Sign In</h3>
           <FormGroup className="mt-3">
             <Label for="exampleUsername">Username</Label>
@@ -88,7 +90,8 @@ export default class SignIn extends Component {
           <UncontrolledTooltip placement="top" target="SignInPasswordGroup">
               Case sensitive
           </UncontrolledTooltip>
-        </form>
+        </Form>
+        {err && <Alert color="danger">{err}</Alert>}
         <Button
           color="success"
           type="submit"

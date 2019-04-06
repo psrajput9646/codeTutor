@@ -43,7 +43,7 @@ export default class ScriptFeedback extends Component {
             })
         })
         .then(res => {
-           this.getComments();
+            this.getComments();
         })
         .catch(err => {
             console.log(err)
