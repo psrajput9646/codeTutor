@@ -8,7 +8,7 @@ function formatName(user){
 
 function Loading(props) {
     const user = props.user;
-    if (user.likes != undefined){
+    if (user.likes !== undefined){
         console.log(user.likes === undefined);
         return (
             <div>

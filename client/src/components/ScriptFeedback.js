@@ -87,21 +87,6 @@ export default class ScriptFeedback extends Component {
                 likes: 90
             }
         ]
-
-        const starList = [
-            {
-                id : 1,
-                name : 'star 1',
-                userName : 'Baily35244',
-                likes: -1
-            },
-            {
-                id : 2,
-                name : 'Solution 2',
-                userName : 'Robert102',
-                likes: 1
-            }
-        ]
         
         return (
         <div className="h-100">
@@ -116,15 +101,6 @@ export default class ScriptFeedback extends Component {
                             <i className="fas fa-hands-helping pl-2"> Solutions</i>
                         </div>
                         {solutionList.map((project)=>
-                            <CommentProjectBox key={project.id} {...project}/>
-                        )}
-                    </div>
-                    {/* Holds signed-in user's starred projects */}
-                    <div id="StarSection">
-                        <div className="bg-dark text-light" id="StarredSectionHead">
-                            <i className="fas fa-star pl-2"> Star Project</i>
-                        </div>
-                        {starList.map((project)=>
                             <CommentProjectBox key={project.id} {...project}/>
                         )}
                     </div>
