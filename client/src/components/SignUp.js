@@ -4,8 +4,10 @@ import { FormGroup, Label, Input, Button, Row, Col, Alert, UncontrolledTooltip} 
 import AuthService from './AuthService';
 import Form from '../../node_modules/reactstrap/lib/Form';
 import { Redirect } from 'react-router-dom'
+import { connect } from "react-redux"
+import  {setUserLoggedIn} from "../actions/user"
 
-export default class SignUp extends Component {
+class SignUp extends Component {
     constructor(props){
         super(props)
         this.Auth = new AuthService();
@@ -56,6 +58,7 @@ export default class SignUp extends Component {
         })
         .then(res => {
             this.Auth.setToken(res.token);
+            this.props.setUserLoggedIn(true)
             this.setState({
                 redirect: true
             })
@@ -173,3 +176,16 @@ export default class SignUp extends Component {
         )
     }
 }
+
+const mapStateToProps = state => ({
+    user: state.user,
+  })
+  
+  const mapDispatchToProps = dispatch => ({
+    setUserLoggedIn: (status) => dispatch(setUserLoggedIn(status))
+  })
+  
+  export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(SignUp)

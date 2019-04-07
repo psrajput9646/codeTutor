@@ -3,8 +3,10 @@ import React, { Component } from 'react'
 import { FormGroup, Label, Input, Button, UncontrolledTooltip, Alert, Form} from 'reactstrap'
 import AuthService from './AuthService'
 import {Redirect} from 'react-router-dom';
+import {connect} from "react-redux";
+import { setUserLoggedIn } from "../actions/user"
 
-export default class SignIn extends Component {
+class SignIn extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -41,6 +43,7 @@ export default class SignIn extends Component {
       .then(res => {
         if (!res.OK) {
           this.Auth.setToken(res.token)
+          this.props.setUserLoggedIn(true)
           this.setState({
             redirect: true
           })
@@ -103,3 +106,17 @@ export default class SignIn extends Component {
     )
   }
 }
+
+const mapStateToProps = state => ({
+  user: state.user,
+})
+
+const mapDispatchToProps = dispatch => ({
+  setUserLoggedIn: (status) => dispatch(setUserLoggedIn(status))
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SignIn)
+
