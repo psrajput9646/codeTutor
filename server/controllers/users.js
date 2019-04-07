@@ -149,7 +149,7 @@ module.exports = {
               id: user.id,
               username: user.username
             };
-            token = jwt.sign(tokenBody, config.secret, {
+            let token = jwt.sign(tokenBody, config.secret, {
               expiresIn: 1209600 // 2 weeks
             });
             return res.status(200).send({ auth: true, token: token });
