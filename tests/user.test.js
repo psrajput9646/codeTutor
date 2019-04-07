@@ -97,7 +97,7 @@ describe("Test the Registration", () => {
         User.findOne({ where: {username} })
         .then(user => {
             if (user) {
-                 user.destroy({force: true})
+              user.destroy({force: true})
             }
         })
     })
