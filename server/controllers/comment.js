@@ -50,6 +50,11 @@ module.exports = {
     // requires commentId
     vote(req, res){
         Comment.findOne({
+            include: [
+                {
+                    model: User
+                }
+            ],
             where: { id: req.params.commentId }
         })
         .then(comment => {
@@ -58,9 +63,11 @@ module.exports = {
                 let index = comment.votedBy.indexOf(req.decoded.id);
                 comment.votedBy.splice(index, 1);
                 comment.votes--;
+                comment.user.points--;
                 
             } else {
-                comment.votes++
+                comment.votes++;
+                comment.user.points++;
                 comment.votedBy.push(req.decoded.id);
             }
             

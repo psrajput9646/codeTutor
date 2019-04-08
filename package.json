@@ -21,6 +21,7 @@
     "pg-hstore": "^2.3.2",
     "rimraf": "^2.6.3",
     "sequelize": "^4.43.0",
-    "sequelize-auto-migrations": "^1.0.3"
+    "sequelize-auto-migrations": "^1.0.3",
+    "socket.io": "^2.2.0"
   }
 }
