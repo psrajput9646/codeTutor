@@ -98,3 +98,9 @@ a.title-link:hover {color:gray;}
 .edit:hover {
     text-decoration: underline;
 }
+
+.flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

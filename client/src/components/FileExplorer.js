@@ -1,27 +1,18 @@
 import React, { Component } from 'react'
 import {
-  Label,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  Form,
-  FormGroup,
-  Input,
-  UncontrolledTooltip,
+  Label
 } from 'reactstrap'
 import ProjectFile from './ProjectFile'
 import AuthService from './AuthService'
 import { createProject } from '../actions/projects'
 import { connect } from 'react-redux'
 import CreateScriptModal from './CreateScriptModal'
+import CreateProjectModal from './CreateProjectModal'
 
 class FileExplorer extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      modalIsOpen: false,
-      secondModalIsOpen: false,
       projectName: '',
       description: '',
       projectList: [],
@@ -29,21 +20,24 @@ class FileExplorer extends Component {
       fileType: '.java',
       invalid: false
     }
-    this.toggle = this.toggleModal.bind(this)
     this.Auth = new AuthService()
-  }
-
-  toggleModal = () => {
-    this.setState(prevState => ({ modalIsOpen: !prevState.modalIsOpen }))
   }
 
   createProject = () => {
     const { projectName, description } = this.state
-    this.props.createProject({
-      name: projectName,
-      description
+    this.Auth.fetchAuth('/api/project/create', {
+      method: 'POST',
+      body: JSON.stringify({
+        name: projectName,
+        description
+      })
     })
-    this.toggleModal();
+    .then(res => {
+      console.log(res)
+    })
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   createFile = projectId => {
@@ -80,61 +74,19 @@ class FileExplorer extends Component {
   }
 
   render() {
-    const projectInfo = this.props;
-
     return (
       <div className="h-100">
-        <Label for="scriptArea" className="mb-3">
-          Explorer
-        </Label>
-        {/* Popup form to create a new project */}
-        <Button
-          color="success"
-          onClick={this.toggleModal}
-          className="float-right"
-          size="sm"
-          id="CreateNewProject">
-          <i className="fa fa-plus" aria-hidden="true" />
-        </Button>
-        <UncontrolledTooltip placement="top" target="CreateNewProject">
-          Create New Project
-        </UncontrolledTooltip>
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          toggle={this.toggleModal}
-          className={this.props.className}>
-          <ModalHeader toggle={this.toggleModal}>Add a Project</ModalHeader>
-          <ModalBody>
-            <Form onSubmit={this.createProject}>
-              <FormGroup>
-                <Label for="projectName">Project Name</Label>
-                <Input
-                  type="text"
-                  name="projectName"
-                  id="ProjectName"
-                  value={projectInfo.projectName}
-                  onChange={this.handleChange}
-                  placeholder="Add project name"
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label for="description">Description (optional)</Label>
-                <Input
-                  type="textarea"
-                  name="description"
-                  id="Description"
-                  rows="4"
-                  value={projectInfo.description}
-                  onChange={this.handleChange}
-                  placeholder="Add short project description"
-                />
-              </FormGroup>
-              <Button color="success">
-                Submit
-              </Button>
-            </Form>
-          </ModalBody>
-        </Modal>
+        <div className="flex">
+          <Label for="scriptArea" className="mb-3">
+            Explorer
+          </Label>
+          {/* Popup form to create a new project */}
+          <CreateProjectModal
+            createProject = {this.createProject} 
+            handleChange={this.handleChange} 
+            invalid = {this.state.invalid}
+          />
+        </div>
 
         <div className="round-div bg-white py-2 border list-box-outer">
           <div className="list-box">
