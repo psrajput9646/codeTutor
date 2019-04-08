@@ -42,7 +42,7 @@ export default class CommentBox extends Component {
                 </span>
                 <div>
                     <span className="like-comment text-secondary">
-                        <i className="fas fa-check-circle fa-xs" onClick={this.vote}></i>
+                        <i className="fa fa-heart fa-xs text-danger" onClick={this.vote}></i>
                     </span>
                     <span className="font-weight-light smallerText pl-2 text-like">
                         {votes}

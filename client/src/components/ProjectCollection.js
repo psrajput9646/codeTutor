@@ -69,7 +69,7 @@ class ProjectCollection extends React.Component {
       name: projectName,
       description
     });
-    this.toggleModal()
+    this.toggleModal();
   }
 
   render() {
@@ -146,8 +146,10 @@ class ProjectCollection extends React.Component {
                       size="sm"
                       color="success"
                       onClick={this.toggleModal}>
-                      New <strong>+</strong>
-                    </Button>{' '}
+                      <strong>New</strong>
+                      {' '}
+                      <i className="fas fa-plus fa-xs"></i>
+                    </Button>
                   </ListGroupItem>
                   <Modal
                     isOpen={this.state.modal}
@@ -157,7 +159,7 @@ class ProjectCollection extends React.Component {
                       Add a Project
                     </ModalHeader>
                     <ModalBody>
-                      <Form>
+                      <Form onSubmit={this.createProject}>
                         <FormGroup>
                           <Label for="projectName">Project Name</Label>
                           <Input
@@ -166,24 +168,27 @@ class ProjectCollection extends React.Component {
                             id="ProjectName"
                             value={projectName}
                             onChange={this.handleChange}
+                            placeholder="Add project name"
                           />
                         </FormGroup>
                         <FormGroup>
                           <Label for="description">
-                            Description (optional)
+                            Description (Optional)
                           </Label>
                           <Input
+                            className = "no-scale-textarea" 
                             type="textarea"
                             name="description"
                             id="Description"
                             rows="4"
                             value={description}
                             onChange={this.handleChange}
+                            placeholder="Add short project description"
                           />
                         </FormGroup>
-                        <Button color="success" onClick={this.createProject}>
+                        <Button color="success">
                           Submit
-                        </Button>{' '}
+                        </Button>
                       </Form>
                     </ModalBody>
                   </Modal>

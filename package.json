@@ -3,10 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "test": "jest"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "brace": "^0.11.1",
     "cookie-parser": "^1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^6.2.0",
@@ -19,9 +21,25 @@
     "password-validator": "^4.1.1",
     "pg": "^7.9.0",
     "pg-hstore": "^2.3.2",
+    "react-ace": "^6.4.0",
     "rimraf": "^2.6.3",
+<<<<<<< HEAD
     "sequelize": "^4.43.0",
     "sequelize-auto-migrations": "^1.0.3",
     "socket.io": "^2.2.0"
+=======
+    "sequelize": "^4.43.1",
+    "sequelize-auto-migrations": "^1.0.3",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "babel-cli": "^6.26.0",
+    "babel-jest": "23.6.0",
+    "jest": "23.6.0",
+    "superagent": "^5.0.2",
+    "supertest": "^4.0.2"
+>>>>>>> 05c7a74b2cc98dc3c17eb4c083e8fe22e5c870a0
   }
 }

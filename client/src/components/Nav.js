@@ -3,7 +3,7 @@ import React from 'react'
 import {Container, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink} from 'reactstrap'
 import { Link } from 'react-router-dom'
 import AuthService from './AuthService'
-import { fetchCurrentUser } from '../actions/user'
+import { fetchCurrentUser, setUserLoggedIn } from '../actions/user'
 import { connect } from 'react-redux'
 
 class Navigation extends React.Component {
@@ -23,6 +23,7 @@ class Navigation extends React.Component {
 
   handleLogout = () => {
     this.Auth.logout()
+    this.props.userLoggedIn(false);
   }
 
   render() {
@@ -40,7 +41,7 @@ class Navigation extends React.Component {
             <Collapse isOpen={this.state.isOpen} navbar>
               {/* Profile */}
               <SignInNav
-                isLoggedIn={this.Auth.isLoggedIn()}
+                isLoggedIn={this.props.userLoggedIn}
                 handleLogout={this.handleLogout}
               />
             </Collapse>
@@ -76,11 +77,13 @@ const SignInNav = props => {
 }
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state.user,
+  userLoggedIn: state.userLoggedIn
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchCurrentUser: () => dispatch(fetchCurrentUser())
+  fetchCurrentUser: () => dispatch(fetchCurrentUser()),
+  setUserLoggedIn: (status) => dispatch(setUserLoggedIn(status))
 })
 
 export default connect(

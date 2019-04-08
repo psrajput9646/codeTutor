@@ -22,6 +22,13 @@ export function setUser(user) {
     }
 }
 
+export function setUserLoggedIn(status) {
+    return {
+      type: 'USER_SET_LOGIN',
+      status
+    }
+}
+
 export function fetchCurrentUser() {
   return dispatch => {
     dispatch(userLoading(true))

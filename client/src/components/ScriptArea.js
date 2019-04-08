@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import {
   FormGroup,
   Label,
-  Input,
   Button,
   UncontrolledTooltip
 } from 'reactstrap'

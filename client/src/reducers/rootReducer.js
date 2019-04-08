@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 import { projects, projectsErrored, projectsLoading } from './projects'
-import { user, userErrored, userLoading } from './user'
+import { user, userErrored, userLoading, userLoggedIn } from './user'
 import { fileCache, fileCacheErrored, fileCacheLoading } from './fileCache'
 import { selectedFile } from './file'
 
@@ -14,5 +14,6 @@ export default combineReducers({
   fileCache,
   fileCacheErrored,
   fileCacheLoading,
-  selectedFile
+  selectedFile,
+  userLoggedIn
 })

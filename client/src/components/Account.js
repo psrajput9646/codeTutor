@@ -12,10 +12,6 @@ import { fetchCurrentUser } from '../actions/user';
 
 class Accounts extends Component {
 
-    constructor(props){
-        super(props);
-    }
-
     componentDidMount(){
         this.props.fetchCurrentUser();
     }

@@ -10,23 +10,21 @@ function Loading(user) {
     if (user.likes !== undefined){
         return (
             <div>
-            <h4 className="mt-2"><strong>{formatName(user)}</strong></h4>
-            <h6>{user.username}</h6>
-            <span id="Likes">
-                <span className="text-secondary">
-                    <i className="fas fa-heart fa text-danger"></i>
+                <h4 className="mt-2"><strong>{formatName(user)}</strong></h4>
+                <h6>{user.username}</h6>
+                <span id="Likes">
+                    <span className="text-secondary">
+                        <i className="fas fa-heart fa text-danger"/>
+                    </span>
+                    <span className="font-weight-light pl-2">{user.likes}</span>
                 </span>
-                <span className="font-weight-light pl-2">
-                    {user.likes}
-                </span>
-            </span>
-            <UncontrolledTooltip placement="top" target="Likes">
-                Total Likes
-            </UncontrolledTooltip>
-            <hr className="mb-1"/>
-            <p>
-                <small>{user.bio}</small>
-            </p>
+                <UncontrolledTooltip placement="right" target="Likes">
+                    Total Likes
+                </UncontrolledTooltip>
+                <hr className="mb-1"/>
+                <p>
+                    <small>{user.bio}</small>
+                </p>
             </div>
         )
     }
@@ -90,8 +88,7 @@ export default class Profile extends Component {
                 </Row>
             </Container>
             <Loading {...user} />
-           
-            <Button color="secondary" className="btn-sm btn-block" onClick={this.toggle}>Edit</Button>{' '}
+            <Button color="secondary" className="btn-sm btn-block" onClick={this.toggle}>Edit</Button>
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                 <ModalHeader toggle={this.toggle}>Edit Bio</ModalHeader>
                 <ModalBody>
@@ -105,6 +102,7 @@ export default class Profile extends Component {
                                 rows="4"
                                 value={newBio}
                                 onChange={this.handleChange}
+                                placeholder="Add your bio"
                             ></Input>
                         </FormGroup>
                         <Button color="success" onClick={this.updateProfile}>Submit</Button>{' '}
