@@ -36,6 +36,7 @@ Object.keys(db).forEach(modelName => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+// Uncomment this if you want to update schema
 //sequelize.sync({ force: true })
 
 module.exports = db;
