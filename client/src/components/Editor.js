@@ -42,6 +42,10 @@ class Editor extends Component {
     star.classList.toggle("text-warning")
   }
 
+  handleClick = () => {
+    this.props.socket.emit("run", "This is path");
+  }
+
   render() {
     const {selectedFile} = this.props
     return (
@@ -120,6 +124,7 @@ class Editor extends Component {
             <Col sm="12" md="3" className="h-100">
               <ScriptFeedback />
             </Col>
+            <Button onClick={this.handleClick}>Example Run</Button>
           </Row>
         </Container>
       </div>
@@ -128,7 +133,8 @@ class Editor extends Component {
 }
 
 const mapStateToProps = state => ({
-    selectedFile: state.selectedFile
+    selectedFile: state.selectedFile,
+    socket: state.socket
 })
 
 const mapDispatchToProps = dispatch => ({

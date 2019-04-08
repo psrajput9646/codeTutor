@@ -1,0 +1,21 @@
+#!/bin/bash
+
+file=$1
+
+if [ $# -eq 0 ]; then
+	echo "No parameters passed."
+elif [[ $file == *.java ]]; then
+	echo 'Java file detected. Compiling.'
+	noExt=$(basename $file .java)
+	javac $file 2>output.txt
+	if [ -s output.txt ]; then
+		echo 'A compilation error occurred.'
+	else
+		java $noExt
+	fi
+elif [[ $file == *.py ]]; then
+	echo 'Python file detected. Compiling.'
+	python $file
+else
+	echo 'Not a recognized file type'
+fi

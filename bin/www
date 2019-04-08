@@ -8,6 +8,7 @@ var app = require('../app');
 var debug = require('debug')('codetutor:server');
 var http = require('http');
 const socketIO = require('socket.io')
+const socketHandler = require('../socket/onConnect').onConnect
 
 /**
  * Get port from environment and store in Express.
@@ -22,6 +23,7 @@ app.set('port', port);
 
 var server = http.createServer(app);
 const io = socketIO(server);
+io.on("connection", socketHandler);
 
 /**
  * Listen on provided port, on all network interfaces.
