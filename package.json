@@ -23,11 +23,6 @@
     "pg-hstore": "^2.3.2",
     "react-ace": "^6.4.0",
     "rimraf": "^2.6.3",
-<<<<<<< HEAD
-    "sequelize": "^4.43.0",
-    "sequelize-auto-migrations": "^1.0.3",
-    "socket.io": "^2.2.0"
-=======
     "sequelize": "^4.43.1",
     "sequelize-auto-migrations": "^1.0.3",
     "socket.io": "^2.2.0"
@@ -40,6 +35,5 @@
     "jest": "23.6.0",
     "superagent": "^5.0.2",
     "supertest": "^4.0.2"
->>>>>>> 05c7a74b2cc98dc3c17eb4c083e8fe22e5c870a0
   }
 }
