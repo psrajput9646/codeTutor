@@ -10,7 +10,7 @@ export function fileCacheLoading(loading) {
 export function fileCacheErrored(error) {
   return {
     type: 'FILE_CACHE_ERRORED',
-    error
+    error 
   }
 }
 
@@ -36,7 +36,7 @@ export function fetchFile(file) {
         })
         .catch(err => {
           dispatch(fileCacheLoading(false))
-          dispatch(fileCacheErrored(err))
+          dispatch(fileCacheErrored("failed to retrieve file"))
           reject(err)
         })
     })
