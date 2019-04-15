@@ -35,12 +35,10 @@ function Loading(user) {
 export default class Profile extends Component {
     constructor(props) {
         super(props);
-        
         this.state = {
             modal: false,
             newBio: ''
         };
-        
         this.toggle = this.toggle.bind(this);
         this.updateProfile = this.updateProfile.bind(this);
         this.Auth = new AuthService();
@@ -65,7 +63,7 @@ export default class Profile extends Component {
     }
 
     handleChange = (event) => {
-        this.setState({ [event.target.name]: event.target.value })
+        this.setState({ newBio: event.target.value})
     }
     
     toggle = () => {
@@ -76,8 +74,6 @@ export default class Profile extends Component {
 
     render() {
         const user = (this.props.user === undefined) ? this.props : this.props.user;
-        let { newBio } = this.state;
-
         return (
         <div>
             <Container>
@@ -92,7 +88,7 @@ export default class Profile extends Component {
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                 <ModalHeader toggle={this.toggle}>Edit Bio</ModalHeader>
                 <ModalBody>
-                    <Form>
+                    <Form onSubmit={this.updateProfile}>
                         <FormGroup>
                             <Label for="bio">Bio</Label>
                             <Input
@@ -100,12 +96,12 @@ export default class Profile extends Component {
                                 name="newBio"
                                 id="NewBio"
                                 rows="4"
-                                value={newBio}
+                                value={this.state.newBio}
                                 onChange={this.handleChange}
                                 placeholder="Add your bio"
                             ></Input>
                         </FormGroup>
-                        <Button color="success" onClick={this.updateProfile}>Submit</Button>{' '}
+                        <Button color="success">Submit</Button>
                     </Form>
                 </ModalBody>
             </Modal>

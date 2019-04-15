@@ -48,6 +48,7 @@ a.title-link:hover {color:gray;}
 }
 .script-io-height{
     height: calc(26vh - 85px) !important;
+    min-height: 70px;
 }
 
 .no-scale-textarea{
