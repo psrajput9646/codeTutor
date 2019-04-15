@@ -4,7 +4,7 @@ import {
 } from 'reactstrap'
 import ProjectFile from './ProjectFile'
 import AuthService from './AuthService'
-import { createProject } from '../actions/projects'
+import { createProject, getProjects } from '../actions/projects'
 import { connect } from 'react-redux'
 import CreateScriptModal from './CreateScriptModal'
 import CreateProjectModal from './CreateProjectModal'
@@ -52,11 +52,16 @@ class FileExplorer extends Component {
       })
       .then(res => {
         console.log(res)
-        // this.getProjects()
+        this.fetchProjects()
       })
         .catch(err => {
           console.log(err)
       })
+  }
+
+  fetchProjects = () => {
+    const { getProjects, currentUser } = this.props;
+    getProjects(currentUser.id);
   }
 
   handleChange = event => {
@@ -125,11 +130,13 @@ class FileExplorer extends Component {
 }
 
 const mapStateToProps = state => ({
-  projects: state.projects
+  projects: state.projects,
+  currentUser: state.currentUser
 })
 
 const mapDispatchToProps = dispatch => ({
-  createProject: project => dispatch(createProject(project))
+  createProject: project => dispatch(createProject(project)),
+  getProjects: userId => dispatch(getProjects(userId))
 })
 
 export default connect(

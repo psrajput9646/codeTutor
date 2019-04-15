@@ -1,12 +1,16 @@
-export function fileCache(state = [], action) {
-  switch (action.type) {
-    case 'FILE_CACHE_ADD':
-      return state.concat(action.file)
+import { produce } from 'immer'
 
-    default:
-      return state
-  }
-}
+export const fileCache = (state = {}, action) =>
+  produce(state, draft => {
+    switch (action.type) {
+      case 'FILE_CACHE_ADD':
+        draft[action.file.id] = action.file;
+        break;
+        
+      case 'FILE_CACHE_UPDATE':
+        draft[action.id].content = action.content
+    }
+  })
 
 export function fileCacheLoading(state = false, action) {
   switch (action.type) {
