@@ -34,10 +34,12 @@ class Navigation extends React.Component {
 
   render() {
     let id;
-    if (this.Auth.isLoggedIn() && this.props.currentUser === null) {
-      this.props.fetchCurrentUser();
-    }else{
-      id = this.props.currentUser.id;
+    if (this.Auth.isLoggedIn()){
+      if(this.props.currentUser === null) {
+        this.props.fetchCurrentUser();
+      }else{
+        id = this.props.currentUser.id;
+      }
     }
     
     return (

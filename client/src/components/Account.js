@@ -39,7 +39,7 @@ class Accounts extends Component {
         let userInfo;
         let owner = true;
         if(!this.props.userLoading){
-            if(this.state.useCurrentUser){
+            if(this.state !== null && this.state.useCurrentUser){
                 userInfo = this.props.currentUser;
             }else{
                 userInfo = this.props.user;
