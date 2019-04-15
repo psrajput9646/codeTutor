@@ -29,11 +29,13 @@ class Editor extends Component {
     this.toggle = this.toggle.bind(this)
     this.toggleStar = this.toggleStar.bind(this)
   }
+  
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal
     }))
   }
+
   /* Add functionality to toggle favorite project */
   toggleStar() {
     var star = document.getElementById('FavoriteProjectStar')

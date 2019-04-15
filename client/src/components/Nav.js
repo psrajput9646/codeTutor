@@ -7,6 +7,11 @@ import { fetchCurrentUser, setUserLoggedIn } from '../actions/user'
 import { connect } from 'react-redux'
 
 class Navigation extends React.Component {
+  
+  componentDidMount(){
+    
+  }
+
   constructor(props) {
     super(props)
     this.Auth = new AuthService()
@@ -15,6 +20,7 @@ class Navigation extends React.Component {
       isOpen: false
     }
   }
+
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
@@ -27,9 +33,13 @@ class Navigation extends React.Component {
   }
 
   render() {
-    if (this.Auth.isLoggedIn() && this.props.user === null) {
-      this.props.fetchCurrentUser()
+    let id;
+    if (this.Auth.isLoggedIn() && this.props.currentUser === null) {
+      this.props.fetchCurrentUser();
+    }else{
+      id = this.props.currentUser.id;
     }
+    
     return (
       <div id="NavBar">
         <Navbar color="dark" dark expand="md">
@@ -43,6 +53,7 @@ class Navigation extends React.Component {
               <SignInNav
                 isLoggedIn={this.props.userLoggedIn}
                 handleLogout={this.handleLogout}
+                userId={id}
               />
             </Collapse>
           </Container>
@@ -66,7 +77,7 @@ const SignInNav = props => {
     return (
       <Nav className="ml-auto" navbar>
         <NavItem>
-          <NavLink tag={Link} to="/account"><strong>Profile</strong></NavLink>
+          <NavLink tag={Link} to={"/account/"+props.userId}><strong>Profile</strong></NavLink>
         </NavItem>
         <NavItem>
           <NavLink tag={Link} to="/account" onClick={props.handleLogout} replace><strong>Sign Out</strong></NavLink>
@@ -77,7 +88,7 @@ const SignInNav = props => {
 }
 
 const mapStateToProps = state => ({
-  user: state.user,
+  currentUser: state.currentUser,
   userLoggedIn: state.userLoggedIn
 })
 

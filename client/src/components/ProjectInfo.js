@@ -37,7 +37,9 @@ export default class ProjectInfo extends Component {
         
         <ListGroupItem className="pb-0">
             <Link to="/editor" className="title-link">{this.state.name} </Link>
+            {this.props.owner &&
             <span className="edit" onClick={this.toggle}>edit</span>
+            }
             <p>{this.state.description}</p>
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                 <ModalHeader toggle={this.toggle}>{this.state.name}</ModalHeader>

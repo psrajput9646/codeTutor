@@ -15,6 +15,19 @@ export function user(state = null, action) {
     }
 }
 
+export function currentUser(state = null, action) {
+    switch(action.type) {
+        case 'GET_CURRENT_USER':
+            return action.currentUser;
+
+        case 'SET_CURRENT_USER':
+            return action.currentUser
+
+        default:
+            return state;
+    }
+}
+
 export function userLoading(state = false, action) {
     switch(action.type) {
         case 'USER_LOADING':

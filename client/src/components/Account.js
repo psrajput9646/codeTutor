@@ -8,12 +8,23 @@ import { Container, Row, Col, Spinner} from 'reactstrap';
 import Profile from './Profile.js';
 import ProjectCollection from './ProjectCollection.js';
 import { connect } from 'react-redux'
-import { fetchCurrentUser } from '../actions/user';
+import { fetchUser } from '../actions/user';
 
 class Accounts extends Component {
 
     componentDidMount(){
-        this.props.fetchCurrentUser();
+        this.setState({
+            useCurrentUser: false
+        })
+        const pathArray = window.location.pathname.split('/').filter(function(e) {return e.length !== 0});
+        const last = pathArray[pathArray.length-1];
+        if(last !== "account"){
+            this.props.fetchUser(last);
+        }else{
+            this.setState({
+                useCurrentUser: true
+            })
+        }
     }
 
     updateBio = (bio) =>{
@@ -25,19 +36,34 @@ class Accounts extends Component {
     }
 
     render() {
+        let userInfo;
+        let owner = true;
+        if(!this.props.userLoading){
+            if(this.state.useCurrentUser){
+                userInfo = this.props.currentUser;
+            }else{
+                userInfo = this.props.user;
+            }
+
+            if(this.props.user !== null && this.props.currentUser !== null &&
+                this.props.currentUser.id !== this.props.user.id){
+                owner = false;
+            }
+        }
+
         return (
         <Container>
             <Row>
                 <Col sm="3" className="mt-3">
                 {this.props.userLoading ? 
                     <Spinner type="grow" color="dark" style={{width: '3rem', height: '3rem'}} />
-                :  <Profile {...this.props.user} callback={this.updateBio}/>}   
+                :  <Profile {...userInfo} callback={this.updateBio}  owner={owner}/>}   
                 </Col>
                 <Col sm="9">
                     <div className="mt-5">
                     {this.props.userLoading ? 
                     <Spinner type="grow" color="dark" style={{width: '3rem', height: '3rem'}} />
-                :  <ProjectCollection projects={this.props.projects}/>} 
+                :  <ProjectCollection projects={this.props.projects} owner={owner}/>} 
                     </div>
                 </Col>
             </Row>
@@ -48,13 +74,14 @@ class Accounts extends Component {
 
 const mapStateToProps = state => ({
     user: state.user,
+    currentUser: state.currentUser,
     userLoading: state.userLoading,
     userErrored: state.userErrored,
     projects: state.projects
 })
 
 const mapDispatchToProps = dispatch => ({
-    fetchCurrentUser: () => dispatch(fetchCurrentUser())
+    fetchUser: (userId) => dispatch(fetchUser(userId))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Accounts);

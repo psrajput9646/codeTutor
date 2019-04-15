@@ -84,7 +84,9 @@ export default class Profile extends Component {
                 </Row>
             </Container>
             <Loading {...user} />
-            <Button color="secondary" className="btn-sm btn-block" onClick={this.toggle}>Edit</Button>
+            {this.props.owner &&
+                <Button color="secondary" className="btn-sm btn-block" onClick={this.toggle}>Edit</Button>
+            }
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                 <ModalHeader toggle={this.toggle}>Edit Bio</ModalHeader>
                 <ModalBody>

@@ -140,6 +140,7 @@ class ProjectCollection extends React.Component {
             <Row>
               <Col sm="12">
                 <ListGroup className="mt-3" flush>
+                  {this.props.owner === true &&
                   <ListGroupItem className="pt-0">
                     <Button
                       className="float-right"
@@ -150,7 +151,8 @@ class ProjectCollection extends React.Component {
                       {' '}
                       <i className="fas fa-plus fa-xs"></i>
                     </Button>
-                  </ListGroupItem>
+                  </ListGroupItem> 
+                  }
                   <Modal
                     isOpen={this.state.modal}
                     toggle={this.toggleModal}
@@ -193,7 +195,7 @@ class ProjectCollection extends React.Component {
                     </ModalBody>
                   </Modal>
                   {this.props.projects.map(project => (
-                    <ProjectInfo key={project.id} {...project} />
+                    <ProjectInfo key={project.id} {...project} owner={this.props.owner}/>
                   ))}
                 </ListGroup>
               </Col>
