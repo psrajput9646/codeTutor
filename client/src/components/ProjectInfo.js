@@ -15,11 +15,13 @@ export default class ProjectInfo extends Component {
         this.toggle = this.toggle.bind(this);
         this.updateName = this.updateName.bind(this);
         this.updateDescription = this.updateDescription.bind(this);
+        this.saveDescripiton = this.saveDescripiton.bind(this);
     }
     
     toggle() {
+        console.log("Modal is toggle");
         this.setState(prevState => ({
-        modal: !prevState.modal
+            modal: !prevState.modal
         }));
     }
 
@@ -31,8 +33,15 @@ export default class ProjectInfo extends Component {
         this.setState({description: event.target.value});
     }
 
+    saveDescripiton(event){
+        event.preventDefault();
+        this.toggle();
+        // Robert do this. Link this to the backend. 
+    }
+
     render() {
         const projectInfo = this.props;
+        console.log(projectInfo);
         return (
         
         <ListGroupItem className="pb-0">
@@ -40,11 +49,11 @@ export default class ProjectInfo extends Component {
             {this.props.owner &&
             <span className="edit" onClick={this.toggle}>edit</span>
             }
-            <p>{this.state.description}</p>
+            <p>{projectInfo.description}</p>
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                 <ModalHeader toggle={this.toggle}>{this.state.name}</ModalHeader>
                 <ModalBody>
-                    <Form onSubmit={this.toggle}>
+                    <Form onSubmit={this.saveDescripiton}>
                         <FormGroup>
                             <Label for={"ProjectName" + projectInfo.id}>Project Name</Label>
                             <Input
