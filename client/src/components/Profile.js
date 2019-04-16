@@ -39,12 +39,14 @@ export default class Profile extends Component {
             modal: false,
             newBio: ''
         };
+        console.log(props);
         this.toggle = this.toggle.bind(this);
         this.updateProfile = this.updateProfile.bind(this);
         this.Auth = new AuthService();
     }
     
-    updateProfile = () => {
+    updateProfile = (event) => {
+        event.preventDefault();
         const { newBio } = this.state;
         this.Auth.fetchAuth('/api/user/update', {
             method: 'POST',
@@ -73,7 +75,9 @@ export default class Profile extends Component {
     }
 
     render() {
+        
         const user = (this.props.user === undefined) ? this.props : this.props.user;
+        console.log(user.bio);
         return (
         <div>
             <Container>

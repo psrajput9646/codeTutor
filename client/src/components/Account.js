@@ -73,6 +73,7 @@ class Accounts extends Component {
 }
 
 const mapStateToProps = state => ({
+    
     user: state.user,
     currentUser: state.currentUser,
     userLoading: state.userLoading,

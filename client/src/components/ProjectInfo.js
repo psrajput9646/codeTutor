@@ -41,7 +41,6 @@ export default class ProjectInfo extends Component {
 
     render() {
         const projectInfo = this.props;
-        console.log(projectInfo);
         return (
         
         <ListGroupItem className="pb-0">
