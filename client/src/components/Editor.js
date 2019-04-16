@@ -52,6 +52,7 @@ class Editor extends Component {
     const {selectedFile} = this.props
     return (
       <div id="EditorWindow">
+        {/* Top Left Panel */}
         <Container fluid>
           <Row>
             {selectedFile ? (
@@ -81,6 +82,7 @@ class Editor extends Component {
               <h3 className = "pt-3 ml-3">Select a file</h3>
             )}
           </Row>
+          {/* Edit Current Project Modal */}
           <Modal
             isOpen={this.state.modal}
             toggle={this.toggle}
@@ -91,7 +93,6 @@ class Editor extends Component {
                 <Input
                   type="text"
                   id="ProjectName"
-                  
                 />
               </FormGroup>
               <Button color="primary" onClick={this.toggle}>
@@ -99,10 +100,13 @@ class Editor extends Component {
               </Button>{' '}
             </ModalBody>
           </Modal>
+
+          {/* Middle Row of Editor page */}
           <Row className="mt-3 mb-0 editor-content-height">
             <Col sm="12" md="2" className="h-100">
               <FileExplorer />
             </Col>
+
             <Col sm="12" md="7">
               <Row className="script-area-height">
                 <Col sm="12">
@@ -114,6 +118,7 @@ class Editor extends Component {
                 </Jumbotron>}
                 </Col>
               </Row>
+              {/* I/O Boxes */}
               <Row className="io-area-height">
                 <Col sm="12" md="6">
                   <ScriptInput />
@@ -123,9 +128,11 @@ class Editor extends Component {
                 </Col>
               </Row>
             </Col>
+
             <Col sm="12" md="3" className="h-100">
               <ScriptFeedback />
             </Col>
+
             <Button onClick={this.handleClick}>Example Run</Button>
           </Row>
         </Container>
