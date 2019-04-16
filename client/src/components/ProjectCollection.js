@@ -1,12 +1,5 @@
 import React from 'react'
 import {
-  Label,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  Form,
-  FormGroup,
-  Input,
   TabContent,
   TabPane,
   Nav,
@@ -14,30 +7,24 @@ import {
   NavLink,
   Row,
   Col,
-  ListGroup,
-  Button,
-  ListGroupItem
+  ListGroup
 } from 'reactstrap'
 import classnames from 'classnames'
 import ProjectInfo from './ProjectInfo.js'
-import SolutionInfo from './SolutionInfo.js'
 import AuthService from './AuthService'
 import { createProject } from '../actions/projects'
 import { connect } from 'react-redux'
+import CreateProjectModal from './CreateProjectModal';
 
 class ProjectCollection extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       activeTab: '1',
-      modal: false,
       projectList: [],
       projectName: '',
       description: ''
     }
-
-    this.toggle = this.toggle.bind(this)
-    this.toggleModal = this.toggleModal.bind(this)
     this.Auth = new AuthService()
   }
 
@@ -49,31 +36,28 @@ class ProjectCollection extends React.Component {
     }
   }
 
-  toggleModal() {
-    this.setState(prevState => ({
-      modal: !prevState.modal
-    }))
-  }
-
-  handleClick = () => {
-    console.log('Here')
-  }
-
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value })
   }
 
   createProject = () => {
     const { projectName, description } = this.state
-    this.props.createProject({
-      name: projectName,
-      description
-    });
-    this.toggleModal();
+    this.Auth.fetchAuth('/api/project/create', {
+      method: 'POST',
+      body: JSON.stringify({
+        name: projectName,
+        description
+      })
+    })
+    .then(res => {
+      console.log(res)
+    })
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   render() {
-    const { projectName, description } = this.state
     const favoritedProjectList = [
       {
         id: 'FavProject1',
@@ -86,22 +70,6 @@ class ProjectCollection extends React.Component {
         name: 'Fav Project Name 2',
         description:
           "script Description 1 Description about the script imply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently"
-      },
-      {
-        id: 'FavProject3',
-        name: 'Fav Project Name 3',
-        description:
-          "script Description 1 Description about the script imply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently"
-      }
-    ]
-    const pendingSolutionList = [
-      {
-        id: 'Solution1',
-        name: 'My Project Name 1', // Name of your (logged-in user) project
-        // Description is from the solution submitter. It should briefly say what was done to solve the problem.
-        description:
-          "script Description 1 Description about the script imply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently",
-        author: 'taylor10094' // Author of the submitted solution. That author's profile rank should be shown next to name.
       }
     ]
     return (
@@ -113,7 +81,14 @@ class ProjectCollection extends React.Component {
               onClick={() => {
                 this.toggle('1')
               }}>
-              My Code
+              <div className="flex">
+                My Projects &nbsp;
+                <CreateProjectModal
+                  createProject = {this.createProject} 
+                  handleChange={this.handleChange} 
+                  invalid = {this.state.invalid}
+                />
+              </div>
             </NavLink>
           </NavItem>
           <NavItem>
@@ -125,75 +100,13 @@ class ProjectCollection extends React.Component {
               Star
             </NavLink>
           </NavItem>
-          <NavItem>
-            <NavLink
-              className={classnames({ active: this.state.activeTab === '3' })}
-              onClick={() => {
-                this.toggle('3')
-              }}>
-              Pending Solutions
-            </NavLink>
-          </NavItem>
         </Nav>
+
         <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId="1">
             <Row>
               <Col sm="12">
                 <ListGroup className="mt-3" flush>
-                  {this.props.owner === true &&
-                  <ListGroupItem className="pt-0">
-                    <Button
-                      className="float-right"
-                      size="sm"
-                      color="success"
-                      onClick={this.toggleModal}>
-                      <strong>New</strong>
-                      {' '}
-                      <i className="fas fa-plus fa-xs"></i>
-                    </Button>
-                  </ListGroupItem> 
-                  }
-                  <Modal
-                    isOpen={this.state.modal}
-                    toggle={this.toggleModal}
-                    className={this.props.className}>
-                    <ModalHeader toggle={this.toggleModal}>
-                      Add a Project
-                    </ModalHeader>
-                    <ModalBody>
-                      <Form onSubmit={this.createProject}>
-                        <FormGroup>
-                          <Label for="projectName">Project Name</Label>
-                          <Input
-                            type="text"
-                            name="projectName"
-                            id="ProjectName"
-                            value={projectName}
-                            onChange={this.handleChange}
-                            placeholder="Add project name"
-                          />
-                        </FormGroup>
-                        <FormGroup>
-                          <Label for="description">
-                            Description (Optional)
-                          </Label>
-                          <Input
-                            className = "no-scale-textarea" 
-                            type="textarea"
-                            name="description"
-                            id="Description"
-                            rows="4"
-                            value={description}
-                            onChange={this.handleChange}
-                            placeholder="Add short project description"
-                          />
-                        </FormGroup>
-                        <Button color="success">
-                          Submit
-                        </Button>
-                      </Form>
-                    </ModalBody>
-                  </Modal>
                   {this.props.projects.map(project => (
                     <ProjectInfo key={project.id} {...project} owner={this.props.owner}/>
                   ))}
@@ -207,17 +120,6 @@ class ProjectCollection extends React.Component {
                 <ListGroup className="mt-3" flush>
                   {favoritedProjectList.map(project => (
                     <ProjectInfo key={project.id} {...project} />
-                  ))}
-                </ListGroup>
-              </Col>
-            </Row>
-          </TabPane>
-          <TabPane tabId="3">
-            <Row>
-              <Col sm="12">
-                <ListGroup className="mt-3" flush>
-                  {pendingSolutionList.map(project => (
-                    <SolutionInfo key={project.id} {...project} />
                   ))}
                 </ListGroup>
               </Col>
