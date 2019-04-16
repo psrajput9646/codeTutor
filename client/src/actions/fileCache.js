@@ -1,4 +1,5 @@
 import AuthService from '../components/AuthService'
+import { saveFile } from "./file"
 
 export function fileCacheLoading(loading) {
   return {
@@ -18,6 +19,21 @@ export function addFile(file) {
   return {
     type: 'FILE_CACHE_ADD',
     file
+  }
+}
+
+export function updateFileCache(id, content) {
+  return {
+    type: 'FILE_CACHE_UPDATE',
+    id,
+    content
+  }
+}
+
+export function updateAndSave(id, content) {
+  return dispatch => {
+    dispatch(updateFileCache(id, content))
+    dispatch(saveFile(id, content))
   }
 }
 

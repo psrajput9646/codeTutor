@@ -7,14 +7,13 @@ import { connect } from 'react-redux';
 class ProjectFile extends Component {
 
     handleOpen = () => {
-        let findFile = this.props.fileCache.find(file => file.id === this.props.file.id)
-        if (!findFile) {
+        if (typeof this.props.fileCache[this.props.file.id] === "undefined") {
             this.props.fetchFile(this.props.file)
             .then(fetchedFile => {
                 this.props.selectFile(fetchedFile);
             })
         } else {
-            this.props.selectFile(findFile);
+            this.props.selectFile(this.props.fileCache[this.props.file.id]);
         }
     }
 

@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
-import {
-  Label
-} from 'reactstrap'
+import { Label } from 'reactstrap'
 import ProjectFile from './ProjectFile'
 import AuthService from './AuthService'
-import { createProject } from '../actions/projects'
+import { createProject, getProjects } from '../actions/projects'
 import { connect } from 'react-redux'
 import CreateScriptModal from './CreateScriptModal'
 import CreateProjectModal from './CreateProjectModal'
@@ -52,11 +50,16 @@ class FileExplorer extends Component {
       })
       .then(res => {
         console.log(res)
-        // this.getProjects()
+        this.fetchProjects()
       })
         .catch(err => {
           console.log(err)
       })
+  }
+
+  fetchProjects = () => {
+    const { getProjects, currentUser } = this.props;
+    getProjects(currentUser.id);
   }
 
   handleChange = event => {
@@ -76,6 +79,7 @@ class FileExplorer extends Component {
   render() {
     return (
       <div className="h-100">
+        {/* Header for file explorer */}
         <div className="flex">
           <Label for="scriptArea" className="mb-3">
             Explorer
@@ -88,35 +92,34 @@ class FileExplorer extends Component {
           />
         </div>
 
-        <div className="round-div bg-white py-2 border list-box-outer">
-          <div className="list-box">
-            <div className="text-light mt-2 bg-dark">
-              {this.props.projects.map(project => (
-                <div key={project.id} className="file-name-container">
-                  {/* Project name area*/}
-                  <div className="project-name-container">
-                    {/* Project name text*/}
-                    <div className="name-cell">
-                      <i className="fas fa-folder">{" " + project.name}</i>
-                    </div>
-                    {/* Plus Icon next to project name */}
-                    <div className="text-center button-cell">
-                      <CreateScriptModal 
-                      key={project.id}
-                      {...project} 
-                      createFile = {this.createFile} 
-                      handleChange={this.handleChange} 
-                      handleFileName={this.handleFileName}
-                      invalid = {this.state.invalid}
-                      />
-                    </div>
+        {/* Projects Area */}
+        <div className="round-div bg-white py-2 border list-box list-box-outer">
+          <div className="text-light mt-2 bg-dark">
+            {this.props.projects.map(project => (
+              <div key={project.id} className="file-name-container">
+                {/* Project name area */}
+                <div className="project-name-container">
+                  {/* Project name text */}
+                  <div className="name-cell">
+                    <i className="fas fa-folder">{" " + project.name}</i>
                   </div>
-                  {project.files.map(file => (
-                    <ProjectFile key={file.id} name={file.name + file.type} file={file}/>
-                  ))}
+                  {/* Plus Icon next to project name */}
+                  <div className="text-center button-cell">
+                    <CreateScriptModal 
+                    key={project.id}
+                    {...project} 
+                    createFile = {this.createFile} 
+                    handleChange={this.handleChange} 
+                    handleFileName={this.handleFileName}
+                    invalid = {this.state.invalid}
+                    />
+                  </div>
                 </div>
-              ))}
-            </div>
+                {project.files.map(file => (
+                  <ProjectFile key={file.id} name={file.name + file.type} file={file}/>
+                ))}
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -125,11 +128,13 @@ class FileExplorer extends Component {
 }
 
 const mapStateToProps = state => ({
-  projects: state.projects
+  projects: state.projects,
+  currentUser: state.currentUser
 })
 
 const mapDispatchToProps = dispatch => ({
-  createProject: project => dispatch(createProject(project))
+  createProject: project => dispatch(createProject(project)),
+  getProjects: userId => dispatch(getProjects(userId))
 })
 
 export default connect(

@@ -8,11 +8,11 @@ module.exports = {
         return File.create({
             name: req.body.name,
             type: req.body.type,
-            path: req.decoded.id + "/" + req.body.projectId + "/" + req.body.name + req.body.type,
+            path: "projects/" + req.decoded.id + "/" + req.body.projectId + "/" + req.body.name + req.body.type,
             projectId: req.body.projectId
         })
         .then(file => {
-            fs.writeFile("projects/" + file.path, '', (err) => {
+            fs.writeFile(file.path, '', (err) => {
                 if (err) {
                   throw new Error(err);
                 } else {
@@ -26,19 +26,22 @@ module.exports = {
     // Parameter: (file)id, content, userId (grabbed from token)
     save(req, res){
         File.findOne({
-            where: { id: req.params.id }
+            where: { id: req.body.id }
         })
         .then(file => {
+            console.log(file)
             fs.writeFile(file.path, req.body.content, (err) => {
                 if (err) {
-                    res.status(500).send({ success: false, err: err})
+                    console.log(err)
+                    res.status(500).send(err)
                 } else {
                     res.status(202).send({success: true})
                 }
             })
         })
         .catch(err => {
-            res.status(500).send({success: false, err: err})
+            console.log(err)
+            res.status(500).send(err)
         })
 
     },
@@ -72,12 +75,12 @@ module.exports = {
             where: { id: req.params.id }
         })
         .then(file => {
-            fs.readFile('projects/' + file.path, (err, data) => {
+            fs.readFile(file.path, (err, data) => {
                 if (err) {
                     console.error(err)
                     res.status(400).send(err)
-                } else {
-                    file.content = data;
+                } else {      
+                    file.dataValues.content = data.toString();
                     res.status(200).send(file)
                 }
             })

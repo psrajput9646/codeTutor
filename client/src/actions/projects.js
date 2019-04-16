@@ -46,3 +46,21 @@ export function createProject(project) {
     })
   }
 }
+
+export function getProjects(userId) {
+  return dispatch => {
+    const authService = new AuthService();
+    dispatch(projectsLoading(true))
+    authService.fetchAuth('/api/project/projects/' + userId, {
+      method: 'GET'
+    })
+    .then(projects => {
+      dispatch(setProjects(projects))
+      dispatch(projectsLoading(false))
+    })
+    .catch(err => {
+      dispatch(projectsLoading(false))
+      dispatch(projectsErrored(err))
+    })
+  }
+}
