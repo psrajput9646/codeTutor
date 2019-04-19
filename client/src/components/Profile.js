@@ -1,85 +1,50 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, UncontrolledTooltip } from 'reactstrap';
 import AuthService from './AuthService';
+import { connect } from 'react-redux'
+import { updateUser } from '../actions/user';
 
-function formatName(user){
-    return user.firstName + ' ' + user.lastName;
-}
 
-function Loading(user) {
-    if (user.likes !== undefined){
-        return (
-            <div>
-                <h4 className="mt-2"><strong>{formatName(user)}</strong></h4>
-                <h6>{user.username}</h6>
-                <span id="Likes">
-                    <span className="text-secondary">
-                        <i className="fas fa-heart fa text-danger"/>
-                    </span>
-                    <span className="font-weight-light pl-2">{user.likes}</span>
-                </span>
-                <UncontrolledTooltip placement="right" target="Likes">
-                    Total Likes
-                </UncontrolledTooltip>
-                <hr className="mb-1"/>
-                <p>
-                    <small>{user.bio}</small>
-                </p>
-            </div>
-        )
-    }
-
-    return  <h6>Loading...</h6>;
-}
-
-export default class Profile extends Component {
+class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
             modal: false,
-            newBio: ''
+            bio: ''
         };
-        console.log(props);
+        
         this.toggle = this.toggle.bind(this);
         this.updateProfile = this.updateProfile.bind(this);
         this.Auth = new AuthService();
     }
+
+    formatName = (user) => {
+        return user.firstName + ' ' + user.lastName;
+    }
     
     updateProfile = (event) => {
         event.preventDefault();
-        const { newBio } = this.state;
-        this.Auth.fetchAuth('/api/user/update', {
-            method: 'POST',
-            body: JSON.stringify({
-                newBio
-            })
-        })
-        .then(res => {
-            this.props.callback(res.bio);
-        })
-        .catch(err => {
-            console.log(err)
-        });
-
+        this.props.updateUser(this.state.bio);
         this.toggle();
     }
 
     handleChange = (event) => {
-        this.setState({ newBio: event.target.value})
+        this.setState({ bio: event.target.value})
     }
     
     toggle = () => {
         this.setState(prevState => ({
-            modal: !prevState.modal
+            modal: !prevState.modal,
+            bio: this.props.user.bio
         }));
     }
 
     render() {
-        
-        const user = (this.props.user === undefined) ? this.props : this.props.user;
-        console.log(user.bio);
+        const user = this.props.user;
+        const owner = (user && this.props.currentUserId === this.props.user.id)? true : false;
         return (
         <div>
+            {/* Profile Picture*/}
             <Container>
                 <Row>
                     <Col className="col-10 offset-1">
@@ -87,8 +52,30 @@ export default class Profile extends Component {
                     </Col>
                 </Row>
             </Container>
-            <Loading {...user} />
-            {this.props.owner &&
+
+            {/* User Information */}
+            {user &&
+                <div>
+                    <h4 className="mt-2"><strong>{this.formatName(user)}</strong></h4>
+                    <h6>{user.username}</h6>
+                    <span id="Likes">
+                        <span className="text-secondary">
+                            <i className="fas fa-heart fa text-danger"/>
+                        </span>
+                        <span className="font-weight-light pl-2">{user.likes}</span>
+                    </span>
+                    <UncontrolledTooltip placement="right" target="Likes">
+                        Total Likes
+                    </UncontrolledTooltip>
+                    <hr className="mb-1"/>
+                    <p>
+                        <small>{user.bio}</small>
+                    </p>
+                </div>
+            }
+
+            {/* Edit Button And Modal*/}
+            {owner &&
                 <Button color="secondary" className="btn-sm btn-block" onClick={this.toggle}>Edit</Button>
             }
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
@@ -99,10 +86,10 @@ export default class Profile extends Component {
                             <Label for="bio">Bio</Label>
                             <Input
                                 type="textarea"
-                                name="newBio"
-                                id="NewBio"
+                                name="bio"
+                                id="Bio"
                                 rows="4"
-                                value={this.state.newBio}
+                                value={this.state.bio}
                                 onChange={this.handleChange}
                                 placeholder="Add your bio"
                             ></Input>
@@ -115,3 +102,14 @@ export default class Profile extends Component {
         )
     }
 }
+
+const mapStateToProps = state => ({
+    user: state.user,
+    currentUserId: state.currentUserId
+})
+
+const mapDispatchToProps = dispatch => ({
+    updateUser: (bio) => dispatch(updateUser(bio))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

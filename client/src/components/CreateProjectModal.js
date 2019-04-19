@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import { 
     Label,
     Button,
@@ -12,29 +11,43 @@ import {
     UncontrolledTooltip,
     FormFeedback
 } from 'reactstrap';
+import { createProject } from '../actions/projects'
+import { connect } from 'react-redux'
 
-export default class CreateProjectModal extends Component {
+class CreateProjectModal extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
-            modal: false
+            modal: false,
+            projectName: '',
+            description: ''
         };
-        
+
         this.toggle = this.toggle.bind(this);
         this.submitForm = this.submitForm.bind(this);
     }
-        
+
     toggle() {
         this.setState(prevState => ({
         modal: !prevState.modal
         }));
     }
 
+    handleChange = event => {
+        this.setState({ [event.target.name]: event.target.value })
+    }
+
     submitForm(){
-        this.props.createProject(this.props.id); 
+        this.props.createProject(this.state.projectName, this.state.description); 
         this.toggle();
     }
+
     render() {
+        if(!this.props.owner){
+            return <div></div>
+        }
+        const { projectName, description} = this.state;
         return (
             <div>
                 <Button
@@ -61,8 +74,8 @@ export default class CreateProjectModal extends Component {
                             type="text"
                             name="projectName"
                             id="ProjectName"
-                            value={this.props.projectName}
-                            onChange={this.props.handleChange}
+                            value={projectName}
+                            onChange={this.handleChange}
                             placeholder="Add project name"
                             />
                             <FormFeedback>Alphabet Characters Only!</FormFeedback>
@@ -74,7 +87,7 @@ export default class CreateProjectModal extends Component {
                             name="description"
                             id="Description"
                             rows="4"
-                            value={this.props.description}
+                            value={description}
                             onChange={this.handleChange}
                             placeholder="Add short project description"
                             />
@@ -89,3 +102,12 @@ export default class CreateProjectModal extends Component {
         );
     }
 }
+
+const mapStateToProps = state => ({
+})
+
+const mapDispatchToProps = dispatch => ({
+    createProject: (projectName, description) => dispatch(createProject(projectName, description))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateProjectModal);

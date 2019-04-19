@@ -4,7 +4,7 @@ import { FormGroup, Label, Input, Button, UncontrolledTooltip, Alert, Form} from
 import AuthService from './AuthService'
 import {Redirect} from 'react-router-dom';
 import {connect} from "react-redux";
-import { setUserLoggedIn } from "../actions/user"
+import { setUserLoggedIn, setCurrentUserId } from "../actions/user"
 
 class SignIn extends Component {
   constructor(props) {
@@ -42,8 +42,10 @@ class SignIn extends Component {
     })
       .then(res => {
         if (!res.OK) {
-          this.Auth.setToken(res.token)
-          this.props.setUserLoggedIn(true)
+          this.Auth.setToken(res.token);
+          const userId = this.Auth.getProfile().id;
+          this.props.setUserLoggedIn(true);
+          this.props.setCurrentUserId(userId);
           this.setState({
             redirect: true
           })
@@ -108,15 +110,11 @@ class SignIn extends Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.user,
 })
 
 const mapDispatchToProps = dispatch => ({
-  setUserLoggedIn: (status) => dispatch(setUserLoggedIn(status))
+  setUserLoggedIn: (status) => dispatch(setUserLoggedIn(status)),
+  setCurrentUserId: (userId) => dispatch(setCurrentUserId(userId))
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SignIn)
-
+export default connect(mapStateToProps,mapDispatchToProps)(SignIn)

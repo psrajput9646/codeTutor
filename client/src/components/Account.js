@@ -11,59 +11,47 @@ import { connect } from 'react-redux'
 import { fetchUser } from '../actions/user';
 
 class Accounts extends Component {
-
+    
     componentDidMount(){
-        this.setState({
-            useCurrentUser: false
-        })
-        const pathArray = window.location.pathname.split('/').filter(function(e) {return e.length !== 0});
-        const last = pathArray[pathArray.length-1];
-        if(last !== "account"){
-            this.props.fetchUser(last);
-        }else{
-            this.setState({
-                useCurrentUser: true
-            })
+        if(this.props.user === null ||
+            this.props.user.id !== parseInt(this.props.match.params.userId)){
+            this.loadUser();
         }
     }
 
-    updateBio = (bio) =>{
-        let user = {...this.state.user};
-        user.bio = bio;
-        this.setState({
-            user
-        })
+    componentDidUpdate(prevProps){
+        if(prevProps.match.params.userId !== this.props.match.params.userId ||
+            prevProps.currentUserId !== this.props.currentUserId){
+            this.loadUser();
+        }
+    }
+
+    loadUser = () => {
+        let userId = this.props.match.params.userId
+        if(userId === undefined){
+            userId = this.props.currentUserId;
+        }
+
+        if(userId !== -1){
+            this.props.fetchUser(userId);
+        }
     }
 
     render() {
-        let userInfo;
-        let owner = true;
-        if(!this.props.userLoading){
-            if(this.state !== null && this.state.useCurrentUser){
-                userInfo = this.props.currentUser;
-            }else{
-                userInfo = this.props.user;
-            }
-
-            if(this.props.user !== null && this.props.currentUser !== null &&
-                this.props.currentUser.id !== this.props.user.id){
-                owner = false;
-            }
-        }
-
         return (
         <Container>
             <Row>
                 <Col sm="3" className="mt-3">
                 {this.props.userLoading ? 
                     <Spinner type="grow" color="dark" style={{width: '3rem', height: '3rem'}} />
-                :  <Profile {...userInfo} callback={this.updateBio}  owner={owner}/>}   
+                :  <Profile/>}   
                 </Col>
                 <Col sm="9">
                     <div className="mt-5">
-                    {this.props.userLoading ? 
-                    <Spinner type="grow" color="dark" style={{width: '3rem', height: '3rem'}} />
-                :  <ProjectCollection projects={this.props.projects} owner={owner}/>} 
+                    {this.props.userLoading ?
+                        <Spinner type="grow" color="dark" style={{width: '3rem', height: '3rem'}} />
+                    :   <ProjectCollection/>
+                    } 
                     </div>
                 </Col>
             </Row>
@@ -73,9 +61,8 @@ class Accounts extends Component {
 }
 
 const mapStateToProps = state => ({
-    
     user: state.user,
-    currentUser: state.currentUser,
+    currentUserId: state.currentUserId,
     userLoading: state.userLoading,
     userErrored: state.userErrored,
     projects: state.projects

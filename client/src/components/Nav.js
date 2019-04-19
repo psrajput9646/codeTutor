@@ -3,25 +3,28 @@ import React from 'react'
 import {Container, Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem, NavLink} from 'reactstrap'
 import { Link } from 'react-router-dom'
 import AuthService from './AuthService'
-import { fetchCurrentUser, setUserLoggedIn } from '../actions/user'
+import { setUserLoggedIn, setCurrentUserId } from '../actions/user'
 import { connect } from 'react-redux'
 
 class Navigation extends React.Component {
-  
-  componentDidMount(){
-    
-  }
-
   constructor(props) {
-    super(props)
-    this.Auth = new AuthService()
-    this.toggle = this.toggle.bind(this)
+    super(props);
+    
     this.state = {
       isOpen: false
     }
+
+    this.Auth = new AuthService();
+    this.toggle = this.toggle.bind(this)
   }
 
-  toggle() {
+  componentDidMount(){
+    if(this.Auth.isLoggedIn()){
+      this.props.setCurrentUserId();
+    }
+  }
+
+  toggle = () => {
     this.setState({
       isOpen: !this.state.isOpen
     })
@@ -33,31 +36,24 @@ class Navigation extends React.Component {
   }
 
   render() {
-    let id;
-    if (this.Auth.isLoggedIn()){
-      if(this.props.currentUser === null) {
-        this.props.fetchCurrentUser();
-      }else{
-        id = this.props.currentUser.id;
-      }
-    }
-    
     return (
       <div id="NavBar">
         <Navbar color="dark" dark expand="md">
           <Container fluid>
+
             {/* Website name */}
             <NavbarBrand tag={Link} to="/"><strong>CodeIt</strong></NavbarBrand>
             <NavbarToggler onClick={this.toggle} />
+
             {/* Links */}
             <Collapse isOpen={this.state.isOpen} navbar>
-              {/* Profile */}
               <SignInNav
                 isLoggedIn={this.props.userLoggedIn}
                 handleLogout={this.handleLogout}
-                userId={id}
+                userId={this.props.currentUserId}
               />
             </Collapse>
+
           </Container>
         </Navbar>
       </div>
@@ -65,7 +61,7 @@ class Navigation extends React.Component {
   }
 }
 
-const SignInNav = props => {
+const SignInNav = (props) => {
   const isLoggedIn = props.isLoggedIn
   if (!isLoggedIn) {
     return (
@@ -90,16 +86,13 @@ const SignInNav = props => {
 }
 
 const mapStateToProps = state => ({
-  currentUser: state.currentUser,
-  userLoggedIn: state.userLoggedIn
+  userLoggedIn: state.userLoggedIn,
+  currentUserId: state.currentUserId
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchCurrentUser: () => dispatch(fetchCurrentUser()),
-  setUserLoggedIn: (status) => dispatch(setUserLoggedIn(status))
+  setUserLoggedIn: (status) => dispatch(setUserLoggedIn(status)),
+  setCurrentUserId: () => dispatch(setCurrentUserId())
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Navigation)
+export default connect(mapStateToProps,mapDispatchToProps)(Navigation)

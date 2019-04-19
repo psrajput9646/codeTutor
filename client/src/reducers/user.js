@@ -15,19 +15,6 @@ export function user(state = null, action) {
     }
 }
 
-export function currentUser(state = null, action) {
-    switch(action.type) {
-        case 'GET_CURRENT_USER':
-            return action.currentUser;
-
-        case 'SET_CURRENT_USER':
-            return action.currentUser
-
-        default:
-            return state;
-    }
-}
-
 export function userLoading(state = false, action) {
     switch(action.type) {
         case 'USER_LOADING':
@@ -52,6 +39,16 @@ export function userLoggedIn(state = auth.isLoggedIn(), action) {
     switch(action.type) {
         case 'USER_SET_LOGIN':
             return action.status
+
+        default:
+            return state;
+    }
+}
+
+export function currentUserId(state = -1, action) {
+    switch(action.type) {
+        case 'USER_SET_ID':
+            return action.userId
 
         default:
             return state;

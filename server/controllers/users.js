@@ -71,7 +71,7 @@ module.exports = {
   },
 
   // Parameter: id
-  get(req, res) {
+  getById(req, res) {
     User.findOne({
       where: { id: req.params.id },
       include: [
@@ -81,8 +81,12 @@ module.exports = {
         },
         {
           model: Project,
-          include: [File]
+          include: [File],
+          
         }
+      ],
+      order: [
+        [Project,'createdAt','DESC']
       ]
     })
     .then(user => {
@@ -90,7 +94,6 @@ module.exports = {
       user.comments.forEach(comment => {
         sum += comment.votes;
       });
-
       const resObj = Object.assign({},
         {
           id: user.id,
@@ -105,24 +108,51 @@ module.exports = {
       res.status(200).send(resObj)
     })
     .catch(err => {
-      console.log(err);
       res.status(500).send(err)
     })
   },
 
   update(req, res){
     User.findOne({
-        where: { id: req.decoded.id }
+        where: { id: req.decoded.id },
+        include: [
+          {
+            model: Comment,
+            attributes: ['votes']
+          },
+          {
+            model: Project,
+            include: [File],
+            order: [[
+              'createdAt','DESC'
+            ]]
+          }
+        ]
     })
     .then(user => {
         user.update({
-            bio: req.body.newBio,
+            bio: req.body.bio
         })
         .then(user => {
-            res.status(200).send(user)
+          let sum = 0;
+          user.comments.forEach(comment => {
+            sum += comment.votes;
+          });
+    
+          const resObj = Object.assign({},
+            {
+              id: user.id,
+              email: user.email,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              bio: user.bio,
+              likes: sum,
+              projects: user.projects
+            }
+          );
+            res.status(200).send(resObj)
         })
         .catch(err => {
-            console.log(err);
             res.status(500).send(err)
         });
     })

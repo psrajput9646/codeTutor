@@ -12,7 +12,6 @@ import {
 import classnames from 'classnames'
 import ProjectInfo from './ProjectInfo.js'
 import AuthService from './AuthService'
-import { createProject } from '../actions/projects'
 import { connect } from 'react-redux'
 import CreateProjectModal from './CreateProjectModal';
 
@@ -21,9 +20,7 @@ class ProjectCollection extends React.Component {
     super(props)
     this.state = {
       activeTab: '1',
-      projectList: [],
-      projectName: '',
-      description: ''
+      projectList: []
     }
     this.Auth = new AuthService()
   }
@@ -36,28 +33,9 @@ class ProjectCollection extends React.Component {
     }
   }
 
-  handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value })
-  }
-
-  createProject = () => {
-    const { projectName, description } = this.state
-    this.Auth.fetchAuth('/api/project/create', {
-      method: 'POST',
-      body: JSON.stringify({
-        name: projectName,
-        description
-      })
-    })
-    .then(res => {
-      console.log(res)
-    })
-      .catch(err => {
-        console.log(err)
-      })
-  }
-
   render() {
+    const projects = this.props.projects;
+    const owner = (this.props.user && this.props.currentUserId === this.props.user.id)? true : false;
     const favoritedProjectList = [
       {
         id: 'FavProject1',
@@ -74,6 +52,7 @@ class ProjectCollection extends React.Component {
     ]
     return (
       <div className="mb-4">
+        {/* Tabs Headers */}
         <Nav tabs>
           <NavItem>
             <NavLink
@@ -83,11 +62,7 @@ class ProjectCollection extends React.Component {
               }}>
               <div className="flex">
                 My Projects &nbsp;
-                <CreateProjectModal
-                  createProject = {this.createProject} 
-                  handleChange={this.handleChange} 
-                  invalid = {this.state.invalid}
-                />
+                <CreateProjectModal owner = {owner} />
               </div>
             </NavLink>
           </NavItem>
@@ -102,18 +77,21 @@ class ProjectCollection extends React.Component {
           </NavItem>
         </Nav>
 
+        {/* Tab Content */}
         <TabContent activeTab={this.state.activeTab}>
+          {/* Pane 1 */}
           <TabPane tabId="1">
             <Row>
               <Col sm="12">
                 <ListGroup className="mt-3" flush>
-                  {this.props.projects.map(project => (
-                    <ProjectInfo key={project.id} {...project} owner={this.props.owner}/>
+                  {projects.map(project => (
+                    <ProjectInfo key={project.id} {...project} owner={owner}/>
                   ))}
                 </ListGroup>
               </Col>
             </Row>
           </TabPane>
+          {/* Pane 2 */}
           <TabPane tabId="2">
             <Row>
               <Col sm="12">
@@ -131,13 +109,13 @@ class ProjectCollection extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({})
-
-const mapDispatchToProps = dispatch => ({
-  createProject: project => dispatch(createProject(project))
+const mapStateToProps = state => ({
+  user: state.user,
+  currentUserId: state.currentUserId,
+  projects: state.projects
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ProjectCollection)
+const mapDispatchToProps = dispatch => ({
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectCollection);

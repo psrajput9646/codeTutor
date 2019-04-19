@@ -22,10 +22,10 @@ export function setUser(user) {
   }
 }
 
-export function setCurrentUser(currentUser) {
+export function setUserBio(bio) {
   return {
-      type: 'SET_CURRENT_USER',
-      currentUser
+      type: 'SET_USER_BIO',
+      bio
   }
 }
 
@@ -36,22 +36,10 @@ export function setUserLoggedIn(status) {
     }
 }
 
-export function fetchCurrentUser() {
-  return dispatch => {
-    dispatch(userLoading(true))
-    const authService = new AuthService()
-    const user = authService.getProfile()
-    authService.fetchAuth('/api/user/' + user.id)
-    .then(user => {
-        dispatch(userLoading(false));
-        dispatch(setCurrentUser(user))
-        dispatch(setProjects(user.projects))
-    })
-    .catch(err => {
-        console.log(err)
-        dispatch(userErrored(err))
-        dispatch(userLoading(false))
-    })
+export function setCurrentUserId() {
+  return {
+    type: 'USER_SET_ID',
+    userId: (new AuthService()).getProfile().id
   }
 }
 
@@ -61,14 +49,35 @@ export function fetchUser(userId) {
     const authService = new AuthService()
     authService.fetchAuth('/api/user/' + userId)
     .then(user => {
-        dispatch(userLoading(false));
         dispatch(setUser(user))
         dispatch(setProjects(user.projects))
+        dispatch(userLoading(false));
     })
     .catch(err => {
-        console.log(err)
         dispatch(userErrored(err))
         dispatch(userLoading(false))
+    })
+  }
+}
+
+export function updateUser(bio) {
+  return dispatch => {
+    //dispatch(userLoading(true))
+    const authService = new AuthService()
+
+    authService.fetchAuth('/api/user/update', {
+      method: 'POST',
+      body: JSON.stringify({
+        bio
+      })
+    })
+    .then(user => {
+      dispatch(setUser(user))
+      dispatch(userLoading(false))
+    })
+    .catch(err => {
+      dispatch(userErrored(err))
+      dispatch(userLoading(false))
     })
   }
 }

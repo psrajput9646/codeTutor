@@ -7,7 +7,7 @@ export function projects(state = [], action) {
       return action.projects
 
     case 'ADD_PROJECT':
-      return state.concat(action.project)
+      return action.project.concat(state)
 
     default:
       return state

@@ -22,4 +22,8 @@ projectRouter.post("/create", verifyToken, projectController.create)
 // Parameter: projectId, userId (grabbed from token)
 projectRouter.post("/delete", verifyToken, projectController.delete)
 
+// Updates a Project
+// Parameter: projectName, description
+projectRouter.post("/update", verifyToken, projectController.update)
+
 module.exports = projectRouter;

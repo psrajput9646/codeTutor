@@ -18,7 +18,7 @@ const App = () => (
       {/* Home is the page that displays a feed of all ongoing projects */}
       <PrivateRoute exact path="/" component={Home}/>
       {/* Account is the account page that displays the user's account info & code*/}
-      <PrivateRoute path="/account" component={Account}/>
+      <PrivateRoute path="/account/:userId?" component={Account}/>
       {/* Editor page allows users to mess with code */}
       <PrivateRoute path="/editor" component={Editor}/>
       {/* Account Access page allows user to gain access or create account */}

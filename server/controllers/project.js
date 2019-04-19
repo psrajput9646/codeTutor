@@ -42,12 +42,15 @@ module.exports = {
   // Parameter: userId
   getProjectsByUserId(req, res) {
      Project.findAll({
+      where: { userId: req.params.userId },
       include: [
         {
           model: File
-        }
+        },
       ],
-      where: { userId: req.params.userId }
+      order: [[
+        'createdAt','DESC'
+      ]]
     })
       .then(projects => {
         res.status(200).send(projects);
@@ -80,6 +83,26 @@ module.exports = {
      })
      .catch(err => res.status(400).send(err));
  },
+
+  update(req, res) {
+     Project.findOne({
+      where: { id: req.body.id }
+    })
+      .then(project => {
+        project.update({
+          name: req.body.name,
+          description: req.body.description
+        }).then(project => {
+          res.status(200).send(project);
+        })
+        .catch(err => {
+          res.status(400).send(err)
+        });
+      })
+      .catch(err => {
+        res.status(400).send(err)
+    });
+  },
 
   // Parameter: projectId, userId (grabbed from token)
   // Will recursively delete everything under folder

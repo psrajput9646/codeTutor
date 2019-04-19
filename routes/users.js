@@ -11,6 +11,6 @@ router.post('/create', userController.create);
 // Parameters: bio
 router.post('/update', verifyToken, userController.update);
 
-router.get('/:id', verifyToken, userController.get);
+router.get('/:id', verifyToken, userController.getById);
 
 module.exports = router;
