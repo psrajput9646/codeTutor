@@ -9,48 +9,23 @@ import { connect } from 'react-redux'
 import { updateAndSave } from '../../actions/fileCache'
 
 class Editor extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      input: ''
-    }
-  }
-
-  componentDidMount() {
-    this.setState({
-      input: this.props.selectedFile.content
-    })
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.selectedFile.id !== this.props.selectedFile.id) {
-        this.props.updateAndSave(prevProps.selectedFile.id, this.state.input);
-      this.setState({
-        input: this.props.selectedFile.content
-      })
-    }
-  }
-
-  handleChange = newValue => {
-    this.setState({
-      input: newValue
-    })
-  }
-
   render() {
-    let fileType
-    switch (this.props.selectedFile.fileType) {
+    let fileType;
+    console.log(this.props.selectedFile.type)
+    switch (this.props.selectedFile.type) {
       case '.java':
         fileType = 'java'
-        return
+        break;
 
       case '.py':
         fileType = 'python'
-        return
+        break;
 
       default:
         fileType = 'java'
     }
+
+    console.log(this.props.file)
 
     return (
       <AceEditor
@@ -59,8 +34,8 @@ class Editor extends Component {
         theme="monokai"
         name="Editor"
         fontSize={14}
-        value={this.state.input}
-        onChange={this.handleChange}
+        value={this.props.input}
+        onChange={this.props.handleChange}
         highlightActiveLine
         setOptions={{
           enableLiveAutocompletion: true,

@@ -12,7 +12,7 @@ module.exports = {
 
 function runFile(run, socket) {
     console.log(run)
-    let child = spawn("bash", ["socket/compile", "projects/2/2/simple.py"])
+    let child = spawn("bash", ["socket/compile", run])
     child.stdout.setEncoding('utf8');
     child.stdout.on('data', (data) => {
         console.log("Sending data")

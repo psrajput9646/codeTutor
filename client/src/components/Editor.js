@@ -44,8 +44,8 @@ class Editor extends Component {
     star.classList.toggle("text-warning")
   }
 
-  handleClick = () => {
-    this.props.socket.emit("run", "This is path");
+  handleRun = () => {
+    this.props.socket.emit("run", this.props.selectedFile.path);
   }
 
   render() {
@@ -110,7 +110,7 @@ class Editor extends Component {
             <Col sm="12" md="7">
               <Row className="script-area-height">
                 <Col sm="12">
-                {selectedFile ? <ScriptArea file={selectedFile}/>
+                {selectedFile ? <ScriptArea file={selectedFile} handleRun={this.handleRun}/>
                 : <Jumbotron fluid>
                     <Container fluid>
                         <h2>Select or create a file to get started!</h2>
@@ -132,8 +132,6 @@ class Editor extends Component {
             <Col sm="12" md="3" className="h-100">
               <ScriptFeedback />
             </Col>
-
-            <Button onClick={this.handleClick}>Example Run</Button>
           </Row>
         </Container>
       </div>
