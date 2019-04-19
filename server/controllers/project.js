@@ -69,6 +69,18 @@ module.exports = {
       .catch(err => res.status(500).send(err));
   },
 
+  getAllProjects(req, res) {
+    Project.findAll({
+      order: [[
+      'createdAt','DESC'
+    ]]
+   })
+     .then(projects => {
+       res.status(200).send(projects);
+     })
+     .catch(err => res.status(400).send(err));
+ },
+
   // Parameter: projectId, userId (grabbed from token)
   // Will recursively delete everything under folder
   delete(req, res) {

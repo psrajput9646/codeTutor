@@ -11,6 +11,9 @@ projectRouter.get("/:id", verifyToken, projectController.getProjectById)
 // Parameter: userId
 projectRouter.get("/projects/:userId", verifyToken, projectController.getProjectsByUserId)
 
+// Retrieves All Projects
+projectRouter.get("/get/all", verifyToken, projectController.getAllProjects)
+
 // Creates a Project
 // Parameters: name, userId (grabbed from token)
 projectRouter.post("/create", verifyToken, projectController.create)
