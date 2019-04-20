@@ -70,21 +70,22 @@ module.exports = {
                 comment.user.points++;
                 comment.votedBy.push(req.decoded.id);
             }
-            
-            comment.update({
-                votes: comment.votes,
-                votedBy: comment.votedBy
-            })
-            .then(resu => {
-                res.status(200).send(resu)
-            })
-            .catch(err => {
-                console.log(err);
-                res.status(500).send(err)
-            });
-
-           
+            return Promise.all([
+                comment.update({
+                    votes: comment.votes,
+                    votedBy: comment.votedBy
+                }),
+                comment.user.update({
+                    points: comment.user.points
+                })
+            ])    
         })
-        .catch((err) => {console.log(err);res.status(500).send(err)})
+        .then((values)=> {
+            res.status(200).send(values)
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).send(err)
+        });
     }
 }
