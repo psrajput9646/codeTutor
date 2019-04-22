@@ -98,6 +98,7 @@ module.exports = {
         {
           id: user.id,
           email: user.email,
+          username: user.username,
           firstName: user.firstName,
           lastName: user.lastName,
           bio: user.bio,
