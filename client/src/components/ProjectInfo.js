@@ -39,12 +39,13 @@ class ProjectInfo extends Component {
 
     render() {
         const projectInfo = this.props;
+        const owner = (this.props.user && this.props.currentUserId === this.props.user.id)? true : false;
         
         return (
         <ListGroupItem className="pb-0">
-            <Link to="/editor" className="title-link">{projectInfo.name} </Link>
+            <Link to={"/editor/"+projectInfo.userId} className="link">{projectInfo.name} </Link>
 
-            {this.props.owner &&
+            {owner &&
                 <span className="edit" onClick={this.toggle}>edit</span>
             }
             <p>{projectInfo.description}</p>
@@ -91,6 +92,8 @@ class ProjectInfo extends Component {
 }
 
 const mapStateToProps = state => ({
+    user: state.user,
+    currentUserId: state.currentUserId
 })
 
 const mapDispatchToProps = dispatch => ({

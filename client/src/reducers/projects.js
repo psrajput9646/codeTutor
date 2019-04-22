@@ -1,3 +1,13 @@
+export function selectedProject(state = null, action){
+  switch (action.type) {
+      case 'SELECT_PROJECT':
+          return action.project
+
+      default:
+          return state
+  }
+}
+
 export function projects(state = [], action) {
   switch (action.type) {
     case 'GET_PROJECTS':

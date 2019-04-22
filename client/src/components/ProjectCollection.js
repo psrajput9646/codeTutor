@@ -35,7 +35,6 @@ class ProjectCollection extends React.Component {
 
   render() {
     const projects = this.props.projects;
-    const owner = (this.props.user && this.props.currentUserId === this.props.user.id)? true : false;
     const favoritedProjectList = [
       {
         id: 'FavProject1',
@@ -62,7 +61,7 @@ class ProjectCollection extends React.Component {
               }}>
               <div className="flex">
                 My Projects &nbsp;
-                <CreateProjectModal owner = {owner} />
+                <CreateProjectModal/>
               </div>
             </NavLink>
           </NavItem>
@@ -85,7 +84,7 @@ class ProjectCollection extends React.Component {
               <Col sm="12">
                 <ListGroup className="mt-3" flush>
                   {projects.map(project => (
-                    <ProjectInfo key={project.id} {...project} owner={owner}/>
+                    <ProjectInfo key={project.id} {...project}/>
                   ))}
                 </ListGroup>
               </Col>

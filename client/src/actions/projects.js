@@ -1,5 +1,12 @@
 import AuthService from '../components/AuthService'
 
+export function setProject(project){
+  return {
+      type: 'SELECT_PROJECT',
+      project
+  }
+}
+
 export function setProjects(projects) {
   return {
     type: 'SET_PROJECTS',
@@ -28,10 +35,22 @@ export function projectsErrored(error) {
   }
 }
 
+export function selectProject(projects, id) {
+  return dispatch => {
+      let found = projects.find(p => p.id === id);
+
+      if(typeof found !== "undefined"){
+        dispatch(setProject(found));
+      }else{
+        dispatch(setProject(null));
+      }
+  }
+}
 
 export function createProject(name, description) {
   return dispatch => {
     const authService = new AuthService();
+    const uid = authService.getProfile().id;
     dispatch(projectsLoading(true))
     authService.fetchAuth('/api/project/create', {
       method: 'POST',
@@ -41,7 +60,7 @@ export function createProject(name, description) {
       })
     })
     .then(project => {
-        dispatch(addProject(project))
+        dispatch(getProjects(uid))
         dispatch(projectsLoading(false))
     })
     .catch(err => {

@@ -20,7 +20,7 @@ const App = () => (
       {/* Account is the account page that displays the user's account info & code*/}
       <PrivateRoute path="/account/:userId?" component={Account}/>
       {/* Editor page allows users to mess with code */}
-      <PrivateRoute path="/editor" component={Editor}/>
+      <PrivateRoute path="/editor/:userId?" component={Editor}/>
       {/* Account Access page allows user to gain access or create account */}
       <Route path="/signIn" component={AccountAccess}/>
       <PrivateRoute component={Default}/>

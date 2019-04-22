@@ -7,8 +7,9 @@ import {Label, Modal, ModalHeader, ModalBody, FormGroup, Input, Button, Uncontro
 import CommentBox from './CommentBox';
 import CommentProjectBox from './CommentProjectBox';
 import AuthService from './AuthService';
+import { connect } from 'react-redux'
 
-export default class ScriptFeedback extends Component {
+class ScriptFeedback extends Component {
 
     constructor(props) {
         super(props);
@@ -23,8 +24,10 @@ export default class ScriptFeedback extends Component {
         this.Auth = new AuthService();
     }
 
-    componentDidMount(){
-        this.getComments();
+    componentDidUpdate(prevprops){
+        if(this.props.selectedProject && this.props.selectedProject !== prevprops.selectedProject){
+            this.getComments();
+        }
     }
 
     toggle() {
@@ -39,11 +42,14 @@ export default class ScriptFeedback extends Component {
             method: 'POST',
             body: JSON.stringify({
                 content: comment,
-                projectId: 1        //THIS NEEDS TO BE CHANGED TO SPECIFIC PROJECT ID
+                projectId: this.props.selectedProject.id
             })
         })
         .then(res => {
             this.getComments();
+            this.setState({
+                comment: ""
+            })
         })
         .catch(err => {
             console.log(err)
@@ -52,9 +58,8 @@ export default class ScriptFeedback extends Component {
         this.toggle();
     }
 
-    //GETS ALL COMMENTS CURRENTLY. MUST BE MODIFIED TO GET COMMENTS FROM A SINGLE PROJECT
     getComments = () =>{
-        this.Auth.fetchAuth('/api/comment/comments/'+1, {
+        this.Auth.fetchAuth('/api/comment/comments/'+this.props.selectedProject.id, {
             method: 'GET'
         })
         .then(res => {
@@ -109,12 +114,14 @@ export default class ScriptFeedback extends Component {
                         <div className="bg-dark text-light" id="CommentsSectionHead">
                             <i className="fas fa-comments pl-2"> Comments</i>
                             {/* Popup form to add a comment */}
-                            <span className="float-right mr-2" onClick={this.toggle} id="AddComment">
-                                <i className="fa fa-plus" aria-hidden="true"></i>
-                            </span>
-                            <UncontrolledTooltip placement="top" target="AddComment">
-                                Add a Comment
-                            </UncontrolledTooltip>
+                            {this.props.selectedProject &&
+                                <span className="float-right mr-2" onClick={this.toggle} id="AddComment">
+                                    <i className="fa fa-plus" aria-hidden="true"></i>
+                                    <UncontrolledTooltip placement="top" target="AddComment">
+                                        Add a Comment
+                                    </UncontrolledTooltip>
+                                </span>
+                            }
                             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                                 <ModalHeader toggle={this.toggle}>Add a Comment</ModalHeader>
                                 <ModalBody>
@@ -143,3 +150,18 @@ export default class ScriptFeedback extends Component {
         )
     }
 }
+
+const mapStateToProps = state => ({
+    user: state.user,
+    userLoading: state.userLoading,
+    userErrored: state.userErrored,
+    currentUserId: state.currentUserId,
+    selectedFile: state.selectedFile,
+    selectedProject: state.selectedProject,
+    socket: state.socket
+  })
+  
+  const mapDispatchToProps = dispatch => ({
+  })
+  
+  export default connect(mapStateToProps, mapDispatchToProps)(ScriptFeedback);

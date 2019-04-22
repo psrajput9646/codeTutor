@@ -1,13 +1,24 @@
 import React, { Component } from 'react'
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { selectFile } from '../actions/file'
+import { selectProject } from '../actions/projects';
 import { fetchFile } from '../actions/fileCache'
 import { connect } from 'react-redux';
 
 class ProjectFile extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            redirect: false
+        }
+    }
 
     handleOpen = () => {
-        if (typeof this.props.fileCache[this.props.file.id] === "undefined") {
+        if(!this.props.selectedProject || this.props.selectedProject.id !== this.props.projectId){
+            this.props.selectProject(this.props.projects, this.props.projectId);
+        }
+
+        if(typeof this.props.fileCache[this.props.file.id] === "undefined") {
             this.props.fetchFile(this.props.file)
             .then(fetchedFile => {
                 this.props.selectFile(fetchedFile);
@@ -15,6 +26,9 @@ class ProjectFile extends Component {
         } else {
             this.props.selectFile(this.props.fileCache[this.props.file.id]);
         }
+    }
+
+    componentDidUpdate(prevProps){
     }
 
     render() {
@@ -40,11 +54,15 @@ class ProjectFile extends Component {
 }
 
 const mapStateToProps = state => ({
-    fileCache: state.fileCache
+    projects: state.projects,
+    fileCache: state.fileCache,
+    selectedFile: state.selectedFile,
+    selectedProject: state.selectedProject
 })
 
 const mapDispatchToProps = dispatch => ({
     selectFile: (file) => dispatch(selectFile(file)),
+    selectProject: (project, id) => dispatch(selectProject(project, id)),
     fetchFile: (file) => dispatch(fetchFile(file))
 })
 

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import { 
     Label,
     Button,
@@ -12,18 +11,26 @@ import {
     UncontrolledTooltip,
     FormFeedback
 } from 'reactstrap';
+import { createFile } from '../actions/file'
+import { connect } from 'react-redux'
 
 class CreateScriptModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            modal: false
+            modal: false,
+            fileName: "",
+            fileType: ".java"
         };
         
         this.toggle = this.toggle.bind(this);
         this.submitForm = this.submitForm.bind(this);
     }
-        
+
+    handleChange = event => {
+        this.setState({ [event.target.name]: event.target.value })
+    }
+
     toggle() {
         this.setState(prevState => ({
         modal: !prevState.modal
@@ -31,10 +38,18 @@ class CreateScriptModal extends Component {
     }
 
     submitForm(){
-        this.props.createFile(this.props.id); 
+        this.props.createFile(this.props.id, this.state.fileName, this.state.fileType); 
         this.toggle();
     }
+
     render() {
+        const {fileName, fileType} = this.state;
+        const owner = (this.props.user && this.props.currentUserId === this.props.user.id)? true : false;
+
+        if(!owner){
+            return(<div></div>);
+        }
+
         return (
             <div>
                 <div className="text-center" onClick={this.toggle}
@@ -56,8 +71,8 @@ class CreateScriptModal extends Component {
                                 type="text"
                                 name="fileName"
                                 id="fileName"
-                                value={this.props.fileName}
-                                onChange={this.props.handleFileName}
+                                value={fileName}
+                                onChange={this.handleChange}
                             />
                             <FormFeedback>Alphabet Characters Only!</FormFeedback>
                         </FormGroup>
@@ -66,8 +81,8 @@ class CreateScriptModal extends Component {
                             <Input
                                 type="select"
                                 name="fileType"
-                                value={this.props.fileType}
-                                onChange={this.props.handleChange}>
+                                value={fileType}
+                                onChange={this.handleChange}>
                                 <option value=".java">Java</option>
                                 <option value=".py">Python</option>
                                 </Input>
@@ -81,4 +96,13 @@ class CreateScriptModal extends Component {
     }
 }
 
-export default CreateScriptModal;
+const mapStateToProps = state => ({
+    user: state.user,
+    currentUserId: state.currentUserId
+})
+
+const mapDispatchToProps = dispatch => ({
+    createFile: (id, name, type) => dispatch(createFile(id, name, type))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateScriptModal);

@@ -18,52 +18,8 @@ class FileExplorer extends Component {
       fileType: '.java',
       invalid: false
     }
+    
     this.Auth = new AuthService()
-  }
-
-  createProject = () => {
-    const { projectName, description } = this.state
-    this.Auth.fetchAuth('/api/project/create', {
-      method: 'POST',
-      body: JSON.stringify({
-        name: projectName,
-        description
-      })
-    })
-    .then(res => {
-      console.log(res)
-    })
-      .catch(err => {
-        console.log(err)
-      })
-  }
-
-  createFile = projectId => {
-      const { fileName, fileType } = this.state
-      this.Auth.fetchAuth('/api/file/create', {
-        method: 'POST',
-        body: JSON.stringify({
-          name: fileName,
-          type: fileType,
-          projectId: projectId
-        })
-      })
-      .then(res => {
-        console.log(res)
-        this.fetchProjects()
-      })
-        .catch(err => {
-          console.log(err)
-      })
-  }
-
-  fetchProjects = () => {
-    const { getProjects, currentUser } = this.props;
-    getProjects(currentUser.id);
-  }
-
-  handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value })
   }
 
   handleFileName = event => {
@@ -79,17 +35,15 @@ class FileExplorer extends Component {
   render() {
     return (
       <div className="h-100">
+
         {/* Header for file explorer */}
         <div className="flex">
           <Label for="scriptArea" className="mb-3">
             Explorer
           </Label>
+
           {/* Popup form to create a new project */}
-          <CreateProjectModal
-            createProject = {this.createProject} 
-            handleChange={this.handleChange} 
-            invalid = {this.state.invalid}
-          />
+          <CreateProjectModal/>
         </div>
 
         {/* Projects Area */}
@@ -99,24 +53,25 @@ class FileExplorer extends Component {
               <div key={project.id} className="file-name-container">
                 {/* Project name area */}
                 <div className="project-name-container">
+
                   {/* Project name text */}
                   <div className="name-cell">
                     <i className="fas fa-folder">{" " + project.name}</i>
                   </div>
+
                   {/* Plus Icon next to project name */}
                   <div className="text-center button-cell">
-                    <CreateScriptModal 
-                    key={project.id}
-                    {...project} 
-                    createFile = {this.createFile} 
-                    handleChange={this.handleChange} 
-                    handleFileName={this.handleFileName}
-                    invalid = {this.state.invalid}
+                    <CreateScriptModal
+                      key={project.id}
+                      {...project}
                     />
                   </div>
+
                 </div>
+                
+                {/* List of Files Belonging to Project */}
                 {project.files.map(file => (
-                  <ProjectFile key={file.id} name={file.name + file.type} file={file}/>
+                  <ProjectFile key={file.id} name={file.name + file.type} file={file} projectId={project.id}/>
                 ))}
               </div>
             ))}

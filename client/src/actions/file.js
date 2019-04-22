@@ -1,4 +1,5 @@
 import AuthService from "../components/AuthService";
+import {getProjects} from "./projects";
 
 export function selectFile(file){
     return {
@@ -18,6 +19,26 @@ export function fileErrored(error) {
     return {
         type: 'FILE_ERRORED',
         error
+    }
+}
+export function createFile(id, name, type){
+    return dispatch => {
+        const authService = new AuthService();
+        const uid = authService.getProfile().id
+        authService.fetchAuth('/api/file/create', {
+            method: 'POST',
+            body: JSON.stringify({
+                projectId: id,
+                name,
+                type,
+            })
+        })
+        .then(file => {
+            dispatch(getProjects(uid))
+        })
+        .catch(err => {
+            dispatch(fileErrored(err))
+        })
     }
 }
 

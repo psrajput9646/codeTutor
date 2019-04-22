@@ -44,10 +44,13 @@ class CreateProjectModal extends Component {
     }
 
     render() {
-        if(!this.props.owner){
+        const { projectName, description} = this.state;
+        const owner = (this.props.user && this.props.currentUserId === this.props.user.id)? true : false;
+        
+        if(!owner){
             return <div></div>
         }
-        const { projectName, description} = this.state;
+        
         return (
             <div>
                 <Button
@@ -104,6 +107,8 @@ class CreateProjectModal extends Component {
 }
 
 const mapStateToProps = state => ({
+    user: state.user,
+    currentUserId: state.currentUserId
 })
 
 const mapDispatchToProps = dispatch => ({
