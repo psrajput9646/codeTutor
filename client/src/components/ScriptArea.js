@@ -1,20 +1,46 @@
 import React, { Component } from 'react'
-import {
-  FormGroup,
-  Label,
-  Button,
-  UncontrolledTooltip
-} from 'reactstrap'
+import { FormGroup, Label, Button, UncontrolledTooltip } from 'reactstrap'
 import Editor from './editor/Editor'
+import { connect } from 'react-redux'
+import { updateAndSave } from '../actions/fileCache'
 
-export default class ScriptArea extends Component {
+class ScriptArea extends Component {
   constructor(props) {
     super(props)
 
     this.toggle = this.toggle.bind(this)
     this.state = {
-      tooltipOpen: false
+      tooltipOpen: false,
+      input: ''
     }
+  }
+
+  componentDidMount() {
+    this.setState({
+      input: this.props.file.content
+    })
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.file.id) {
+      if (prevProps.file.id !== this.props.file.id) {
+        this.props.updateAndSave(prevProps.file.id, this.state.input)
+        this.setState({
+          input: this.props.file.content
+        })
+      }
+    }
+  }
+
+  handleChange = newValue => {
+    this.setState({
+      input: newValue
+    })
+  }
+
+  handleSave = () => {
+    const { updateAndSave, file } = this.props
+    updateAndSave(file.id, this.state.input)
   }
 
   toggle() {
@@ -33,7 +59,8 @@ export default class ScriptArea extends Component {
             color="success"
             size="sm"
             className="float-right"
-            id="ExecuteCode">
+            id="ExecuteCode"
+            onClick={this.props.handleRun}>
             <i className="fa fa-play" aria-hidden="true" />
           </Button>
           <UncontrolledTooltip placement="top" target="ExecuteCode">
@@ -43,7 +70,8 @@ export default class ScriptArea extends Component {
             color="success"
             size="sm"
             className="float-right mr-1"
-            id="SaveProject">
+            id="SaveProject"
+            onClick={this.handleSave}>
             <i className="fa fa-save" aria-hidden="true" />
           </Button>
           <UncontrolledTooltip placement="top" target="SaveProject">
@@ -72,9 +100,24 @@ export default class ScriptArea extends Component {
         </div>
         {/* Input field for scripts */}
         <div className="no-scale-textarea script-area-input-height">
-          <Editor file={this.props.file}/>
+          <Editor
+            file={this.props.file}
+            handleChange={this.handleChange}
+            input={this.state.input}
+          />
         </div>
       </FormGroup>
     )
   }
 }
+
+const mapStateToProps = state => ({})
+
+const mapDispatchToProps = dispatch => ({
+  updateAndSave: (id, content) => dispatch(updateAndSave(id, content))
+})
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ScriptArea)

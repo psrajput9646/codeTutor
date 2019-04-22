@@ -9,7 +9,7 @@ elif [[ $file == *.java ]]; then
 	noExt=$(basename $file .java)
 	javac $file 2>output.txt
 	if [ -s output.txt ]; then
-		echo 'A compilation error occurred.'
+		cat output.txt
 	else
 		java $noExt
 	fi

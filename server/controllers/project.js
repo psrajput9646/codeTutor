@@ -58,6 +58,94 @@ module.exports = {
       .catch(err => res.status(400).send(err));
   },
 
+  favorite(req, res){
+    Project.findOne({
+      include: [
+        {
+          model: User
+        }
+      ],
+      where: { id: req.params.projectId }
+    })
+    .then(project => {
+      if(project.favoritedBy.includes(req.decoded.id)) {
+        let uIndex = project.favoritedBy.indexOf(req.decoded.id);
+        let pIndex = project.user.favoritedProjects.indexOf(project.id)
+        project.favoritedBy.splice(uIndex, 1);
+        project.votes -= 10;
+        project.user.points -= 10;
+        project.user.favoritedProjects.splice(pIndex, 1);
+      }
+
+      else {
+        project.votes += 10;
+        project.user.points += 10;
+        project.favoritedBy.push(req.decoded.id);
+        project.user.favoritedProjects.push(project.id);
+      }
+
+      return Promise.all([
+        project.update({
+          votes: project.votes,
+          favoritedBy: project.favoritedBy
+        }),
+        project.user.update({
+          points: project.user.points,
+          favoritedProjects: project.user.favoritedProjects
+        })
+      ])
+    })
+    .then((values) => {
+      res.status(200).send(values)
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).send(err)
+    })
+  },
+
+  vote(req, res){
+    Project.findOne({
+      include: [
+        {
+          model: User
+        }
+      ],
+      where: { id: req.params.projectId }
+    })
+    .then(project => {
+      if(project.votedBy.includes(req.decoded.id)) {
+        let index = project.votedBy.indexOf(req.decoded.id);
+        project.votedBy.splice(index, 1);
+        project.votes--;
+        project.user.points++;
+      }
+
+      else {
+        project.votes++;
+        project.user.points++;
+        project.votedBy.push(req.decoded.id);
+      }
+
+      return Promise.all([
+        project.update({
+          votes: project.votes,
+          votedBy: project.votedBy
+        }),
+        project.user.update({
+          points: project.user.points
+        })
+      ])
+    })
+    .then((values) => {
+      res.status(200).send(values)
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).send(err)
+    })
+  },
+
   getProjectByIdAndUserId(req, res, next) {
      Project.findOne({
       where: { id: req.body.projectId, userId: req.decoded.id }

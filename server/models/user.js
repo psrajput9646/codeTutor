@@ -9,7 +9,8 @@ module.exports = (sequelize, DataTypes) => {
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
     bio: DataTypes.STRING,
-    points: DataTypes.INTEGER
+    points: DataTypes.INTEGER,
+    favoritedProjects: DataTypes.ARRAY(DataTypes.INTEGER)
   }, {});
   User.associate = function(models) {
     User.hasMany(models.project);
