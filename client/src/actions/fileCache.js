@@ -44,7 +44,7 @@ export function fetchFile(file) {
       dispatch(fileCacheErrored(null))
       dispatch(fileCacheLoading(true))
       authService
-        .fetchAuth('api/file/' + file.id)
+        .fetchAuth('/api/file/' + file.id)
         .then(fetchedFile => {
           dispatch(addFile(fetchedFile))
           dispatch(fileCacheLoading(false))
