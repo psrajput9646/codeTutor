@@ -21,29 +21,17 @@ module.exports = {
         Comment.findAll({
             include: [
                 {
-                    model: User
+                    model: User,
+                    attributes: ['username']
                 }
             ],
             where: { projectId: req.params.projectId },
-            order: [[
-                'createdAt','DESC'
-            ]],
+            order: [
+                ['createdAt','DESC']
+            ],
         })
         .then(comments => {
-            const resObj = comments.map(comment => {
-                return Object.assign(
-                    {},
-                    {
-                      id: comment.id,
-                      content: comment.content,
-                      votes: comment.votes,
-                      favorited: comment.favorited,
-                      createdAt: comment.createdAt,
-                      username: comment.user.username
-                    }
-                  ) 
-            });
-            res.status(200).send(resObj)})
+            res.status(200).send(comments)})
         .catch(err => {console.log(err);res.status(400).send(err)})
     },
 
@@ -52,7 +40,8 @@ module.exports = {
         Comment.findOne({
             include: [
                 {
-                    model: User
+                    model: User,
+                    attributes: ["id", "points",'username']
                 }
             ],
             where: { id: req.params.commentId }
@@ -64,7 +53,6 @@ module.exports = {
                 comment.votedBy.splice(index, 1);
                 comment.votes--;
                 comment.user.points--;
-                
             } else {
                 comment.votes++;
                 comment.user.points++;

@@ -141,7 +141,7 @@ class ScriptFeedback extends Component {
                             </Modal>
                         </div>
                         {commentList.map((comment) =>
-                            <CommentBox key={comment.id} {...comment}/>
+                            <CommentBox key={comment.id} {...comment} currentUserId={this.props.currentUserId}/>
                         )}
                     </div>
                 </div>

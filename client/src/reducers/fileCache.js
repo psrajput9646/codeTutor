@@ -10,6 +10,9 @@ export const fileCache = (state = {}, action) =>
       case 'FILE_CACHE_UPDATE':
         draft[action.id].content = action.content
         break;
+      
+      default:
+        return state
     }
   })
 

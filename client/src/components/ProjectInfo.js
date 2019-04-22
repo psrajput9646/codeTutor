@@ -38,13 +38,14 @@ class ProjectInfo extends Component {
     }
 
     render() {
-        const projectInfo = this.props;
-        const owner = (this.props.user && this.props.currentUserId === this.props.user.id)? true : false;
-        
+        const { user, projectInfo, locked} = this.props;
+        const owner = (user && !locked && this.props.currentUserId === user.id)? true : false;
+
         return (
         <ListGroupItem className="pb-0">
             <Link to={"/editor/"+projectInfo.userId} className="link">{projectInfo.name} </Link>
-
+                
+            {/* Edit Project Only If Owner */}
             {owner &&
                 <span className="edit" onClick={this.toggle}>edit</span>
             }
@@ -54,6 +55,7 @@ class ProjectInfo extends Component {
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                 <ModalHeader toggle={this.toggle}>{projectInfo.name}</ModalHeader>
                 <ModalBody>
+
                      {/* Edit Project Name */}
                     <Form onSubmit={this.submitForm}>
                         <FormGroup>
@@ -67,6 +69,7 @@ class ProjectInfo extends Component {
                                 placeholder="Add project name"
                             />
                         </FormGroup>
+
                         {/* Edit Project Description */}
                         <FormGroup>
                             <Label for={"Description" + projectInfo.id}>Description (Optional)</Label>

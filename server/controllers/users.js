@@ -76,13 +76,8 @@ module.exports = {
       where: { id: req.params.id },
       include: [
         {
-          model: Comment,
-          attributes: ['votes']
-        },
-        {
           model: Project,
           include: [File],
-          
         }
       ],
       order: [
@@ -90,10 +85,6 @@ module.exports = {
       ]
     })
     .then(user => {
-      let sum = 0;
-      user.comments.forEach(comment => {
-        sum += comment.votes;
-      });
       const resObj = Object.assign({},
         {
           id: user.id,
@@ -102,7 +93,7 @@ module.exports = {
           firstName: user.firstName,
           lastName: user.lastName,
           bio: user.bio,
-          likes: sum,
+          points: user.points,
           projects: user.projects
         }
       );

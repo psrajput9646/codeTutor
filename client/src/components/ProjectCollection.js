@@ -84,7 +84,7 @@ class ProjectCollection extends React.Component {
               <Col sm="12">
                 <ListGroup className="mt-3" flush>
                   {projects.map(project => (
-                    <ProjectInfo key={project.id} {...project}/>
+                    <ProjectInfo key={project.id} projectInfo={project}/>
                   ))}
                 </ListGroup>
               </Col>
@@ -96,7 +96,7 @@ class ProjectCollection extends React.Component {
               <Col sm="12">
                 <ListGroup className="mt-3" flush>
                   {favoritedProjectList.map(project => (
-                    <ProjectInfo key={project.id} {...project} />
+                    <ProjectInfo key={project.id} projectInfo={project} />
                   ))}
                 </ListGroup>
               </Col>
