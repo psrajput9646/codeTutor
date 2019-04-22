@@ -45,7 +45,7 @@ class SignIn extends Component {
           this.Auth.setToken(res.token);
           const userId = this.Auth.getProfile().id;
           this.props.setUserLoggedIn(true);
-          this.props.setCurrentUserId(userId);
+          this.props.setCurrentUserId();
           this.setState({
             redirect: true
           })
@@ -114,7 +114,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   setUserLoggedIn: (status) => dispatch(setUserLoggedIn(status)),
-  setCurrentUserId: (userId) => dispatch(setCurrentUserId(userId))
+  setCurrentUserId: () => dispatch(setCurrentUserId())
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(SignIn)

@@ -5,7 +5,7 @@ import AuthService from './AuthService';
 import Form from '../../node_modules/reactstrap/lib/Form';
 import { Redirect } from 'react-router-dom'
 import { connect } from "react-redux"
-import  {setUserLoggedIn} from "../actions/user"
+import  { setUserLoggedIn, setCurrentUserId } from "../actions/user"
 
 class SignUp extends Component {
     constructor(props){
@@ -59,6 +59,7 @@ class SignUp extends Component {
         .then(res => {
             this.Auth.setToken(res.token);
             this.props.setUserLoggedIn(true)
+            this.props.setCurrentUserId();
             this.setState({
                 redirect: true
             })
@@ -182,7 +183,8 @@ const mapStateToProps = state => ({
   })
   
   const mapDispatchToProps = dispatch => ({
-    setUserLoggedIn: (status) => dispatch(setUserLoggedIn(status))
+    setUserLoggedIn: (status) => dispatch(setUserLoggedIn(status)),
+    setCurrentUserId: () => dispatch(setCurrentUserId())
   })
   
   export default connect(
