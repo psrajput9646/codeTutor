@@ -59,7 +59,7 @@ class ProjectCollection extends React.Component {
               onClick={() => {
                 this.toggle('1')
               }}>
-              <div className="flex">
+              <div className="flex project-collection-nav-name">
                 My Projects &nbsp;
                 <CreateProjectModal/>
               </div>
@@ -71,7 +71,9 @@ class ProjectCollection extends React.Component {
               onClick={() => {
                 this.toggle('2')
               }}>
-              Star
+              <div className="project-collection-nav-name">
+                Star
+              </div>
             </NavLink>
           </NavItem>
         </Nav>
