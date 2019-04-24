@@ -57,7 +57,7 @@ export default class Home extends Component {
                             <Spinner type="grow" color="dark" style={{width: '3rem', height: '3rem'}} />
                         :   <ListGroup className="mt-3" flush>
                                 {projectsList.map((project)=>
-                                    <ProjectInfo key={project.id} {...project}/>
+                                    <ProjectInfo key={project.id} projectInfo={project} locked={true}/>
                                 )}
                             </ListGroup>
                         }

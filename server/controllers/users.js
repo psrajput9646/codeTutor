@@ -85,16 +85,22 @@ module.exports = {
       where: { id: req.params.id },
       include: [
         {
+<<<<<<< HEAD
           model: Comment,
           attributes: ["votes"]
         },
         {
           model: Project,
           include: [File]
+=======
+          model: Project,
+          include: [File],
+>>>>>>> dd6bc532453d764c40c70218c89c420bb0bae23d
         }
       ],
       order: [[Project, "createdAt", "DESC"]]
     })
+<<<<<<< HEAD
       .then(user => {
         let sum = 0;
         user.comments.forEach(comment => {
@@ -118,6 +124,26 @@ module.exports = {
       .catch(err => {
         res.status(500).send(err);
       });
+=======
+    .then(user => {
+      const resObj = Object.assign({},
+        {
+          id: user.id,
+          email: user.email,
+          username: user.username,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          bio: user.bio,
+          points: user.points,
+          projects: user.projects
+        }
+      );
+      res.status(200).send(resObj)
+    })
+    .catch(err => {
+      res.status(500).send(err)
+    })
+>>>>>>> dd6bc532453d764c40c70218c89c420bb0bae23d
   },
 
   update(req, res) {

@@ -59,7 +59,7 @@ class ProjectCollection extends React.Component {
               onClick={() => {
                 this.toggle('1')
               }}>
-              <div className="flex">
+              <div className="flex project-collection-nav-name">
                 My Projects &nbsp;
                 <CreateProjectModal/>
               </div>
@@ -71,7 +71,9 @@ class ProjectCollection extends React.Component {
               onClick={() => {
                 this.toggle('2')
               }}>
-              Star
+              <div className="project-collection-nav-name">
+                Star
+              </div>
             </NavLink>
           </NavItem>
         </Nav>
@@ -84,7 +86,7 @@ class ProjectCollection extends React.Component {
               <Col sm="12">
                 <ListGroup className="mt-3" flush>
                   {projects.map(project => (
-                    <ProjectInfo key={project.id} {...project}/>
+                    <ProjectInfo key={project.id} projectInfo={project}/>
                   ))}
                 </ListGroup>
               </Col>
@@ -96,7 +98,7 @@ class ProjectCollection extends React.Component {
               <Col sm="12">
                 <ListGroup className="mt-3" flush>
                   {favoritedProjectList.map(project => (
-                    <ProjectInfo key={project.id} {...project} />
+                    <ProjectInfo key={project.id} projectInfo={project} />
                   ))}
                 </ListGroup>
               </Col>

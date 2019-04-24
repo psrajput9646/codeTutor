@@ -43,7 +43,6 @@ class SignIn extends Component {
       .then(res => {
         if (!res.OK) {
           this.Auth.setToken(res.token);
-          const userId = this.Auth.getProfile().id;
           this.props.setUserLoggedIn(true);
           this.props.setCurrentUserId();
           this.setState({

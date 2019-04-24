@@ -1,6 +1,10 @@
 a.title-link:link {color:black; text-decoration:none;}
 a.title-link:hover {color:gray;}
 
+.project-collection-nav-name{
+    font-size: 1.2rem;
+    font-weight:bold;
+}
 .project-name-container{
     width: 100%;
     display: flex;
