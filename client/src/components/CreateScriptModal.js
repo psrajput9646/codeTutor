@@ -28,7 +28,12 @@ class CreateScriptModal extends Component {
     }
 
     handleChange = event => {
-        this.setState({ [event.target.name]: event.target.value })
+        let name = event.target.value
+        let valid = /^[a-zA-Z]+$/.test(name)
+        this.setState({
+          [event.target.name]: event.target.value,
+          invalid: !valid
+        })
     }
 
     toggle() {
@@ -67,7 +72,7 @@ class CreateScriptModal extends Component {
                         <FormGroup>
                             <Label for="fileName">File Name</Label>
                             <Input
-                                invalid={this.props.invalid}
+                                invalid={this.state.invalid}
                                 type="text"
                                 name="fileName"
                                 id="fileName"
@@ -87,7 +92,7 @@ class CreateScriptModal extends Component {
                                 <option value=".py">Python</option>
                                 </Input>
                                 </FormGroup>
-                            <Button color="success" onClick={this.submitForm}>Submit</Button>
+                            <Button color="success" onClick={this.submitForm} disabled={this.state.invalid}>Submit</Button>
                         </Form>
                     </ModalBody>
                 </Modal>

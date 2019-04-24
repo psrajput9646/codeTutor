@@ -88,7 +88,7 @@ describe("Test the Registration", () => {
     test("It should reject usernames that already exist", async () => {
         const response = await request(app)
         .post("/api/user/create")
-        .send({username: "bly01854", password, email, firstName, lastName})
+        .send({username: "TestUser", password, email, firstName, lastName})
         .set("Accept", "application/json");
         expect(response.statusCode).toBe(409);
     })
@@ -102,8 +102,3 @@ describe("Test the Registration", () => {
         })
     })
 })
-
-afterAll(() => {
-    // Close connection
-    return db.sequelize.close();
-  });

@@ -26,4 +26,12 @@ projectRouter.post("/delete", verifyToken, projectController.delete)
 // Parameter: projectName, description
 projectRouter.post("/update", verifyToken, projectController.update)
 
+// Favorites a Project
+// Parameter: Id, userId(grabbed from token)
+projectRouter.get("/favorite/:id", verifyToken, projectController.favorite)
+
+// Votes on a Project
+// Parameter: Id, userId(grabbed from token)
+projectRouter.get("/vote/:id", verifyToken, projectController.vote)
+
 module.exports = projectRouter;

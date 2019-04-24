@@ -1,7 +1,8 @@
 const Project = require("../models").project;
 const File = require("../models").file;
-const rimraf = require('rimraf');
-const mkdirp = require('mkdirp');
+const rimraf = require("rimraf");
+const mkdirp = require("mkdirp");
+const ncp = require("ncp").ncp;
 
 module.exports = {
   // Requires name for project, description, userId(grabbed from token)
@@ -34,23 +35,24 @@ module.exports = {
       ]
     })
       .then(project => {
-        res.status(200).send(project)
+        res.status(200).send(project);
       })
-      .catch(err => res.status(400).send(err));
+      .catch(err => {
+        console.log(err);
+        res.status(404).send(err);
+      });
   },
 
   // Parameter: userId
   getProjectsByUserId(req, res) {
-     Project.findAll({
+    Project.findAll({
       where: { userId: req.params.userId },
       include: [
         {
           model: File
-        },
+        }
       ],
-      order: [[
-        'createdAt','DESC'
-      ]]
+      order: [["createdAt", "DESC"]]
     })
       .then(projects => {
         res.status(200).send(projects);
@@ -58,96 +60,131 @@ module.exports = {
       .catch(err => res.status(400).send(err));
   },
 
-  favorite(req, res){
+  // Requires Id of Project
+  favorite(req, res) {
     Project.findOne({
       include: [
         {
           model: User
         }
       ],
-      where: { id: req.params.projectId }
+      where: { id: req.params.id }
     })
-    .then(project => {
-      if(project.favoritedBy.includes(req.decoded.id)) {
-        let uIndex = project.favoritedBy.indexOf(req.decoded.id);
-        let pIndex = project.user.favoritedProjects.indexOf(project.id)
-        project.favoritedBy.splice(uIndex, 1);
-        project.votes -= 10;
-        project.user.points -= 10;
-        project.user.favoritedProjects.splice(pIndex, 1);
-      }
+      .then(project => {
+        if (project.favoritedBy.includes(req.decoded.id)) {
+          let uIndex = project.favoritedBy.indexOf(req.decoded.id);
+          let pIndex = project.user.favoritedProjects.indexOf(project.id);
+          project.favoritedBy.splice(uIndex, 1);
+          project.votes -= 10;
+          project.user.points -= 10;
+          project.user.favoritedProjects.splice(pIndex, 1);
+        } else {
+          project.votes += 10;
+          project.user.points += 10;
+          project.favoritedBy.push(req.decoded.id);
+          project.user.favoritedProjects.push(project.id);
+        }
 
-      else {
-        project.votes += 10;
-        project.user.points += 10;
-        project.favoritedBy.push(req.decoded.id);
-        project.user.favoritedProjects.push(project.id);
-      }
-
-      return Promise.all([
-        project.update({
-          votes: project.votes,
-          favoritedBy: project.favoritedBy
-        }),
-        project.user.update({
-          points: project.user.points,
-          favoritedProjects: project.user.favoritedProjects
-        })
-      ])
-    })
-    .then((values) => {
-      res.status(200).send(values)
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).send(err)
-    })
+        return Promise.all([
+          project.update({
+            votes: project.votes,
+            favoritedBy: project.favoritedBy
+          }),
+          project.user.update({
+            points: project.user.points,
+            favoritedProjects: project.user.favoritedProjects
+          })
+        ]);
+      })
+      .then(values => {
+        res.status(200).send(values);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).send(err);
+      });
   },
 
-  vote(req, res){
+  // Requires Id of Project
+  vote(req, res) {
     Project.findOne({
       include: [
         {
           model: User
         }
       ],
-      where: { id: req.params.projectId }
+      where: { id: req.params.id }
     })
-    .then(project => {
-      if(project.votedBy.includes(req.decoded.id)) {
-        let index = project.votedBy.indexOf(req.decoded.id);
-        project.votedBy.splice(index, 1);
-        project.votes--;
-        project.user.points++;
-      }
+      .then(project => {
+        if (project.votedBy.includes(req.decoded.id)) {
+          let index = project.votedBy.indexOf(req.decoded.id);
+          project.votedBy.splice(index, 1);
+          project.votes--;
+          project.user.points++;
+        } else {
+          project.votes++;
+          project.user.points++;
+          project.votedBy.push(req.decoded.id);
+        }
 
-      else {
-        project.votes++;
-        project.user.points++;
-        project.votedBy.push(req.decoded.id);
-      }
+        return Promise.all([
+          project.update({
+            votes: project.votes,
+            votedBy: project.votedBy
+          }),
+          project.user.update({
+            points: project.user.points
+          })
+        ]);
+      })
+      .then(values => {
+        res.status(200).send(values);
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).send(err);
+      });
+  },
 
-      return Promise.all([
-        project.update({
-          votes: project.votes,
-          votedBy: project.votedBy
-        }),
-        project.user.update({
-          points: project.user.points
-        })
-      ])
-    })
-    .then((values) => {
-      res.status(200).send(values)
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).send(err)
-    })
+  fork(req, res) {
+    Project.findOne({
+      include: [
+        {
+          model: File
+        }
+      ],
+      where: { id: req.params.id }
+    }).then(project => {
+      Project.create({
+        name: project.name,
+        description: "Fork of " + project.name,
+        userId: req.decoded.id
+      }).then(newProject => {
+        let newFiles = [];
+        let basePath = "projects/" + req.decoded.id + "/" + newProject.id + "/";
+        project.files.forEach(file => {
+          newFiles.push(
+            File.create({
+              name: file.name,
+              type: file.type,
+              path: basePath + file.name + file.type,
+              projectId: newProject.id
+            })
+          );
+        });
+        Promise.all(newFiles).then(values => {
+          ncp(
+            "projects/" + project.userId + "/" + project.id,
+            basePath,
+            err => {}
+          );
+        });
+      });
+    });
   },
 
   getProjectByIdAndUserId(req, res, next) {
-     Project.findOne({
+    Project.findOne({
       where: { id: req.body.projectId, userId: req.decoded.id }
     })
       .then(project => {
@@ -162,34 +199,34 @@ module.exports = {
 
   getAllProjects(req, res) {
     Project.findAll({
-      order: [[
-      'createdAt','DESC'
-    ]]
-   })
-     .then(projects => {
-       res.status(200).send(projects);
-     })
-     .catch(err => res.status(400).send(err));
- },
+      order: [["createdAt", "DESC"]]
+    })
+      .then(projects => {
+        res.status(200).send(projects);
+      })
+      .catch(err => res.status(400).send(err));
+  },
 
   update(req, res) {
-     Project.findOne({
+    Project.findOne({
       where: { id: req.body.id }
     })
       .then(project => {
-        project.update({
-          name: req.body.name,
-          description: req.body.description
-        }).then(project => {
-          res.status(200).send(project);
-        })
-        .catch(err => {
-          res.status(400).send(err)
-        });
+        project
+          .update({
+            name: req.body.name,
+            description: req.body.description
+          })
+          .then(project => {
+            res.status(200).send(project);
+          })
+          .catch(err => {
+            res.status(400).send(err);
+          });
       })
       .catch(err => {
-        res.status(400).send(err)
-    });
+        res.status(400).send(err);
+      });
   },
 
   // Parameter: projectId, userId (grabbed from token)

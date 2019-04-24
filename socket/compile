@@ -5,7 +5,7 @@ file=$1
 if [ $# -eq 0 ]; then
 	echo "No parameters passed."
 elif [[ $file == *.java ]]; then
-	echo 'Java file detected. Compiling.'
+	echo 'Compiling Java File...'
 	noExt=$(basename $file .java)
 	javac $file 2>output.txt
 	if [ -s output.txt ]; then
@@ -14,7 +14,7 @@ elif [[ $file == *.java ]]; then
 		java $noExt
 	fi
 elif [[ $file == *.py ]]; then
-	echo 'Python file detected. Compiling.'
+	echo 'Running Python file...'
 	python $file
 else
 	echo 'Not a recognized file type'

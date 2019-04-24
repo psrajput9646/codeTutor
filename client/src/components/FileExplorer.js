@@ -16,20 +16,9 @@ class FileExplorer extends Component {
       projectList: [],
       fileName: '',
       fileType: '.java',
-      invalid: false
     }
     
     this.Auth = new AuthService()
-  }
-
-  handleFileName = event => {
-    console.log("handle file name");
-    let name = event.target.value
-    let valid = /^[a-zA-Z]+$/.test(name)
-    this.setState({
-      [event.target.name]: event.target.value,
-      invalid: !valid
-    })
   }
 
   render() {

@@ -12,13 +12,21 @@ const mkdirp = require("mkdirp");
 // Password Validator Schema
 let schema = new passwordValidator();
 schema
-  .is().min(8)
-  .is().max(100)
-  .has().uppercase()
-  .has().lowercase()
-  .has().digits()
-  .has().not().spaces()
-  .has().symbols();
+  .is()
+  .min(8)
+  .is()
+  .max(100)
+  .has()
+  .uppercase()
+  .has()
+  .lowercase()
+  .has()
+  .digits()
+  .has()
+  .not()
+  .spaces()
+  .has()
+  .symbols();
 
 module.exports = {
   create(req, res) {
@@ -43,7 +51,7 @@ module.exports = {
     // Encrypt password and create user
     bcrypt.genSalt(10, function(err, salt) {
       bcrypt.hash(req.body.password, salt, function(err, hash) {
-        return User.create({
+        User.create({
           username: req.body.username,
           password: hash,
           email: req.body.email,
@@ -58,10 +66,11 @@ module.exports = {
             mkdirp("projects/" + user.id, err => {
               if (err) {
                 throw new Error(err);
+              } else {
+                return jwt.sign(tokenBody, config.secret, {
+                  expiresIn: 1209600 // 2 weeks
+                });
               }
-            });
-            return jwt.sign(tokenBody, config.secret, {
-              expiresIn: 1209600 // 2 weeks
             });
           })
           .then(token => res.status(201).send({ auth: true, token }))
@@ -77,89 +86,87 @@ module.exports = {
       include: [
         {
           model: Comment,
-          attributes: ['votes']
+          attributes: ["votes"]
+        },
+        {
+          model: Project,
+          include: [File]
+        }
+      ],
+      order: [[Project, "createdAt", "DESC"]]
+    })
+      .then(user => {
+        let sum = 0;
+        user.comments.forEach(comment => {
+          sum += comment.votes;
+        });
+        const resObj = Object.assign(
+          {},
+          {
+            id: user.id,
+            email: user.email,
+            username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            bio: user.bio,
+            likes: sum,
+            projects: user.projects
+          }
+        );
+        res.status(200).send(resObj);
+      })
+      .catch(err => {
+        res.status(500).send(err);
+      });
+  },
+
+  update(req, res) {
+    User.findOne({
+      where: { id: req.decoded.id },
+      include: [
+        {
+          model: Comment,
+          attributes: ["votes"]
         },
         {
           model: Project,
           include: [File],
-          
+          order: [["createdAt", "DESC"]]
         }
-      ],
-      order: [
-        [Project,'createdAt','DESC']
       ]
     })
-    .then(user => {
-      let sum = 0;
-      user.comments.forEach(comment => {
-        sum += comment.votes;
-      });
-      const resObj = Object.assign({},
-        {
-          id: user.id,
-          email: user.email,
-          username: user.username,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          bio: user.bio,
-          likes: sum,
-          projects: user.projects
-        }
-      );
-      res.status(200).send(resObj)
-    })
-    .catch(err => {
-      res.status(500).send(err)
-    })
-  },
-
-  update(req, res){
-    User.findOne({
-        where: { id: req.decoded.id },
-        include: [
-          {
-            model: Comment,
-            attributes: ['votes']
-          },
-          {
-            model: Project,
-            include: [File],
-            order: [[
-              'createdAt','DESC'
-            ]]
-          }
-        ]
-    })
-    .then(user => {
-        user.update({
+      .then(user => {
+        user
+          .update({
             bio: req.body.bio
-        })
-        .then(user => {
-          let sum = 0;
-          user.comments.forEach(comment => {
-            sum += comment.votes;
+          })
+          .then(user => {
+            let sum = 0;
+            user.comments.forEach(comment => {
+              sum += comment.votes;
+            });
+
+            const resObj = Object.assign(
+              {},
+              {
+                id: user.id,
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                bio: user.bio,
+                likes: sum,
+                projects: user.projects
+              }
+            );
+            res.status(200).send(resObj);
+          })
+          .catch(err => {
+            res.status(500).send(err);
           });
-    
-          const resObj = Object.assign({},
-            {
-              id: user.id,
-              email: user.email,
-              firstName: user.firstName,
-              lastName: user.lastName,
-              bio: user.bio,
-              likes: sum,
-              projects: user.projects
-            }
-          );
-            res.status(200).send(resObj)
-        })
-        .catch(err => {
-            res.status(500).send(err)
-        });
-    })
-    .catch((err) => {
-      res.status(500).send(err)
-    })
+      })
+      .catch(err => {
+        res.status(500).send(err);
+      });
   },
 
   login(req, res) {
