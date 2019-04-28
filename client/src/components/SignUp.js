@@ -57,12 +57,18 @@ class SignUp extends Component {
             })
         })
         .then(res => {
-            this.Auth.setToken(res.token);
-            this.props.setUserLoggedIn(true)
-            this.props.setCurrentUserId();
-            this.setState({
-                redirect: true
-            })
+            if(typeof res.token === "undefined"){
+                this.Auth.setToken(res.token);
+                this.props.setUserLoggedIn(true)
+                this.props.setCurrentUserId();
+                this.setState({
+                    redirect: true
+                })
+            }else{
+                this.setState({
+                    err: "Server Error: Token unsuccesfully created."
+                })
+            }
         })
         .catch(err => {
             console.log(err)
