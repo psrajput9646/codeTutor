@@ -60,7 +60,7 @@ export function fetchUser(userId) {
   }
 }
 
-export function updateUser(bio) {
+export function updateUser(data, fields) {
   return dispatch => {
     //dispatch(userLoading(true))
     const authService = new AuthService()
@@ -68,7 +68,11 @@ export function updateUser(bio) {
     authService.fetchAuth('/api/user/update', {
       method: 'POST',
       body: JSON.stringify({
-        bio
+        bio: data.bio,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        favoritedProjects: data.favoritedProjects,
+        fields
       })
     })
     .then(user => {

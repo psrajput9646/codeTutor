@@ -116,40 +116,23 @@ module.exports = {
       where: { id: req.decoded.id },
       include: [
         {
-          model: Comment,
-          attributes: ["votes"]
-        },
-        {
           model: Project,
-          include: [File],
           order: [["createdAt", "DESC"]]
         }
       ]
     })
       .then(user => {
-        user
-          .update({
-            bio: req.body.bio
+        user.update({
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            bio: req.body.bio,
+            favoritedProjects: req.body.favoritedProjects
+          },
+          {
+            fields: req.body.fields
           })
           .then(user => {
-            let sum = 0;
-            user.comments.forEach(comment => {
-              sum += comment.votes;
-            });
-
-            const resObj = Object.assign(
-              {},
-              {
-                id: user.id,
-                email: user.email,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                bio: user.bio,
-                likes: sum,
-                projects: user.projects
-              }
-            );
-            res.status(200).send(resObj);
+            res.status(200).send(user);
           })
           .catch(err => {
             res.status(500).send(err);
