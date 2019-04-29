@@ -73,6 +73,16 @@ class ScriptArea extends Component {
           <UncontrolledTooltip placement="top" target="ExecuteCode">
             Execute code
           </UncontrolledTooltip>
+          <Button
+            color="success"
+            size="sm"
+            className="float-right mr-1"
+            id="SubmitSolution">
+            <i className="fa fa-paper-plane" aria-hidden="true" />
+          </Button>
+          <UncontrolledTooltip placement="top" target="SubmitSolution">
+            Submit as solution
+          </UncontrolledTooltip>
           {owner &&
             <span>
               <Button
