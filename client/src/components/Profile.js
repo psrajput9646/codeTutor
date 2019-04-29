@@ -10,7 +10,9 @@ class Profile extends Component {
         super(props);
         this.state = {
             modal: false,
-            bio: ''
+            bio: "",
+            firstName: "",
+            lastName: ""
         };
         
         this.toggle = this.toggle.bind(this);
@@ -24,23 +26,30 @@ class Profile extends Component {
     
     updateProfile = (event) => {
         event.preventDefault();
-        this.props.updateUser(this.state.bio);
+        const { firstName, lastName, bio } = this.state;
+        const user = Object.assign({},{firstName, lastName, bio});
+        
+        this.props.updateUser(user, ["firstName", "lastName", "bio"]);
         this.toggle();
     }
 
     handleChange = (event) => {
-        this.setState({ bio: event.target.value})
+        this.setState({ [event.target.name]: event.target.value})
     }
     
     toggle = () => {
+        const { firstName, lastName, bio } = this.props.user;
         this.setState(prevState => ({
-            modal: !prevState.modal,
-            bio: this.props.user.bio
+            firstName,
+            lastName,
+            bio: (bio !== null)? bio : "",
+            modal: !prevState.modal
         }));
     }
 
     render() {
         const user = this.props.user;
+        const { firstName, lastName, bio } = this.state;
         const owner = (user && this.props.currentUserId === this.props.user.id)? true : false;
         return (
         <div>
@@ -62,7 +71,7 @@ class Profile extends Component {
                         <span className="text-secondary">
                             <i className="fas fa-heart fa text-danger"/>
                         </span>
-                        <span className="font-weight-light pl-2">{user.likes}</span>
+                        <span className="font-weight-light pl-2">{user.points}</span>
                     </span>
                     <UncontrolledTooltip placement="right" target="Likes">
                         Total Likes
@@ -74,24 +83,51 @@ class Profile extends Component {
                 </div>
             }
 
-            {/* Edit Button And Modal*/}
+            {/* Edit Profile Only If Owner */}
             {owner &&
                 <Button color="secondary" className="btn-sm btn-block" onClick={this.toggle}>Edit</Button>
             }
+            
+            {/* Edit Modal*/}
             <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
                 <ModalHeader toggle={this.toggle}>Edit Bio</ModalHeader>
                 <ModalBody>
                     <Form onSubmit={this.updateProfile}>
+                        <FormGroup>
+                            <Label for="firstName">Name</Label>
+                            <Row>
+                            <Col md={6} sm={12}>
+                                <Input
+                                type="text"
+                                name="firstName"
+                                id="firstName"
+                                placeholder="First Name"
+                                value={firstName}
+                                onChange={this.handleChange}
+                                />
+                            </Col>
+                            <Col md={6} sm={12}>
+                                <Input
+                                type="text"
+                                name="lastName"
+                                id="lastName"
+                                placeholder="Last Name"
+                                value={lastName}
+                                onChange={this.handleChange}
+                                />
+                            </Col>
+                            </Row>
+                        </FormGroup>
                         <FormGroup>
                             <Label for="bio">Bio</Label>
                             <Input
                                 type="textarea"
                                 name="bio"
                                 id="Bio"
-                                rows="4"
-                                value={this.state.bio}
-                                onChange={this.handleChange}
                                 placeholder="Add your bio"
+                                rows="4"
+                                value={bio}
+                                onChange={this.handleChange}
                             ></Input>
                         </FormGroup>
                         <Button color="success">Submit</Button>
@@ -109,7 +145,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    updateUser: (bio) => dispatch(updateUser(bio))
+    updateUser: (user, fields) => dispatch(updateUser(user, fields))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

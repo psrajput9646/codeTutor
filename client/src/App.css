@@ -5,11 +5,20 @@ a.title-link:hover {color:gray;}
     font-size: 1.2rem;
     font-weight:bold;
 }
+
 .project-name-container{
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
+}
+
+.file-name-container:nth-child(n+2){
+    margin-top: 15px;
+}
+
+.file:nth-child(n+3){
+    border-top: 1px solid gray;
 }
 
 .name-cell {
@@ -50,6 +59,7 @@ a.title-link:hover {color:gray;}
 .io-area-height{
     height: calc(20%) !important;
 }
+
 .script-io-height{
     height: calc(26vh - 85px) !important;
     min-height: 70px;
@@ -63,6 +73,7 @@ a.title-link:hover {color:gray;}
 .editor-content-height{
     height: calc(100vh - 133px);
 }
+
 .list-box{
     background: white;
     min-height: 200px;
@@ -100,6 +111,7 @@ a.title-link:hover {color:gray;}
     cursor: pointer;
     font-size: 12pt;
 }
+
 .edit:hover {
     text-decoration: underline;
 }
@@ -108,4 +120,8 @@ a.title-link:hover {color:gray;}
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+input.invalid {
+    border: 1px solid red;
 }

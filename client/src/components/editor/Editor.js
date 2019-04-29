@@ -11,7 +11,7 @@ import { updateAndSave } from '../../actions/fileCache'
 class Editor extends Component {
   render() {
     let fileType;
-    console.log(this.props.selectedFile.type)
+    
     switch (this.props.selectedFile.type) {
       case '.java':
         fileType = 'java'
@@ -25,11 +25,12 @@ class Editor extends Component {
         fileType = 'java'
     }
 
-    console.log(this.props.file)
-
+    const user = this.props.user;
+    const owner = (user && this.props.currentUserId === this.props.user.id)? true : false;
     return (
       <AceEditor
         className="h-100 w-100"
+        readOnly={owner? false: true}
         mode={fileType}
         theme="monokai"
         name="Editor"
@@ -47,6 +48,8 @@ class Editor extends Component {
 }
 
 const mapStateToProps = state => ({
+  user: state.user,
+  currentUserId: state.currentUserId,
   selectedFile: state.selectedFile
 })
 

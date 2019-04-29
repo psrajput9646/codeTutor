@@ -6,12 +6,6 @@ import { fetchFile } from '../actions/fileCache'
 import { connect } from 'react-redux';
 
 class ProjectFile extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            redirect: false
-        }
-    }
 
     handleOpen = () => {
         if(!this.props.selectedProject || this.props.selectedProject.id !== this.props.projectId){
@@ -28,23 +22,30 @@ class ProjectFile extends Component {
         }
     }
 
-    componentDidUpdate(prevProps){
+    handleRename = () => {
+        this.props.selectFile(null);
+    }
+
+    handleDelete = () => {
+        this.props.selectFile(null);
     }
 
     render() {
         const fileName = this.props.name;
         return (
-        <div className="comment-box bg-light">
+        <div className="file bg-light">
             <span className="font-weight-light text-smaller text-dark bg-light">
                 <UncontrolledDropdown>
-                    <DropdownToggle className="btn-block btn-light mb-1 text-left" size="sm">
+                    <DropdownToggle className="btn-block btn-light text-left" size="sm">
                         {fileName}
                     </DropdownToggle>
                     
                     <DropdownMenu>
                         <DropdownItem onClick={this.handleOpen}>Open</DropdownItem>
                         <DropdownItem divider />
-                        <DropdownItem >Delete</DropdownItem>
+                        <DropdownItem onClick={this.handleRename}>Rename</DropdownItem>
+                        <DropdownItem divider />
+                        <DropdownItem onClick={this.handleDelete}>Delete</DropdownItem>
                     </DropdownMenu>
                 </UncontrolledDropdown>
             </span>

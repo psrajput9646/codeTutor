@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {FormGroup, Label, Input, Button } from 'reactstrap';
+import {FormGroup, Label, Input } from 'reactstrap';
 import { connect} from 'react-redux'
 
 
@@ -29,7 +29,6 @@ class ScriptInput extends Component {
         <FormGroup>
             <Label for="InputText">Input</Label>
             <Input className="no-scale-textarea script-io-height" type="textarea" name="text" value={this.state.input} onChange={this.handleChange} id="InputText"/>
-            <Button onClick={this.handleSubmit}>Submit</Button>
         </FormGroup>
         )
     }

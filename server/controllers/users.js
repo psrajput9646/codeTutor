@@ -39,6 +39,7 @@ module.exports = {
     if (!emailValidator.validate(req.body.email)) {
       return res.status(400).send({ error: "Bad email" });
     }
+
     // See if username is taken
     User.findOne({
       where: { username: req.body.username }
@@ -46,35 +47,37 @@ module.exports = {
       if (user) {
         return res.status(409).send({ error: "Username already exists" });
       }
-    });
-
-    // Encrypt password and create user
-    bcrypt.genSalt(10, function(err, salt) {
-      bcrypt.hash(req.body.password, salt, function(err, hash) {
-        User.create({
-          username: req.body.username,
-          password: hash,
-          email: req.body.email,
-          firstName: req.body.firstName,
-          lastName: req.body.lastName
-        })
-          .then(user => {
-            let tokenBody = {
-              id: user.id,
-              username: user.username
-            };
-            mkdirp("projects/" + user.id, err => {
-              if (err) {
-                throw new Error(err);
-              } else {
-                return jwt.sign(tokenBody, config.secret, {
-                  expiresIn: 1209600 // 2 weeks
-                });
-              }
-            });
+    
+      // Encrypt password and create user
+      bcrypt.genSalt(10, function(err, salt) {
+        bcrypt.hash(req.body.password, salt, function(err, hash) {
+          User.create({
+            username: req.body.username.toLowerCase(),
+            password: hash,
+            email: req.body.email.toLowerCase(),
+            firstName: req.body.firstName,
+            lastName: req.body.lastName
           })
-          .then(token => res.status(201).send({ auth: true, token }))
-          .catch(err => res.status(500).send(err));
+            .then(user => {
+              let tokenBody = {
+                id: user.id,
+                username: user.username
+              };
+              return mkdirp("projects/" + user.id, err => {
+                if (err) {
+                  throw new Error(err);
+                } else {
+                  let token= jwt.sign(tokenBody, config.secret, {
+                    expiresIn: 1209600 // 2 weeks
+                  });
+                  res.status(201).send({ auth: true, token })
+                }
+              })
+            })
+            .catch(err =>{
+              res.status(500).send(err)
+            });
+        });
       });
     });
   },
@@ -86,25 +89,13 @@ module.exports = {
       include: [
         {
           model: Project,
-          include: [File],
+          include: [File]
         }
       ],
       order: [[Project, "createdAt", "DESC"]]
     })
     .then(user => {
-      const resObj = Object.assign({},
-        {
-          id: user.id,
-          email: user.email,
-          username: user.username,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          bio: user.bio,
-          points: user.points,
-          projects: user.projects
-        }
-      );
-      res.status(200).send(resObj)
+      res.status(200).send(user)
     })
     .catch(err => {
       res.status(500).send(err)
@@ -116,46 +107,43 @@ module.exports = {
       where: { id: req.decoded.id },
       include: [
         {
-          model: Comment,
-          attributes: ["votes"]
-        },
-        {
           model: Project,
-          include: [File],
           order: [["createdAt", "DESC"]]
         }
       ]
     })
       .then(user => {
-        user
-          .update({
-            bio: req.body.bio
+        let index;
+        if(user.favoritedProjects === null){
+          index = -1;
+          user.favoritedProjects = [];
+        }else{
+          index = user.favoritedProjects.indexOf(req.body.projectId);
+        }
+        if(index === -1){
+          user.favoritedProjects.push(req.body.projectId);
+        }else{
+          user.favoritedProjects.splice(index, 1);
+        }
+        user.update({
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            bio: req.body.bio,
+            favoritedProjects: user.favoritedProjects
+          },
+          {
+            fields: req.body.fields
           })
           .then(user => {
-            let sum = 0;
-            user.comments.forEach(comment => {
-              sum += comment.votes;
-            });
-
-            const resObj = Object.assign(
-              {},
-              {
-                id: user.id,
-                email: user.email,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                bio: user.bio,
-                likes: sum,
-                projects: user.projects
-              }
-            );
-            res.status(200).send(resObj);
+            res.status(200).send(user);
           })
           .catch(err => {
+            console.log(err);
             res.status(500).send(err);
           });
       })
       .catch(err => {
+        console.log(err);
         res.status(500).send(err);
       });
   },
@@ -163,7 +151,7 @@ module.exports = {
   login(req, res) {
     // Find user
     User.findOne({
-      where: { username: req.body.username }
+      where: { username: req.body.username.toLowerCase() }
     }).then(user => {
       if (!user) {
         res

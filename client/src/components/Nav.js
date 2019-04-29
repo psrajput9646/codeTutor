@@ -31,8 +31,8 @@ class Navigation extends React.Component {
   }
 
   handleLogout = () => {
-    this.Auth.logout()
-    this.props.userLoggedIn(false);
+    this.props.setUserLoggedIn(false);
+    this.Auth.logout();
   }
 
   render() {

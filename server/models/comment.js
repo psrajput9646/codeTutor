@@ -2,9 +2,9 @@
 module.exports = (sequelize, DataTypes) => {
   const Comment = sequelize.define('comment', {
     content: DataTypes.TEXT,
-    votes: DataTypes.INTEGER,
-    favorited: DataTypes.BOOLEAN,
-    votedBy: DataTypes.ARRAY(DataTypes.INTEGER)
+    votes: {type: DataTypes.INTEGER, defaultValue: 0},
+    favorited: {type: DataTypes.BOOLEAN, defaultValue: false},
+    votedBy: {type: DataTypes.ARRAY(DataTypes.INTEGER), defaultValue: []}
   }, {});
   Comment.associate = function(models) {
     // associations can be defined here

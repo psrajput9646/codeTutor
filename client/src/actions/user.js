@@ -22,13 +22,6 @@ export function setUser(user) {
   }
 }
 
-export function setUserBio(bio) {
-  return {
-      type: 'SET_USER_BIO',
-      bio
-  }
-}
-
 export function setUserLoggedIn(status) {
     return {
       type: 'USER_SET_LOGIN',
@@ -43,6 +36,13 @@ export function setCurrentUserId() {
   }
 }
 
+export function setFavoritedProjects(favoritedProjects) {
+  return {
+    type: 'SET_FAVORITED',
+    favoritedProjects
+  }
+}
+
 export function fetchUser(userId) {
   return dispatch => {
     dispatch(userLoading(true))
@@ -51,6 +51,26 @@ export function fetchUser(userId) {
     .then(user => {
         dispatch(setUser(user))
         dispatch(setProjects(user.projects))
+        dispatch(fetchFavoritedProjects(user.favoritedProjects))
+    })
+    .catch(err => {
+        dispatch(userErrored(err))
+        dispatch(userLoading(false))
+    })
+  }
+}
+
+export function fetchFavoritedProjects(favoritedProjects) {
+  return dispatch => {
+    const authService = new AuthService()
+    authService.fetchAuth('/api/project/get/favorited/',{
+      method: "POST",
+      body: JSON.stringify({
+        favoritedProjects
+      })
+    })
+    .then(projects => {
+        dispatch(setFavoritedProjects(projects))
         dispatch(userLoading(false));
     })
     .catch(err => {
@@ -60,7 +80,7 @@ export function fetchUser(userId) {
   }
 }
 
-export function updateUser(bio) {
+export function updateUser(data, fields) {
   return dispatch => {
     //dispatch(userLoading(true))
     const authService = new AuthService()
@@ -68,7 +88,11 @@ export function updateUser(bio) {
     authService.fetchAuth('/api/user/update', {
       method: 'POST',
       body: JSON.stringify({
-        bio
+        bio: data.bio,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        favoritedProjects: data.favoritedProjects,
+        fields
       })
     })
     .then(user => {

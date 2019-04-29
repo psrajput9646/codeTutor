@@ -13,8 +13,8 @@ import { fetchUser } from '../actions/user';
 class Accounts extends Component {
     
     componentDidMount(){
-        if(this.props.user === null ||
-            this.props.user.id !== parseInt(this.props.match.params.userId)){
+        if(this.props.userLoggedIn && (this.props.user === null || 
+            this.props.user.id !== parseInt(this.props.match.params.userId))){
             this.loadUser();
         }
     }
@@ -65,6 +65,7 @@ const mapStateToProps = state => ({
     currentUserId: state.currentUserId,
     userLoading: state.userLoading,
     userErrored: state.userErrored,
+    userLoggedIn: state.userLoggedIn,
     projects: state.projects
 })
 
