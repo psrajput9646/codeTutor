@@ -138,7 +138,9 @@ class ScriptArea extends Component {
 
 const mapStateToProps = state => ({
   user: state.user,
-  currentUserId: state.currentUserId
+  currentUserId: state.currentUserId,
+  selectedFile: state.selectedFile,
+  socket: state.socket
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -20,6 +20,7 @@ class CreateProjectModal extends Component {
 
         this.state = {
             modal: false,
+            invalid: false,
             projectName: '',
             description: ''
         };
@@ -35,7 +36,15 @@ class CreateProjectModal extends Component {
     }
 
     handleChange = event => {
-        this.setState({ [event.target.name]: event.target.value })
+        let name = event.target.value;
+        let invalid = this.state.invalid;
+        if(event.target.name === "projectName" && name){
+            invalid = !/^[a-zA-Z0-9 ]+$/.test(name)
+        }
+        this.setState({
+            [event.target.name]: event.target.value,
+            invalid
+        })
     }
 
     submitForm = (event) =>{
@@ -79,6 +88,7 @@ class CreateProjectModal extends Component {
                         <FormGroup>
                             <Label for="projectName">Project Name</Label>
                             <Input
+                            invalid={this.state.invalid}
                             type="text"
                             name="projectName"
                             id="ProjectName"
@@ -86,7 +96,7 @@ class CreateProjectModal extends Component {
                             onChange={this.handleChange}
                             placeholder="Add project name"
                             />
-                            <FormFeedback>Alphabet Characters Only!</FormFeedback>
+                            <FormFeedback>Alphanumeric Characters Only!</FormFeedback>
                         </FormGroup>
                         <FormGroup>
                             <Label for="description">Description (optional)</Label>

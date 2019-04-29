@@ -28,11 +28,15 @@ class CreateScriptModal extends Component {
     }
 
     handleChange = event => {
-        let name = event.target.value
-        let valid = /^[a-zA-Z]+$/.test(name)
+        let name = event.target.value;
+        let invalid = this.state.invalid;
+    
+        if(event.target.name === "fileName" && name){
+            invalid = !/^[a-zA-Z]+$/.test(name)
+        }
         this.setState({
           [event.target.name]: event.target.value,
-          invalid: !valid
+          invalid
         })
     }
 
