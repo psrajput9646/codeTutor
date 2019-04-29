@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Row, Col, UncontrolledTooltip, Modal, ModalBody,
+import { Container, Row, Col, Modal, ModalBody,
     FormGroup, Label, Input, Button, Jumbotron, Spinner} from 'reactstrap'
 import ScriptArea from './ScriptArea.js'
 import ScriptFeedback from './ScriptFeedback.js'
@@ -7,7 +7,7 @@ import ScriptInput from './ScriptInput.js'
 import ScriptOutput from './ScriptOutput.js'
 import FileExplorer from './FileExplorer.js'
 import { fetchUser } from '../actions/user';
-import { setProject } from '../actions/projects';
+import { selectProject } from '../actions/projects';
 import { selectFile } from '../actions/file';
 import { connect } from 'react-redux'
 
@@ -19,16 +19,18 @@ class Editor extends Component {
     }
 
     this.toggle = this.toggle.bind(this)
-    this.toggleStar = this.toggleStar.bind(this)
   }
 
   componentDidMount(){
     if(this.props.user === null ||
       this.props.user.id !== parseInt(this.props.match.params.userId)){
       this.loadUser();
-      this.props.setProject(null);
-      this.props.selectFile(null);
     }
+  }
+
+  componentWillUnmount(){
+    this.props.selectFile(null);
+    this.props.selectProject(this.props.projects, null);
   }
 
   componentDidUpdate(prevProps){
@@ -53,18 +55,6 @@ class Editor extends Component {
     this.setState(prevState => ({
       modal: !prevState.modal
     }))
-  }
-
-  /* Add functionality to toggle favorite project */
-  toggleStar() {
-    var star = document.getElementById('FavoriteProjectStar')
-    star.classList.toggle('far')
-    star.classList.toggle('fa')
-    star.classList.toggle("text-warning")
-  }
-
-  handleRun = () => {
-    this.props.socket.emit("run", this.props.selectedFile.path);
   }
 
   render() {
@@ -149,22 +139,11 @@ const Breadcrumbs = (props) => {
     <h4 className="pt-3 ml-3" id="EditorName">
       <a href={"/account/"+props.user.id}>{props.user.username}</a>
       {" / "}
-      <a href={"#"}>{props.selectedProject.name}</a>
+      <span>{props.selectedProject.name}</span>
       {" / "}
-      <a href={"#"}>{props.selectedFile.name}</a>
+      <span>{props.selectedFile.name}</span>
       {"  "}
-      <span onClick={props.toggleStar}>
-        <i
-          className="far fa-star"
-          aria-hidden="true"
-          id="FavoriteProjectStar"
-        />
-      </span>
-      <UncontrolledTooltip
-        placement="left"
-        target="FavoriteProjectStar">
-        Favorite Project!
-      </UncontrolledTooltip>{' '}
+      
       <span
         className="edit"
         onClick={props.toggle}
@@ -185,6 +164,7 @@ const Breadcrumbs = (props) => {
 
 const mapStateToProps = state => ({
   user: state.user,
+  projects: state.projects,
   userLoading: state.userLoading,
   userErrored: state.userErrored,
   currentUserId: state.currentUserId,
@@ -196,7 +176,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   fetchUser: (userId) => dispatch(fetchUser(userId)),
   selectFile: (file) => dispatch(selectFile(file)),
-  setProject: (project) => dispatch(setProject(project))
+  selectProject: (projects, id) => dispatch(selectProject(projects, id))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Editor);
