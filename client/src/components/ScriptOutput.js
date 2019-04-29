@@ -15,9 +15,16 @@ class ScriptOutput extends Component {
     }
 
     getData = data => {
-        this.setState({
-            input: this.state.input + data
-        })
+        if(data.includes("Running Python file...") ||
+            data.includes("Compiling Java File...") ){
+            this.setState({
+                input:  data
+            })
+        }else{
+            this.setState({
+                input: this.state.input + data
+            })
+        }
     }
 
     render() {
