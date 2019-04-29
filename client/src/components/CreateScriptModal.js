@@ -38,12 +38,16 @@ class CreateScriptModal extends Component {
 
     toggle() {
         this.setState(prevState => ({
-        modal: !prevState.modal
+            modal: !prevState.modal
         }));
     }
 
     submitForm(){
         this.props.createFile(this.props.id, this.state.fileName, this.state.fileType); 
+        this.setState({
+            fileName: "",
+            fileType: ".java"
+        });
         this.toggle();
     }
 
@@ -57,7 +61,7 @@ class CreateScriptModal extends Component {
 
         return (
             <div>
-                <div className="text-center" onClick={this.toggle}
+                <div onClick={this.toggle}
                     id={"AddFile"+ this.props.id}
                 >
                     <i className="fa fa-plus" aria-hidden="true"></i>

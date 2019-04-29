@@ -30,7 +30,7 @@ class CreateProjectModal extends Component {
 
     toggle() {
         this.setState(prevState => ({
-        modal: !prevState.modal
+            modal: !prevState.modal
         }));
     }
 
@@ -38,8 +38,13 @@ class CreateProjectModal extends Component {
         this.setState({ [event.target.name]: event.target.value })
     }
 
-    submitForm(){
+    submitForm = (event) =>{
+        event.preventDefault();
         this.props.createProject(this.state.projectName, this.state.description); 
+        this.setState({
+            projectName: '',
+            description: ''
+        });
         this.toggle();
     }
 
@@ -70,7 +75,7 @@ class CreateProjectModal extends Component {
                 className={this.props.className}>
                 <ModalHeader toggle={this.toggle}>Add a Project</ModalHeader>
                 <ModalBody>
-                    <Form onSubmit={this.createProject}>
+                    <Form onSubmit={this.submitForm}>
                         <FormGroup>
                             <Label for="projectName">Project Name</Label>
                             <Input
