@@ -91,6 +91,16 @@ class ScriptArea extends Component {
             color="success"
             size="sm"
             className="float-right mr-1"
+            id="SubmitSolution">
+            <i className="fa fa-paper-plane" aria-hidden="true" />
+          </Button>
+          <UncontrolledTooltip placement="top" target="SubmitSolution">
+            Submit as solution
+          </UncontrolledTooltip>
+          <Button
+            color="success"
+            size="sm"
+            className="float-right mr-1"
             id="CodeFork">
             <i className="fa fa-code-branch" aria-hidden="true" />
           </Button>{' '}
