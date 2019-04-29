@@ -11,7 +11,6 @@ import {
 } from 'reactstrap'
 import classnames from 'classnames'
 import ProjectInfo from './ProjectInfo.js'
-import AuthService from './AuthService'
 import { connect } from 'react-redux'
 import CreateProjectModal from './CreateProjectModal';
 
@@ -19,10 +18,8 @@ class ProjectCollection extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      activeTab: '1',
-      projectList: []
+      activeTab: '1'
     }
-    this.Auth = new AuthService()
   }
 
   toggle(tab) {
@@ -34,21 +31,7 @@ class ProjectCollection extends React.Component {
   }
 
   render() {
-    const projects = this.props.projects;
-    const favoritedProjectList = [
-      {
-        id: 'FavProject1',
-        name: 'Fav Project Name 1',
-        description:
-          "script Description 1 Description about the script imply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently"
-      },
-      {
-        id: 'FavProject2',
-        name: 'Fav Project Name 2',
-        description:
-          "script Description 1 Description about the script imply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently"
-      }
-    ]
+    const { projects, favoritedProjects } = this.props;
     return (
       <div className="mb-4">
         {/* Tabs Headers */}
@@ -97,7 +80,7 @@ class ProjectCollection extends React.Component {
             <Row>
               <Col sm="12">
                 <ListGroup className="mt-3" flush>
-                  {favoritedProjectList.map(project => (
+                  {favoritedProjects.map(project => (
                     <ProjectInfo key={project.id} projectInfo={project} />
                   ))}
                 </ListGroup>
@@ -111,8 +94,7 @@ class ProjectCollection extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.user,
-  currentUserId: state.currentUserId,
+  favoritedProjects: state.favoritedProjects,
   projects: state.projects
 })
 
