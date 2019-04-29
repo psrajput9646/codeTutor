@@ -43,6 +43,10 @@ class ScriptArea extends Component {
     updateAndSave(file.id, this.state.input)
   }
 
+  handleRun = () => {
+    this.props.socket.emit("run", this.props.selectedFile.path);
+  }
+
   toggle() {
     this.setState({
       tooltipOpen: !this.state.tooltipOpen
@@ -50,6 +54,9 @@ class ScriptArea extends Component {
   }
 
   render() {
+    const { user } = this.props;
+    const owner = (user && this.props.currentUserId === this.props.user.id)? true : false;
+
     return (
       <FormGroup className="h-100">
         <div className="d-block mb-2 ">
@@ -60,43 +67,51 @@ class ScriptArea extends Component {
             size="sm"
             className="float-right"
             id="ExecuteCode"
-            onClick={this.props.handleRun}>
+            onClick={this.handleRun}>
             <i className="fa fa-play" aria-hidden="true" />
           </Button>
           <UncontrolledTooltip placement="top" target="ExecuteCode">
             Execute code
           </UncontrolledTooltip>
-          <Button
-            color="success"
-            size="sm"
-            className="float-right mr-1"
-            id="SaveProject"
-            onClick={this.handleSave}>
-            <i className="fa fa-save" aria-hidden="true" />
-          </Button>
-          <UncontrolledTooltip placement="top" target="SaveProject">
-            Save your project
-          </UncontrolledTooltip>
-          <Button
-            color="success"
-            size="sm"
-            className="float-right mr-1"
-            id="HelpingHand">
-            <i className="fa fa-hands-helping" aria-hidden="true" />
-          </Button>
-          <UncontrolledTooltip placement="top" target="HelpingHand">
-            Submit for help!
-          </UncontrolledTooltip>
-          <Button
-            color="success"
-            size="sm"
-            className="float-right mr-1"
-            id="CodeFork">
-            <i className="fa fa-code-branch" aria-hidden="true" />
-          </Button>{' '}
-          <UncontrolledTooltip placement="top" target="CodeFork">
-            Fork Project
-          </UncontrolledTooltip>
+          {owner &&
+            <span>
+              <Button
+                color="success"
+                size="sm"
+                className="float-right mr-1"
+                id="SaveProject"
+                onClick={this.handleSave}>
+                <i className="fa fa-save" aria-hidden="true" />
+              </Button>
+              <UncontrolledTooltip placement="top" target="SaveProject">
+                Save your project
+              </UncontrolledTooltip>
+            <Button
+              color="success"
+              size="sm"
+              className="float-right mr-1"
+              id="HelpingHand">
+              <i className="fa fa-hands-helping" aria-hidden="true" />
+            </Button>
+            <UncontrolledTooltip placement="top" target="HelpingHand">
+              Submit for help!
+            </UncontrolledTooltip>
+          </span>
+          }
+          {!owner &&
+            <span>
+              <Button
+                color="success"
+                size="sm"
+                className="float-right mr-1"
+                id="CodeFork">
+                <i className="fa fa-code-branch" aria-hidden="true" />
+              </Button>{' '}
+              <UncontrolledTooltip placement="top" target="CodeFork">
+                Fork Project
+              </UncontrolledTooltip>
+            </span>
+          }
         </div>
         {/* Input field for scripts */}
         <div className="no-scale-textarea script-area-input-height">
@@ -111,7 +126,10 @@ class ScriptArea extends Component {
   }
 }
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+  user: state.user,
+  currentUserId: state.currentUserId
+})
 
 const mapDispatchToProps = dispatch => ({
   updateAndSave: (id, content) => dispatch(updateAndSave(id, content))
