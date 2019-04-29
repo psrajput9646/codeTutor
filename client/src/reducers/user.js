@@ -54,3 +54,13 @@ export function currentUserId(state = -1, action) {
             return state;
     }
 }
+
+export function favoritedProjects(state = [], action) {
+    switch(action.type) {
+        case 'SET_FAVORITED':
+            return action.favoritedProjects
+
+        default:
+            return state;
+    }
+}

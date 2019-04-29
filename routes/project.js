@@ -14,6 +14,10 @@ projectRouter.get("/projects/:userId", verifyToken, projectController.getProject
 // Retrieves All Projects
 projectRouter.get("/get/all", verifyToken, projectController.getAllProjects)
 
+// Retrieves All Favorited Projects
+// Parameter: favoritedArray
+projectRouter.post("/get/favorited", verifyToken, projectController.getAllFavorited)
+
 // Creates a Project
 // Parameters: name, userId (grabbed from token)
 projectRouter.post("/create", verifyToken, projectController.create)
@@ -28,10 +32,10 @@ projectRouter.post("/update", verifyToken, projectController.update)
 
 // Favorites a Project
 // Parameter: Id, userId(grabbed from token)
-projectRouter.get("/favorite/:id", verifyToken, projectController.favorite)
+projectRouter.post("/favorite/:id", verifyToken, projectController.favorite)
 
 // Votes on a Project
 // Parameter: Id, userId(grabbed from token)
-projectRouter.get("/vote/:id", verifyToken, projectController.vote)
+projectRouter.post("/vote/:id", verifyToken, projectController.vote)
 
 module.exports = projectRouter;

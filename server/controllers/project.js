@@ -1,5 +1,6 @@
 const Project = require("../models").project;
 const File = require("../models").file;
+const User = require("../models").user;
 const rimraf = require("rimraf");
 const mkdirp = require("mkdirp");
 const ncp = require("ncp").ncp;
@@ -60,6 +61,17 @@ module.exports = {
       .catch(err => res.status(400).send(err));
   },
 
+  getAllFavorited(req, res) {
+    Project.findAll({
+      where: { id: { in: req.body.favoritedProjects }}
+    })
+      .then(projects => {
+        console.log("projy: ", projects)
+        res.status(200).send(projects);
+      })
+      .catch(err => res.status(400).send(err));
+  },
+
   // Requires Id of Project
   favorite(req, res) {
     Project.findOne({
@@ -72,17 +84,14 @@ module.exports = {
     })
       .then(project => {
         if (project.favoritedBy.includes(req.decoded.id)) {
-          let uIndex = project.favoritedBy.indexOf(req.decoded.id);
-          let pIndex = project.user.favoritedProjects.indexOf(project.id);
-          project.favoritedBy.splice(uIndex, 1);
+          let index = project.favoritedBy.indexOf(req.decoded.id);
+          project.favoritedBy.splice(index, 1);
           project.votes -= 10;
           project.user.points -= 10;
-          project.user.favoritedProjects.splice(pIndex, 1);
         } else {
           project.votes += 10;
           project.user.points += 10;
           project.favoritedBy.push(req.decoded.id);
-          project.user.favoritedProjects.push(project.id);
         }
 
         return Promise.all([
@@ -91,8 +100,7 @@ module.exports = {
             favoritedBy: project.favoritedBy
           }),
           project.user.update({
-            points: project.user.points,
-            favoritedProjects: project.user.favoritedProjects
+            points: project.user.points
           })
         ]);
       })
@@ -100,7 +108,6 @@ module.exports = {
         res.status(200).send(values);
       })
       .catch(err => {
-        console.log(err);
         res.status(500).send(err);
       });
   },
