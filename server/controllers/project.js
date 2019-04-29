@@ -3,7 +3,9 @@ const File = require("../models").file;
 const User = require("../models").user;
 const rimraf = require("rimraf");
 const mkdirp = require("mkdirp");
-const ncp = require("ncp").ncp;
+const ncp = require("ncp");
+const Promise = require('bluebird')
+Promise.promisifyAll(ncp);
 
 module.exports = {
   // Requires name for project, description, userId(grabbed from token)
@@ -153,6 +155,7 @@ module.exports = {
       });
   },
 
+  // Params: Original project id
   fork(req, res) {
     Project.findOne({
       include: [
@@ -165,7 +168,8 @@ module.exports = {
       Project.create({
         name: project.name,
         description: "Fork of " + project.name,
-        userId: req.decoded.id
+        userId: req.decoded.id,
+        forkedFrom: project.id
       }).then(newProject => {
         let newFiles = [];
         let basePath = "projects/" + req.decoded.id + "/" + newProject.id + "/";
@@ -180,14 +184,20 @@ module.exports = {
           );
         });
         Promise.all(newFiles).then(values => {
-          ncp(
+          return ncp.ncpAsync(
             "projects/" + project.userId + "/" + project.id,
-            basePath,
-            err => {}
-          );
+            basePath
+          )
         });
       });
-    });
+    })
+    .then(() => {
+      res.status(202).send()
+    })
+    .catch((err) => {
+      console.log(err)
+      res.status(500).send(err.toString())
+    })
   },
 
   getProjectByIdAndUserId(req, res, next) {

@@ -38,4 +38,8 @@ projectRouter.post("/favorite/:id", verifyToken, projectController.favorite)
 // Parameter: Id, userId(grabbed from token)
 projectRouter.post("/vote/:id", verifyToken, projectController.vote)
 
+// Forks a project
+// Parameter: Id, userId(grabbed from token)
+projectRouter.get("/fork/:id", verifyToken, projectController.fork)
+
 module.exports = projectRouter;
