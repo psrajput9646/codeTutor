@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Container, Row, Col, Modal, ModalBody,
     FormGroup, Label, Input, Button, Jumbotron, Spinner} from 'reactstrap'
+import { Link } from 'react-router-dom'
 import ScriptArea from './ScriptArea.js'
 import ScriptFeedback from './ScriptFeedback.js'
 import ScriptInput from './ScriptInput.js'
@@ -137,7 +138,7 @@ const Breadcrumbs = (props) => {
   if(props.selectedFile){
     return(
     <h4 className="pt-3 ml-3" id="EditorName">
-      <a href={"/account/"+props.user.id}>{props.user.username}</a>
+      <Link to={"/account/"+props.user.id}>{props.user.username}</Link>
       {" / "}
       <span>{props.selectedProject.name}</span>
       {" / "}
@@ -155,7 +156,7 @@ const Breadcrumbs = (props) => {
   }
   return(
     <h4 className = "pt-3 ml-3">
-      <a href={"/account/"+props.user.id}>{props.user.username}</a>
+      <Link to={"/account/"+props.user.id}>{props.user.username}</Link>
       {" / "}
       Select a file
     </h4>

@@ -52,9 +52,9 @@ module.exports = {
       bcrypt.genSalt(10, function(err, salt) {
         bcrypt.hash(req.body.password, salt, function(err, hash) {
           User.create({
-            username: req.body.username,
+            username: req.body.username.toLowerCase(),
             password: hash,
-            email: req.body.email,
+            email: req.body.email.toLowerCase(),
             firstName: req.body.firstName,
             lastName: req.body.lastName
           })
@@ -151,7 +151,7 @@ module.exports = {
   login(req, res) {
     // Find user
     User.findOne({
-      where: { username: req.body.username }
+      where: { username: req.body.username.toLowerCase() }
     }).then(user => {
       if (!user) {
         res

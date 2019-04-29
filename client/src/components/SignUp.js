@@ -107,7 +107,7 @@ class SignUp extends Component {
         const { firstName, lastName, password, email, username,
             passwordConfirm, emailConfirm, redirect, err} = this.state;
         const passMatch = password === passwordConfirm;
-        const emailMatch = email === emailConfirm;
+        const emailMatch = email.toLowerCase() === emailConfirm.toLowerCase();
         
         if (redirect) {
             return <Redirect to='/' />
