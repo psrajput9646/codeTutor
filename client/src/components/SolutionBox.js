@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-export default class CommentProjectBox extends Component {
+export default class SolutionBox extends Component {
     render() {
         const project = this.props;
         return (

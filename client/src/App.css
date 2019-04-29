@@ -103,7 +103,10 @@ a.title-link:hover {color:gray;}
 }
 
 .comment-box{
-    border-top: .3em solid white;
+    margin: 2px;
+    margin-bottom: 0px;
+    border: 1px solid rgb(214, 209, 209);
+    border-radius: 5px;
 }
 
 .edit {
