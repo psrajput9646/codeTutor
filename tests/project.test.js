@@ -74,6 +74,8 @@ describe("Test Project methods.", () => {
     expect(response.statusCode).toBe(404);
   });
 
+  test("It should fork a project")
+
   afterEach(() => {
     Project.findAll({ where: { name: name } }).then(projects => {
       projects.map(function(project) {
