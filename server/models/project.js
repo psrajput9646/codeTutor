@@ -5,10 +5,10 @@ module.exports = (sequelize, DataTypes) => {
   const Project = sequelize.define('project', {
     name: DataTypes.STRING,
     description: DataTypes.STRING,
-    favoritedBy: DataTypes.ARRAY(DataTypes.INTEGER),
-    votedBy: DataTypes.ARRAY(DataTypes.INTEGER),
-    votes: DataTypes.INTEGER,
-    forkedFrom: DataTypes.INTEGER
+    favoritedBy: {type: DataTypes.ARRAY(DataTypes.INTEGER), defaultValue: []},
+    votedBy: {type: DataTypes.ARRAY(DataTypes.INTEGER), defaultValue: []},
+    votes: {type: DataTypes.INTEGER, defaultValue: 0},
+    forkedFrom: {type: DataTypes.INTEGER, defaultValue: null}
   }, {});
   Project.associate = function(models) {
     Project.belongsTo(models.user);
