@@ -39,6 +39,7 @@ module.exports = {
     if (!emailValidator.validate(req.body.email)) {
       return res.status(400).send({ error: "Bad email" });
     }
+
     // See if username is taken
     User.findOne({
       where: { username: req.body.username }
@@ -46,35 +47,37 @@ module.exports = {
       if (user) {
         return res.status(409).send({ error: "Username already exists" });
       }
-    });
-
-    // Encrypt password and create user
-    bcrypt.genSalt(10, function(err, salt) {
-      bcrypt.hash(req.body.password, salt, function(err, hash) {
-        User.create({
-          username: req.body.username,
-          password: hash,
-          email: req.body.email,
-          firstName: req.body.firstName,
-          lastName: req.body.lastName
-        })
-          .then(user => {
-            let tokenBody = {
-              id: user.id,
-              username: user.username
-            };
-            mkdirp("projects/" + user.id, err => {
-              if (err) {
-                throw new Error(err);
-              } else {
-                return jwt.sign(tokenBody, config.secret, {
-                  expiresIn: 1209600 // 2 weeks
-                });
-              }
-            });
+    
+      // Encrypt password and create user
+      bcrypt.genSalt(10, function(err, salt) {
+        bcrypt.hash(req.body.password, salt, function(err, hash) {
+          User.create({
+            username: req.body.username,
+            password: hash,
+            email: req.body.email,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName
           })
-          .then(token => res.status(201).send({ auth: true, token }))
-          .catch(err => res.status(500).send(err));
+            .then(user => {
+              let tokenBody = {
+                id: user.id,
+                username: user.username
+              };
+              return mkdirp("projects/" + user.id, err => {
+                if (err) {
+                  throw new Error(err);
+                } else {
+                  let token= jwt.sign(tokenBody, config.secret, {
+                    expiresIn: 1209600 // 2 weeks
+                  });
+                  res.status(201).send({ auth: true, token })
+                }
+              })
+            })
+            .catch(err =>{
+              res.status(500).send(err)
+            });
+        });
       });
     });
   },
@@ -86,25 +89,13 @@ module.exports = {
       include: [
         {
           model: Project,
-          include: [File],
+          include: [File]
         }
       ],
       order: [[Project, "createdAt", "DESC"]]
     })
     .then(user => {
-      const resObj = Object.assign({},
-        {
-          id: user.id,
-          email: user.email,
-          username: user.username,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          bio: user.bio,
-          points: user.points,
-          projects: user.projects
-        }
-      );
-      res.status(200).send(resObj)
+      res.status(200).send(user)
     })
     .catch(err => {
       res.status(500).send(err)
@@ -122,11 +113,23 @@ module.exports = {
       ]
     })
       .then(user => {
+        let index;
+        if(user.favoritedProjects === null){
+          index = -1;
+          user.favoritedProjects = [];
+        }else{
+          index = user.favoritedProjects.indexOf(req.body.projectId);
+        }
+        if(index === -1){
+          user.favoritedProjects.push(req.body.projectId);
+        }else{
+          user.favoritedProjects.splice(index, 1);
+        }
         user.update({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             bio: req.body.bio,
-            favoritedProjects: req.body.favoritedProjects
+            favoritedProjects: user.favoritedProjects
           },
           {
             fields: req.body.fields
@@ -135,10 +138,12 @@ module.exports = {
             res.status(200).send(user);
           })
           .catch(err => {
+            console.log(err);
             res.status(500).send(err);
           });
       })
       .catch(err => {
+        console.log(err);
         res.status(500).send(err);
       });
   },
