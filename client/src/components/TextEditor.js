@@ -6,7 +6,7 @@ import 'brace/ext/language_tools'
 import 'brace/theme/monokai'
 
 import { connect } from 'react-redux'
-import { updateAndSave } from '../../actions/fileCache'
+import { updateAndSave } from '../actions/fileCache'
 
 class Editor extends Component {
   render() {
@@ -57,7 +57,4 @@ const mapDispatchToProps = dispatch => ({
     updateAndSave: (id, content) => dispatch(updateAndSave(id, content))
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Editor)
+export default connect(mapStateToProps,mapDispatchToProps)(Editor)

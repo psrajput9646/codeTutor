@@ -135,32 +135,17 @@ class Editor extends Component {
 }
 
 const Breadcrumbs = (props) => {
-  if(props.selectedFile){
-    return(
-    <h4 className="pt-3 ml-3" id="EditorName">
-      <Link to={"/account/"+props.user.id}>{props.user.username}</Link>
-      {" / "}
-      <span>{props.selectedProject.name}</span>
-      {" / "}
-      <span>{props.selectedFile.name}</span>
-      {"  "}
-      
-      <span
-        className="edit"
-        onClick={props.toggle}
-        size="sm"
-        id="EditScriptInfo">
-        edit
-      </span>
-    </h4>)
-  }
   return(
-    <h4 className = "pt-3 ml-3">
-      <Link to={"/account/"+props.user.id}>{props.user.username}</Link>
-      {" / "}
-      Select a file
-    </h4>
-  )
+  <h4 className="pt-3 ml-3" id="EditorName">
+    <Link to={"/account/"+props.user.id}>{props.user.username}</Link>
+    {" / "}
+    {props.selectedProject &&
+      <span>{props.selectedProject.name + " / "}</span>
+    }
+    {props.selectedFile &&
+      <span>{props.selectedFile.name + " / "}</span>
+    }
+  </h4>)
 }
 
 const mapStateToProps = state => ({

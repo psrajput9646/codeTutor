@@ -1,16 +1,6 @@
 import React, { Component } from 'react';
-import { 
-    Label,
-    Button,
-    Modal,
-    ModalHeader,
-    ModalBody,
-    Form,
-    FormGroup,
-    Input,
-    UncontrolledTooltip,
-    FormFeedback
-} from 'reactstrap';
+import { Label, Button, Modal, ModalHeader, ModalBody,
+    Form, FormGroup, Input, UncontrolledTooltip, FormFeedback } from 'reactstrap';
 import { createProject } from '../actions/projects'
 import { connect } from 'react-redux'
 
@@ -79,45 +69,44 @@ class CreateProjectModal extends Component {
                 Create New Project
                 </UncontrolledTooltip>
                 <Modal
-                isOpen={this.state.modal}
-                toggle={this.toggle}
-                className={this.props.className}>
-                <ModalHeader toggle={this.toggle}>Add a Project</ModalHeader>
-                <ModalBody>
-                    <Form onSubmit={this.submitForm}>
-                        <FormGroup>
-                            <Label for="projectName">Project Name</Label>
-                            <Input
-                            invalid={this.state.invalid}
-                            type="text"
-                            name="projectName"
-                            id="ProjectName"
-                            value={projectName}
-                            onChange={this.handleChange}
-                            placeholder="Add project name"
-                            />
-                            <FormFeedback>Alphanumeric Characters Only!</FormFeedback>
-                        </FormGroup>
-                        <FormGroup>
-                            <Label for="description">Description (optional)</Label>
-                            <Input
-                            type="textarea"
-                            name="description"
-                            id="Description"
-                            rows="4"
-                            value={description}
-                            onChange={this.handleChange}
-                            placeholder="Add short project description"
-                            />
-                        </FormGroup>
-                        <Button color="success" onClick={this.submitForm}>
-                            Submit
-                        </Button>
-                    </Form>
-                </ModalBody>
+                    isOpen={this.state.modal}
+                    toggle={this.toggle}>
+                    <ModalHeader toggle={this.toggle}>Create New Project</ModalHeader>
+                    <ModalBody>
+                        <Form onSubmit={this.submitForm}>
+                            <FormGroup>
+                                <Label for="projectName">Project Name</Label>
+                                <Input
+                                invalid={this.state.invalid}
+                                type="text"
+                                name="projectName"
+                                id="ProjectName"
+                                value={projectName}
+                                onChange={this.handleChange}
+                                placeholder="Add project name"
+                                />
+                                <FormFeedback>Alphanumeric Characters Only!</FormFeedback>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="description">Description (optional)</Label>
+                                <Input
+                                type="textarea"
+                                name="description"
+                                id="Description"
+                                rows="4"
+                                value={description}
+                                onChange={this.handleChange}
+                                placeholder="Add short project description"
+                                />
+                            </FormGroup>
+                            <Button color="success" onClick={this.submitForm}>
+                                Submit
+                            </Button>
+                        </Form>
+                    </ModalBody>
                 </Modal>
             </div>
-        );
+        )
     }
 }
 

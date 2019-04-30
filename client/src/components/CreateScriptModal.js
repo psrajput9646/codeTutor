@@ -71,10 +71,10 @@ class CreateScriptModal extends Component {
                     <i className="fa fa-plus" aria-hidden="true"></i>
                 </div>
                 <UncontrolledTooltip placement="top" target={"AddFile"+ this.props.id}>
-                    Add a File +
+                    Create New File
                 </UncontrolledTooltip>
-                <Modal isOpen={this.state.modal} toggle={this.toggle} className={this.props.className}>
-                <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
+                <Modal isOpen={this.state.modal} toggle={this.toggle}>
+                <ModalHeader toggle={this.toggle}>Create New File</ModalHeader>
                 <ModalBody>
                     <Form>
                         <FormGroup>
