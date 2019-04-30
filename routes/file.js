@@ -13,11 +13,15 @@ fileRouter.get("/:id", verifyToken, fileController.getFile)
 fileRouter.post("/create", verifyToken, fileController.create)
 
 // Saves a file
-   // Parameter: (file)id, content, userId (grabbed from token)
+// Parameter: (file)id, content, userId (grabbed from token)
+fileRouter.post("/rename", verifyToken, fileController.rename)
+
+// Saves a file
+// Parameter: (file)id, content, userId (grabbed from token)
 fileRouter.post("/save", verifyToken, fileController.save)
 
 // Deletes a file
-   // Parameter: (file)id, userId (grabbed from token)
+// Parameter: (file)id, userId (grabbed from token)
 fileRouter.post("/delete", verifyToken, fileController.delete)
 
 module.exports = fileRouter;

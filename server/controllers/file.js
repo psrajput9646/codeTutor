@@ -47,20 +47,24 @@ module.exports = {
     },
 
     // Parameter: (file)id, userId (grabbed from token)
-    delete(req, res){
+    rename(req, res){
         File.findOne({
-            where: { id: req.params.id }
+            where: { id: req.body.id }
         })
         .then(file => {
-            fs.unlink(file.path, (err) => {
+            const newPath = "projects/" + req.body.uid + "/" + file.projectId + "/" + req.body.name + file.type;
+            fs.rename(file.path, newPath, (err) => {
                 if (err){
                     res.status(500).send({success: false, err})
                 } else {
-                    file.destroy()
-                    .then(()=>{
-                        res.status(202).send({success: true})
+                    file.update({
+                        name: req.body.name,
+                        path: newPath
                     })
-                    .catch(err => res.status(500).send({success: false, err}))
+                    .then(()=>{
+                        res.status(202).send({success: true, file})
+                    })
+                    .catch(err =>{res.status(500).send({success: false, err})})
                 }
             })
         })
@@ -86,5 +90,28 @@ module.exports = {
             })
         })
         .catch(err => res.status(400).send(err))
-    }
+    },
+
+    // Parameter: (file)id, userId (grabbed from token)
+    delete(req, res){
+        File.findOne({
+            where: { id: req.body.id }
+        })
+        .then(file => {
+            fs.unlink(file.path, (err) => {
+                if (err){
+                    res.status(500).send({success: false, err})
+                } else {
+                    file.destroy()
+                    .then(()=>{
+                        res.status(202).send({success: true})
+                    })
+                    .catch(err => res.status(500).send({success: false, err}))
+                }
+            })
+        })
+        .catch((err) => {
+            res.status(500).send({success: false, err})
+        })
+    },
 }

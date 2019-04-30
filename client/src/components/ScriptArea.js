@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { FormGroup, Label, Button, UncontrolledTooltip } from 'reactstrap'
-import Editor from './editor/Editor'
+import TextEditor from './TextEditor'
 import { connect } from 'react-redux'
+import AuthService from './AuthService';
 import { updateAndSave } from '../actions/fileCache'
 
 class ScriptArea extends Component {
@@ -13,6 +14,8 @@ class ScriptArea extends Component {
       tooltipOpen: false,
       input: ''
     }
+
+    this.Auth = new AuthService();
   }
 
   componentDidMount() {
@@ -38,13 +41,25 @@ class ScriptArea extends Component {
     })
   }
 
+  handleRun = () => {
+    this.props.socket.emit("run", this.props.selectedFile.path);
+  }
+
   handleSave = () => {
     const { updateAndSave, file } = this.props
     updateAndSave(file.id, this.state.input)
   }
 
-  handleRun = () => {
-    this.props.socket.emit("run", this.props.selectedFile.path);
+  handleFork = () => {
+    const { selectedProject } = this.props
+    this.Auth.fetchAuth('/api/project/fork/'+selectedProject.id,{
+      method: "POST"
+    })
+    .then(project => {
+      console.log(project);
+    }).catch(err => {
+      console.log(err);
+    })
   }
 
   toggle() {
@@ -56,12 +71,13 @@ class ScriptArea extends Component {
   render() {
     const { user } = this.props;
     const owner = (user && this.props.currentUserId === this.props.user.id)? true : false;
-
+    
     return (
       <FormGroup className="h-100">
         <div className="d-block mb-2 ">
           <Label for="scriptArea">Script Input</Label>
-          {/* Buttons for script inputs */}
+
+          {/* Execute Code Button */}
           <Button
             color="success"
             size="sm"
@@ -69,52 +85,63 @@ class ScriptArea extends Component {
             id="ExecuteCode"
             onClick={this.handleRun}>
             <i className="fa fa-play" aria-hidden="true" />
+            <UncontrolledTooltip placement="top" target="ExecuteCode">
+              Execute code
+            </UncontrolledTooltip>
           </Button>
-          <UncontrolledTooltip placement="top" target="ExecuteCode">
-            Execute code
-          </UncontrolledTooltip>
-          <Button
-            color="success"
-            size="sm"
-            className="float-right mr-1"
-            id="SubmitSolution">
-            <i className="fa fa-paper-plane" aria-hidden="true" />
-          </Button>
-          <UncontrolledTooltip placement="top" target="SubmitSolution">
-            Submit as solution
-          </UncontrolledTooltip>
+
           {owner &&
-            <span>
-              <Button
-                color="success"
-                size="sm"
-                className="float-right mr-1"
-                id="SaveProject"
-                onClick={this.handleSave}>
-                <i className="fa fa-save" aria-hidden="true" />
-              </Button>
-              <UncontrolledTooltip placement="top" target="SaveProject">
-                Save your project
-              </UncontrolledTooltip>
+            /* Save Project Button */
             <Button
               color="success"
               size="sm"
               className="float-right mr-1"
-              id="HelpingHand">
-              <i className="fa fa-hands-helping" aria-hidden="true" />
+              id="SaveProject"
+              onClick={this.handleSave}>
+              <i className="fa fa-save" aria-hidden="true" />
+              <UncontrolledTooltip placement="top" target="SaveProject">
+                Save your project
+              </UncontrolledTooltip>
             </Button>
-            <UncontrolledTooltip placement="top" target="HelpingHand">
-              Submit for help!
-            </UncontrolledTooltip>
-          </span>
           }
+
+          {owner &&
+            /* Submit For Help Button */
+              <Button
+                color="success"
+                size="sm"
+                className="float-right mr-1"
+                id="HelpingHand">
+                <i className="fa fa-hands-helping" aria-hidden="true" />
+                <UncontrolledTooltip placement="top" target="HelpingHand">
+                  Submit for help!
+                </UncontrolledTooltip>
+              </Button>
+          }
+          
+          {!owner && this.props.selectedProject.forkedFrom &&
+            /* Submit As Solution Button */
+            <Button
+              color="success"
+              size="sm"
+              className="float-right mr-1"
+              id="SubmitSolution">
+              <i className="fa fa-paper-plane" aria-hidden="true" />
+              <UncontrolledTooltip placement="top" target="SubmitSolution">
+                Submit as solution
+              </UncontrolledTooltip>
+            </Button>
+          }
+          
           {!owner &&
+            /* Fork Project Button*/
             <span>
               <Button
                 color="success"
                 size="sm"
                 className="float-right mr-1"
-                id="CodeFork">
+                id="CodeFork"
+                onClick={this.handleFork}>
                 <i className="fa fa-code-branch" aria-hidden="true" />
               </Button>{' '}
               <UncontrolledTooltip placement="top" target="CodeFork">
@@ -123,9 +150,10 @@ class ScriptArea extends Component {
             </span>
           }
         </div>
-        {/* Input field for scripts */}
+
+        {/* Input field for Scripts */}
         <div className="no-scale-textarea script-area-input-height">
-          <Editor
+          <TextEditor
             file={this.props.file}
             handleChange={this.handleChange}
             input={this.state.input}
@@ -140,6 +168,7 @@ const mapStateToProps = state => ({
   user: state.user,
   currentUserId: state.currentUserId,
   selectedFile: state.selectedFile,
+  selectedProject: state.selectedProject,
   socket: state.socket
 })
 
@@ -147,7 +176,4 @@ const mapDispatchToProps = dispatch => ({
   updateAndSave: (id, content) => dispatch(updateAndSave(id, content))
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ScriptArea)
+export default connect(mapStateToProps,mapDispatchToProps)(ScriptArea)

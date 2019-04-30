@@ -66,3 +66,43 @@ export function saveFile(id, content){
         })
     }
 }
+
+export function renameFile(id, name){
+    return dispatch => {
+        const authService = new AuthService();
+        const uid = authService.getProfile().id
+        authService.fetchAuth('/api/file/rename', {
+            method: 'POST',
+            body: JSON.stringify({
+                id,
+                name,
+                uid
+            })
+        })
+        .then(file => {
+            dispatch(getProjects(uid))
+        })
+        .catch(err => {
+            dispatch(fileErrored(err))
+        })
+    }
+}
+
+export function deleteFile(id){
+    return dispatch => {
+        const authService = new AuthService();
+        const uid = authService.getProfile().id
+        authService.fetchAuth('/api/file/delete', {
+            method: 'POST',
+            body: JSON.stringify({
+                id,
+            })
+        })
+        .then(file => {
+            dispatch(getProjects(uid))
+        })
+        .catch(err => {
+            dispatch(fileErrored(err))
+        })
+    }
+}
