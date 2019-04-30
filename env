@@ -1,3 +1,0 @@
-DATABASE_URL="postgresql://codeadmin:u7vwDg5MiswwjNRIgf0Fy6xuatW3jglL@tech9339.crabdance.com:5432/codeit"
-SESSION_SECRET='wow-what-a-unique-secret'
-SECRET=w0wwhAtaS3cR

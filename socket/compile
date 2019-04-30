@@ -7,10 +7,12 @@ if [ $# -eq 0 ]; then
 elif [[ $file == *.java ]]; then
 	echo 'Compiling Java File...'
 	noExt=$(basename $file .java)
+	path=$(dirname $file)
 	javac $file 2>output.txt
 	if [ -s output.txt ]; then
 		cat output.txt
 	else
+		cd $path
 		java $noExt
 	fi
 elif [[ $file == *.py ]]; then
