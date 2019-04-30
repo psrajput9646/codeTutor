@@ -74,7 +74,10 @@ describe("Test Project methods.", () => {
     expect(response.statusCode).toBe(404);
   });
 
-  test("It should fork a project")
+/*   test("It should fork a project", async () => {
+    const response = await request(app)
+    .post("/api/project/fork/")
+  }) */
 
   afterEach(() => {
     Project.findAll({ where: { name: name } }).then(projects => {
