@@ -15,7 +15,8 @@ class ScriptFeedback extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            commentList: []
+            commentList: [],
+            solutionList: []
         };
 
         this.Auth = new AuthService();
@@ -23,8 +24,15 @@ class ScriptFeedback extends Component {
     }
 
     componentDidUpdate(prevprops){
-        if(this.props.selectedProject && this.props.selectedProject !== prevprops.selectedProject){
-            this.getComments();
+        if(this.props !== prevprops){
+            if(!this.props.selectedProject){
+                this.setState({
+                    solutionList: []
+                });
+            }else{
+                this.getComments();
+                this.getSolutions();
+            }
         }
     }
 
@@ -41,23 +49,26 @@ class ScriptFeedback extends Component {
             console.log(err)
         })
     }
-    
+
+    getSolutions = () =>{
+        this.Auth.fetchAuth('/api/project/get/solutions', {
+            method: 'POST',
+            body: JSON.stringify({
+                solutions: this.props.selectedProject.solutions
+            })
+        })
+        .then(projects => {
+            this.setState({
+                solutionList: projects
+            });
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
     render() {
-        const { commentList } = this.state;
-        const solutionList = [
-            {
-                id : 1,
-                name : 'Solution 1',
-                userName : 'ptr35244',
-                likes: 124
-            },
-            {
-                id : 2,
-                name : 'Solution 2',
-                userName : 'Joe102',
-                likes: 90
-            }
-        ]
+        const { commentList, solutionList } = this.state;
         
         return (
             <div className="h-100">

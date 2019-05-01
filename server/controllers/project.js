@@ -72,6 +72,21 @@ module.exports = {
       .catch(err => res.status(400).send(err));
   },
 
+  getSolutions(req, res) {
+    Project.findAll({
+      where: { id: { in: req.body.solutions }},
+      include: [
+        {
+          model: User
+        }
+      ]
+    })
+      .then(projects => {
+        res.status(200).send(projects);
+      })
+      .catch(err => res.status(400).send(err));
+  },
+
   // Requires Id of Project
   favorite(req, res) {
     Project.findOne({
@@ -112,6 +127,31 @@ module.exports = {
       });
   },
 
+  submitSolution(req, res) {
+    Project.findOne({
+      where: { id: req.body.originId }
+    })
+      .then(project => {
+        console.log("origin: ", req.body.originId, " forkedId: ",  req.body.forkedId);
+        if (project.solutions.includes(req.body.forkedId)) {
+          let index = project.favoritedBy.indexOf(req.body.forkedId);
+          project.solutions.splice(index, 1);
+        } else {
+          project.solutions.push(req.body.forkedId);
+        }
+
+        return project.update({
+            solutions: project.solutions,
+          })
+      })
+      .then(values => {
+        res.status(200).send({success: true});
+      })
+      .catch(err => {
+        res.status(500).send(err);
+      });
+  },
+
   // Requires Id of Project
   vote(req, res) {
     Project.findOne({
@@ -127,7 +167,7 @@ module.exports = {
           let index = project.votedBy.indexOf(req.decoded.id);
           project.votedBy.splice(index, 1);
           project.votes--;
-          project.user.points++;
+          project.user.points--;
         } else {
           project.votes++;
           project.user.points++;
@@ -161,39 +201,41 @@ module.exports = {
         }
       ],
       where: { id: req.params.id }
-    }).then(project => {
+    })
+    .then(project => {
       Project.create({
         name: project.name,
         description: "Fork of " + project.name,
         userId: req.decoded.id,
         forkedFrom: project.id
-      }).then(newProject => {
-        let newFiles = [];
-        let basePath = "projects/" + req.decoded.id + "/" + newProject.id + "/";
-        project.files.forEach(file => {
-          newFiles.push(
-            File.create({
-              name: file.name,
-              type: file.type,
-              path: basePath + file.name + file.type,
-              projectId: newProject.id
-            })
-          );
+      })
+        .then(newProject => {
+          let newFiles = [];
+          let basePath = "projects/" + req.decoded.id + "/" + newProject.id + "/";
+          project.files.forEach(file => {
+            newFiles.push(
+              File.create({
+                name: file.name,
+                type: file.type,
+                path: basePath + file.name + file.type,
+                projectId: newProject.id
+              })
+            );
+          });
+          Promise.all(newFiles).then(values => {
+            return ncp.ncpAsync(
+              "projects/" + project.userId + "/" + project.id,
+              basePath
+            )
+          });
         });
-        Promise.all(newFiles).then(values => {
-          return ncp.ncpAsync(
-            "projects/" + project.userId + "/" + project.id,
-            basePath
-          )
-        });
-      });
-    })
-    .then(() => {
-      res.status(202).send()
-    })
-    .catch((err) => {
-      res.status(500).send(err.toString())
-    })
+      })
+      .then(() => {
+        res.status(202).send({success: true})
+      })
+      .catch((err) => {
+        res.status(500).send(err.toString())
+      })
   },
 
   getProjectByIdAndUserId(req, res, next) {

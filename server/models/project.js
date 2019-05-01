@@ -8,7 +8,8 @@ module.exports = (sequelize, DataTypes) => {
     favoritedBy: {type: DataTypes.ARRAY(DataTypes.INTEGER), defaultValue: []},
     votedBy: {type: DataTypes.ARRAY(DataTypes.INTEGER), defaultValue: []},
     votes: {type: DataTypes.INTEGER, defaultValue: 0},
-    forkedFrom: {type: DataTypes.INTEGER, defaultValue: null}
+    forkedFrom: {type: DataTypes.INTEGER, defaultValue: null},
+    solutions: {type: DataTypes.ARRAY(DataTypes.INTEGER), defaultValue: []}
   }, {});
   Project.associate = function(models) {
     Project.belongsTo(models.user);

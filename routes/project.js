@@ -18,6 +18,10 @@ projectRouter.get("/get/all", verifyToken, projectController.getAllProjects)
 // Parameter: favoritedArray
 projectRouter.post("/get/favorited", verifyToken, projectController.getAllFavorited)
 
+// Retrieves All Solutions
+// Parameter: favoritedArray
+projectRouter.post("/get/solutions", verifyToken, projectController.getSolutions)
+
 // Creates a Project
 // Parameters: name, userId (grabbed from token)
 projectRouter.post("/create", verifyToken, projectController.create)
@@ -33,6 +37,10 @@ projectRouter.post("/update", verifyToken, projectController.update)
 // Favorites a Project
 // Parameter: Id, userId(grabbed from token)
 projectRouter.post("/favorite/:id", verifyToken, projectController.favorite)
+
+// Add A Project to another Porject's solution list
+// Parameter: Id, userId(grabbed from token)
+projectRouter.post("/submitSolution", verifyToken, projectController.submitSolution)
 
 // Votes on a Project
 // Parameter: Id, userId(grabbed from token)

@@ -4,6 +4,7 @@ import TextEditor from './TextEditor'
 import { connect } from 'react-redux'
 import AuthService from './AuthService';
 import { updateAndSave } from '../actions/fileCache'
+import { submitSolution } from '../actions/projects'
 
 class ScriptArea extends Component {
   constructor(props) {
@@ -55,11 +56,17 @@ class ScriptArea extends Component {
     this.Auth.fetchAuth('/api/project/fork/'+selectedProject.id,{
       method: "POST"
     })
-    .then(project => {
-      console.log(project);
-    }).catch(err => {
+    .catch(err => {
       console.log(err);
     })
+  }
+  
+  handleSolution = () => {
+    const { selectedProject } = this.props
+    const originId = selectedProject.forkedFrom;
+    const forkedId = selectedProject.id;
+    this.props.submitSolution(originId, forkedId)
+    
   }
 
   toggle() {
@@ -105,7 +112,7 @@ class ScriptArea extends Component {
             </Button>
           }
 
-          {owner &&
+          {owner && !this.props.selectedProject.forkedFrom &&
             /* Submit For Help Button */
               <Button
                 color="success"
@@ -119,13 +126,14 @@ class ScriptArea extends Component {
               </Button>
           }
           
-          {!owner && this.props.selectedProject.forkedFrom &&
+          {owner && this.props.selectedProject.forkedFrom &&
             /* Submit As Solution Button */
             <Button
               color="success"
               size="sm"
               className="float-right mr-1"
-              id="SubmitSolution">
+              id="SubmitSolution"
+              onClick={this.handleSolution}>
               <i className="fa fa-paper-plane" aria-hidden="true" />
               <UncontrolledTooltip placement="top" target="SubmitSolution">
                 Submit as solution
@@ -173,7 +181,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-  updateAndSave: (id, content) => dispatch(updateAndSave(id, content))
+  updateAndSave: (id, content) => dispatch(updateAndSave(id, content)),
+  submitSolution: (originId, forkId) => dispatch(submitSolution(originId, forkId))
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(ScriptArea)

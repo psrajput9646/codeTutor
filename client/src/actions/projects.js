@@ -132,3 +132,25 @@ export function updateProject(id, name, description) {
     })
   }
 }
+
+export function submitSolution(originId, forkedId) {
+  return dispatch => {
+    dispatch(projectsLoading(true))
+    const authService = new AuthService();
+    
+    authService.fetchAuth('/api/project/submitSolution', {
+      method: 'POST',
+      body: JSON.stringify({
+        originId,
+        forkedId,
+      })
+    })
+    .then(project => {
+      dispatch(projectsLoading(false))
+    })
+    .catch(err => {
+        dispatch(projectsErrored(err))
+        dispatch(projectsLoading(false))
+    })
+  }
+}
