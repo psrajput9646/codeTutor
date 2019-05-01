@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { FormGroup, Label, Button, UncontrolledTooltip } from 'reactstrap'
 import TextEditor from './TextEditor'
 import { connect } from 'react-redux'
-import AuthService from './AuthService';
+import AuthService from './AuthService'
 import { updateAndSave } from '../actions/fileCache'
 import { submitSolution } from '../actions/projects'
 
@@ -13,15 +13,19 @@ class ScriptArea extends Component {
     this.toggle = this.toggle.bind(this)
     this.state = {
       tooltipOpen: false,
-      input: ''
+      input: '',
+      executing: false
     }
 
-    this.Auth = new AuthService();
+    this.Auth = new AuthService()
   }
 
   componentDidMount() {
     this.setState({
       input: this.props.file.content
+    })
+    this.props.socket.on('stdout', data => {
+      if (data === "Process finished") this.setState({executing: false})
     })
   }
 
@@ -43,7 +47,10 @@ class ScriptArea extends Component {
   }
 
   handleRun = () => {
-    this.props.socket.emit("run", this.props.selectedFile.path);
+    this.props.socket.emit('run', this.props.selectedFile.path)
+    this.setState({
+      executing: true
+    })
   }
 
   handleSave = () => {
@@ -53,12 +60,12 @@ class ScriptArea extends Component {
 
   handleFork = () => {
     const { selectedProject } = this.props
-    this.Auth.fetchAuth('/api/project/fork/'+selectedProject.id,{
-      method: "POST"
+    this.Auth.fetchAuth('/api/project/fork/' + selectedProject.id, {
+      method: 'POST'
     })
-    .catch(err => {
-      console.log(err);
-    })
+      .catch(err => {
+        console.log(err)
+      })
   }
   
   handleSolution = () => {
@@ -76,9 +83,10 @@ class ScriptArea extends Component {
   }
 
   render() {
-    const { user } = this.props;
-    const owner = (user && this.props.currentUserId === this.props.user.id)? true : false;
-    
+    const { user, fileSaving } = this.props
+    const owner =
+      user && this.props.currentUserId === this.props.user.id ? true : false
+
     return (
       <FormGroup className="h-100">
         <div className="d-block mb-2 ">
@@ -86,6 +94,7 @@ class ScriptArea extends Component {
 
           {/* Execute Code Button */}
           <Button
+            disabled={fileSaving || this.state.executing}
             color="success"
             size="sm"
             className="float-right"
@@ -97,9 +106,10 @@ class ScriptArea extends Component {
             </UncontrolledTooltip>
           </Button>
 
-          {owner &&
+          {owner && (
             /* Save Project Button */
             <Button
+              disabled={fileSaving}
               color="success"
               size="sm"
               className="float-right mr-1"
@@ -110,10 +120,11 @@ class ScriptArea extends Component {
                 Save your project
               </UncontrolledTooltip>
             </Button>
-          }
+          )}
 
-          {owner && !this.props.selectedProject.forkedFrom &&
-            /* Submit For Help Button */
+          {/* Commenting out because not implemented yet         
+    {owner &&
+             Submit For Help Button 
               <Button
                 color="success"
                 size="sm"
@@ -124,11 +135,12 @@ class ScriptArea extends Component {
                   Submit for help!
                 </UncontrolledTooltip>
               </Button>
-          }
-          
-          {owner && this.props.selectedProject.forkedFrom &&
+          } */}
+
+          {!owner && this.props.selectedProject.forkedFrom && (
             /* Submit As Solution Button */
             <Button
+              disabled={fileSaving}
               color="success"
               size="sm"
               className="float-right mr-1"
@@ -139,12 +151,13 @@ class ScriptArea extends Component {
                 Submit as solution
               </UncontrolledTooltip>
             </Button>
-          }
-          
-          {!owner &&
+          )}
+
+          {!owner && (
             /* Fork Project Button*/
             <span>
               <Button
+                disabled={fileSaving}
                 color="success"
                 size="sm"
                 className="float-right mr-1"
@@ -156,7 +169,7 @@ class ScriptArea extends Component {
                 Fork Project
               </UncontrolledTooltip>
             </span>
-          }
+          )}
         </div>
 
         {/* Input field for Scripts */}
@@ -177,7 +190,8 @@ const mapStateToProps = state => ({
   currentUserId: state.currentUserId,
   selectedFile: state.selectedFile,
   selectedProject: state.selectedProject,
-  socket: state.socket
+  socket: state.socket,
+  fileSaving: state.fileSaving
 })
 
 const mapDispatchToProps = dispatch => ({
@@ -185,4 +199,7 @@ const mapDispatchToProps = dispatch => ({
   submitSolution: (originId, forkId) => dispatch(submitSolution(originId, forkId))
 })
 
-export default connect(mapStateToProps,mapDispatchToProps)(ScriptArea)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ScriptArea)
