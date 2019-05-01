@@ -46,7 +46,8 @@ class CreateScriptModal extends Component {
         }));
     }
 
-    submitForm(){
+    submitForm = event =>{
+        event.preventDefault();
         this.props.createFile(this.props.id, this.state.fileName, this.state.fileType); 
         this.setState({
             fileName: "",
@@ -76,7 +77,7 @@ class CreateScriptModal extends Component {
                 <Modal isOpen={this.state.modal} toggle={this.toggle}>
                 <ModalHeader toggle={this.toggle}>Create New File</ModalHeader>
                 <ModalBody>
-                    <Form>
+                    <Form onSubmit={this.submitForm}>
                         <FormGroup>
                             <Label for="fileName">File Name</Label>
                             <Input
