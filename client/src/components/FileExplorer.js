@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
-import { Label, UncontrolledTooltip } from 'reactstrap'
+import { Label, UncontrolledTooltip, DropdownMenu, DropdownItem, UncontrolledDropdown, DropdownToggle,
+  Modal, ModalHeader, ModalBody, Form, Button, FormGroup, FormFeedback, Input} from 'reactstrap'
 import ProjectFile from './ProjectFile'
 import AuthService from './AuthService'
-import { createProject, getProjects } from '../actions/projects'
+import { createProject, getProjects, updateProject, deleteProject } from '../actions/projects'
 import { connect } from 'react-redux'
 import CreateScriptModal from './CreateScriptModal'
 import CreateProjectModal from './CreateProjectModal'
@@ -11,14 +12,16 @@ class FileExplorer extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      favoritedProjects: []
+      favoritedProjects: [],
+      deleteModal: false,
+      renameModal: false,
+      newDescription: "",
+      newProjectName: "",
+      invalid: false,
+      projectId: 0
     }
     
     this.Auth = new AuthService();
-    this.fetchFavProjects = this.fetchFavProjects.bind(this);
-    this.updateCurrentUser = this.updateCurrentUser.bind(this);
-    this.updateProject = this.updateProject.bind(this);
-    this.toggleStar = this.toggleStar.bind(this);
   }
   
   componentDidMount(){
@@ -37,7 +40,7 @@ class FileExplorer extends Component {
     })
   }
 
-  updateCurrentUser = (projectId) =>{
+  updateCurrentUser = projectId =>{
     this.Auth.fetchAuth('/api/user/update', {
       method: 'POST',
       body: JSON.stringify({
@@ -56,7 +59,7 @@ class FileExplorer extends Component {
     })
   }
 
-  updateProject = (projectId) =>{
+  updateFavProject = projectId =>{
     this.Auth.fetchAuth('/api/project/favorite/'+projectId, {
       method: "POST"
     })
@@ -64,23 +67,85 @@ class FileExplorer extends Component {
       console.log(err);
     })
   }
-  
+
+  handleChange = event => {
+    let name = event.target.value;
+    let invalid = this.state.invalid;
+    if(event.target.name === "projectName" && name){
+        invalid = !/^[a-zA-Z0-9 ]+$/.test(name)
+    }
+    this.setState({
+        [event.target.name]: event.target.value,
+        invalid
+    })
+  }
+
+  toggleRename = (event) =>{
+    let newDescription = " ";
+    let newProjectName = " ";
+    let projectId = 0;
+    if(event && event.target.tagName === "BUTTON"){
+      newDescription = event.target.getAttribute("description");
+      newProjectName = event.target.getAttribute("projectname");
+      projectId = event.target.getAttribute("projectid");
+    }
+    this.setState(prevState =>({
+        renameModal: !prevState.renameModal,
+        newDescription,
+        newProjectName,
+        projectId
+    }))
+  }
+
+  toggleDelete = (event) =>{
+    let projectId = 0;
+
+    if(event && event.target.tagName === "BUTTON"){
+      projectId = event.target.getAttribute("projectid");
+    }
+
+    this.setState(prevState =>({
+        deleteModal: !prevState.deleteModal,
+        projectId
+    }))
+  }
+
+  renameProject = (event) => {
+    const { projectId, newDescription, newProjectName } = this.state;
+    if (this.props.selectedFile && this.props.file.id === this.props.selectedFile.id){
+        this.props.selectFile(null);
+    }
+
+    this.props.updateProject(projectId, newProjectName, newDescription);
+    this.toggleRename();
+  }
+
+  deleteProject = (event) => {
+    const { projectId } = this.state;
+      if (this.props.selectedFile && this.props.file.id === this.props.selectedFile.id){
+          this.props.selectFile(null);
+      }
+
+      this.props.deleteProject(projectId);
+      this.toggleDelete();
+  }
+
   toggleStar = (event) => {
-    const projectId = parseInt(event.target.attributes.projectid.nodeValue);
+    const projectId = parseInt(event.target.getAttribute("projectid"));
 
     this.updateCurrentUser(projectId);
-    this.updateProject(projectId);
+    this.updateFavProject(projectId);
   }
 
   render() {
-    const { favoritedProjects } = this.state;
+    const { favoritedProjects, newProjectName, newDescription } = this.state;
     const { user, selectedProject } = this.props;
     const owner = (user && this.props.currentUserId === this.props.user.id)? true : false;
     const classes = ["project-name-container", "project-name-container bg-success"];
     return (
       <div className="h-100">
 
-        {/* Header for file explorer */}
+        {/* Header */}
         <div className="flex">
           <Label for="scriptArea" className="mb-3">
             Explorer
@@ -89,9 +154,9 @@ class FileExplorer extends Component {
           {/* Popup form to create a new project */}
           <CreateProjectModal/>
         </div>
-
+  
         {/* Projects Area */}
-        <div className="round-div bg-white border list-box list-box-outer">
+        <div className="round-div border list-box list-box-outer">
           <div className="text-light bg-white">
             {this.props.projects.map(project => (
               <div key={project.id} className="file-name-container bg-dark">
@@ -101,8 +166,32 @@ class FileExplorer extends Component {
                   {/* Project name text */}
                   <div className="name-cell">
                     <i className="fas fa-folder">{" " + project.name}</i>
-                  </div>
+                    {owner &&
+                      <UncontrolledDropdown className="ml-1 inline">
+                          <DropdownToggle tag="span" className="fas fa-cog">
+                          </DropdownToggle>
+                          
+                          <DropdownMenu>
 
+                            <DropdownItem 
+                              projectid={project.id}
+                              projectname={project.name}
+                              description={project.description}
+                              onClick={this.toggleRename} >
+                              <i className="far fa-edit"></i> Rename
+                            </DropdownItem>
+
+                            <DropdownItem divider />
+
+                            <DropdownItem projectid={project.id} onClick={this.toggleDelete}>
+                              <i className="far fa-trash-alt"></i> Delete
+                            </DropdownItem>
+
+                          </DropdownMenu>
+                      </UncontrolledDropdown>
+                    }
+                  </div>
+                  
                   {/* Plus Icon next to project name */}
                   <span className="mt-1 button-cell">
                   {owner ?
@@ -110,7 +199,7 @@ class FileExplorer extends Component {
                       key={project.id}
                       {...project}
                     />
-                  : 
+                  :
                     <ToggleStar
                     toggleStar = {this.toggleStar}
                     projectId = {project.id}
@@ -118,6 +207,59 @@ class FileExplorer extends Component {
                     />
                   }
                   </span>
+                  <Modal
+                    isOpen={this.state.deleteModal}
+                    toggle={this.toggleDelete}>
+                    <ModalHeader toggle={this.toggleDelete}>Delete Project</ModalHeader>
+                    <ModalBody>
+                        <Label>Are you sure?</Label>
+                        <Form>
+                            <Button color="danger" onClick={this.deleteProject}>
+                                Yes
+                            </Button>
+                            <Button className="ml-3" color="secondary" onClick={this.toggleDelete}>
+                                No
+                            </Button>
+                        </Form>
+                    </ModalBody>
+                  </Modal>
+                  <Modal
+                    isOpen={this.state.renameModal}
+                    toggle={this.toggleRename}>
+                    <ModalHeader toggle={this.toggleRename}>Rename Project</ModalHeader>
+                    <ModalBody>
+                        <Form onSubmit={this.renameFile}>
+                        <FormGroup>
+                                <Label for="newProjectName">Project Name</Label>
+                                <Input
+                                invalid={this.state.invalid}
+                                type="text"
+                                name="newProjectName"
+                                id="NewProjectName"
+                                value={newProjectName}
+                                onChange={this.handleChange}
+                                placeholder="Project name"
+                                />
+                                <FormFeedback>Alphanumeric Characters Only!</FormFeedback>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for="newDescription">Description (optional)</Label>
+                                <Input
+                                type="textarea"
+                                name="newDescription"
+                                id="NewDescription"
+                                rows="4"
+                                value={newDescription}
+                                onChange={this.handleChange}
+                                placeholder="Short project description"
+                                />
+                            </FormGroup>
+                            <Button color="success" onClick={this.renameProject}>
+                                Submit
+                            </Button>
+                        </Form>
+                    </ModalBody>
+                </Modal>
                 </div>
                 
                 {/* List of Files Belonging to Project */}
@@ -165,10 +307,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   createProject: project => dispatch(createProject(project)),
-  getProjects: userId => dispatch(getProjects(userId))
+  getProjects: userId => dispatch(getProjects(userId)),
+  updateProject: (id, name, description) => dispatch(updateProject(id, name, description)),
+  deleteProject: id => dispatch(deleteProject(id))
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FileExplorer)
+export default connect(mapStateToProps,mapDispatchToProps)(FileExplorer)

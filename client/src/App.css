@@ -128,3 +128,7 @@ a.title-link:hover {color:gray;}
 input.invalid {
     border: 1px solid red;
 }
+
+.inline{
+    display: inline-block;
+}

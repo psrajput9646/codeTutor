@@ -41,7 +41,6 @@ module.exports = {
         res.status(200).send(project);
       })
       .catch(err => {
-        console.log(err);
         res.status(404).send(err);
       });
   },
@@ -68,7 +67,6 @@ module.exports = {
       where: { id: { in: req.body.favoritedProjects }}
     })
       .then(projects => {
-        console.log("projy: ", projects)
         res.status(200).send(projects);
       })
       .catch(err => res.status(400).send(err));
@@ -150,7 +148,6 @@ module.exports = {
         res.status(200).send(values);
       })
       .catch(err => {
-        console.log(err);
         res.status(500).send(err);
       });
   },
@@ -195,7 +192,6 @@ module.exports = {
       res.status(202).send()
     })
     .catch((err) => {
-      console.log(err)
       res.status(500).send(err.toString())
     })
   },
@@ -250,19 +246,40 @@ module.exports = {
   // Will recursively delete everything under folder
   delete(req, res) {
     let filePath = `projects/${req.decoded.id}/${req.body.projectId}`;
-    Project.destroy({
+    Project.findOne({
       where: {
         id: req.body.projectId
-      }
+      },
+      include: [
+        {
+          model: File,
+          attributes: ["id"]
+        }
+      ],
     })
-      .then(() => {
-        rimraf(filePath, err => {
-          if (err) {
-            res.status(500).send({ success: false, err });
-          } else {
-            res.status(202).send({ success: true });
-          }
-        });
+      .then(project =>{
+        let ids = [];
+        project.files.forEach(file=>{
+          ids.push(file.id);
+        })
+
+        return Promise.all([
+          File.destroy({
+            where: {
+              id: { in: ids}
+            }
+          }),
+          project.destroy()
+        ])
+          .then(() => {
+            rimraf(filePath, err => {
+              if (err) {
+                res.status(500).send({ success: false, err });
+              } else {
+                res.status(202).send({ success: true });
+              }
+            });
+          })
       })
       .catch(err => {
         res.status(500).send({ success: false, err });

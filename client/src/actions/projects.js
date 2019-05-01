@@ -70,6 +70,28 @@ export function createProject(name, description) {
   }
 }
 
+export function deleteProject(projectId) {
+  return dispatch => {
+    const authService = new AuthService();
+    const uid = authService.getProfile().id;
+    dispatch(projectsLoading(true))
+    authService.fetchAuth('/api/project/delete', {
+      method: 'POST',
+      body: JSON.stringify({
+        projectId
+      })
+    })
+    .then(project => {
+        dispatch(getProjects(uid))
+        dispatch(projectsLoading(false))
+    })
+    .catch(err => {
+        dispatch(projectsErrored(err))
+        dispatch(projectsLoading(false))
+    })
+  }
+}
+
 export function getProjects(userId) {
   return dispatch => {
     const authService = new AuthService();
