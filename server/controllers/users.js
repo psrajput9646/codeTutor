@@ -51,7 +51,7 @@ module.exports = {
       // Encrypt password and create user
       bcrypt.genSalt(10, function(err, salt) {
         bcrypt.hash(req.body.password, salt, function(err, hash) {
-          User.create({
+         return User.create({
             username: req.body.username.toLowerCase(),
             password: hash,
             email: req.body.email.toLowerCase(),
@@ -63,7 +63,7 @@ module.exports = {
                 id: user.id,
                 username: user.username
               };
-              return mkdirp("projects/" + user.id, err => {
+               mkdirp("projects/" + user.id, err => {
                 if (err) {
                   throw new Error(err);
                 } else {
@@ -75,6 +75,7 @@ module.exports = {
               })
             })
             .catch(err =>{
+              console.log(err)
               res.status(500).send(err)
             });
         });
@@ -150,7 +151,8 @@ module.exports = {
 
   login(req, res) {
     // Find user
-    User.findOne({
+
+    return User.findOne({
       where: { username: req.body.username.toLowerCase() }
     }).then(user => {
       if (!user) {
@@ -171,6 +173,7 @@ module.exports = {
             });
             return res.status(200).send({ auth: true, token: token });
           } else {
+            console.log(response)
             // Failed login
             return res.status(401).send({
               auth: false,
@@ -179,6 +182,6 @@ module.exports = {
           }
         });
       }
-    });
+    })
   }
 };

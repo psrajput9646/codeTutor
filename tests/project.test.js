@@ -66,7 +66,7 @@ describe("Test Project methods.", () => {
     projetId1 = response.body.id;
   });
 
-  test("It should reject without project id", async () => {
+  test("It should reject project retrieval without project id", async () => {
     const response = await request(app)
       .post("/api/project/")
       .set("Accept", "application/json")
@@ -74,10 +74,6 @@ describe("Test Project methods.", () => {
     expect(response.statusCode).toBe(404);
   });
 
-/*   test("It should fork a project", async () => {
-    const response = await request(app)
-    .post("/api/project/fork/")
-  }) */
 
   afterEach(() => {
     Project.findAll({ where: { name: name } }).then(projects => {
