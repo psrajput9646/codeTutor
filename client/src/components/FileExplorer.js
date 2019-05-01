@@ -3,7 +3,8 @@ import { Label, UncontrolledTooltip, DropdownMenu, DropdownItem, UncontrolledDro
   Modal, ModalHeader, ModalBody, Form, Button, FormGroup, FormFeedback, Input} from 'reactstrap'
 import ProjectFile from './ProjectFile'
 import AuthService from './AuthService'
-import { createProject, getProjects, updateProject, deleteProject } from '../actions/projects'
+import { createProject, getProjects, updateProject, deleteProject, selectProject } from '../actions/projects'
+import { selectFile } from '../actions/file'
 import { connect } from 'react-redux'
 import CreateScriptModal from './CreateScriptModal'
 import CreateProjectModal from './CreateProjectModal'
@@ -55,7 +56,6 @@ class FileExplorer extends Component {
       })
     })
     .catch(err => {
-      console.log(err);
     })
   }
 
@@ -99,18 +99,17 @@ class FileExplorer extends Component {
 
   toggleDelete = (event) =>{
     let projectId = 0;
-
     if(event && event.target.tagName === "BUTTON"){
-      projectId = event.target.getAttribute("projectid");
+      projectId = parseInt(event.target.getAttribute("projectid"));
     }
-
+    
     this.setState(prevState =>({
         deleteModal: !prevState.deleteModal,
         projectId
     }))
   }
 
-  renameProject = (event) => {
+  renameProject = () => {
     const { projectId, newDescription, newProjectName } = this.state;
     if (this.props.selectedFile && this.props.file.id === this.props.selectedFile.id){
         this.props.selectFile(null);
@@ -120,12 +119,13 @@ class FileExplorer extends Component {
     this.toggleRename();
   }
 
-  deleteProject = (event) => {
+  deleteProject = () => {
     const { projectId } = this.state;
-      if (this.props.selectedFile && this.props.file.id === this.props.selectedFile.id){
+      if (this.props.selectedProject && projectId === this.props.selectedProject.id){
           this.props.selectFile(null);
+          this.props.selectProject(this.props.projects, null);
       }
-
+      
       this.props.deleteProject(projectId);
       this.toggleDelete();
   }
@@ -309,7 +309,9 @@ const mapDispatchToProps = dispatch => ({
   createProject: project => dispatch(createProject(project)),
   getProjects: userId => dispatch(getProjects(userId)),
   updateProject: (id, name, description) => dispatch(updateProject(id, name, description)),
-  deleteProject: id => dispatch(deleteProject(id))
+  deleteProject: id => dispatch(deleteProject(id)),
+  selectProject: (projects, id) => dispatch(selectProject(projects, id)),
+  selectFile: id => dispatch(selectFile(id))
 })
 
 export default connect(mapStateToProps,mapDispatchToProps)(FileExplorer)

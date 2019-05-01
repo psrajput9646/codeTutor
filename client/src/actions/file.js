@@ -57,7 +57,6 @@ export function saveFile(id, content){
                 resolve()
             })
             .catch((error) => {
-                console.log(error)
                 dispatch(fileSaving(false))
                 dispatch(fileErrored(error))
                 reject()

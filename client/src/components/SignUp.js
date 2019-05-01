@@ -76,7 +76,6 @@ class SignUp extends Component {
             })
         })
         .then(res => {
-            console.log(res);
             if(typeof res.token !== "undefined"){
                 this.Auth.setToken(res.token);
                 this.props.setUserLoggedIn(true)

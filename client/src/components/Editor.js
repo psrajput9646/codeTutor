@@ -143,7 +143,7 @@ const Breadcrumbs = (props) => {
       <span>{props.selectedProject.name + " / "}</span>
     }
     {props.selectedFile &&
-      <span>{props.selectedFile.name + " / "}</span>
+      <span>{props.selectedFile.name + props.selectedFile.type}</span>
     }
   </h4>)
 }

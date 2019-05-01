@@ -11,14 +11,12 @@ class ProjectInfo extends Component {
         super(props);
         
         this.state = {
-            name: this.props.name,
-            description: this.props.description,
+            name: this.props.projectInfo.name,
+            description: this.props.projectInfo.description,
             modal: false,
         };
 
         this.toggle = this.toggle.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.submitForm = this.submitForm.bind(this);
     }
     
     toggle() {
@@ -31,16 +29,16 @@ class ProjectInfo extends Component {
         this.setState({ [event.target.name]: event.target.value })
     }
 
-    submitForm(event){
+    submitForm = event =>{
         event.preventDefault();
-        this.props.updateProject(this.props.id, this.state.name, this.state.description);
+        this.props.updateProject(this.props.projectInfo.id, this.state.name, this.state.description);
         this.toggle();
     }
 
     render() {
         const { user, projectInfo, locked} = this.props;
         const owner = (user && !locked && this.props.currentUserId === user.id)? true : false;
-
+        
         return (
         <ListGroupItem className="pb-0">
             <Link to={"/editor/"+projectInfo.userId} className="link">{projectInfo.name} </Link>
