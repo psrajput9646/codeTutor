@@ -64,7 +64,6 @@ const mapStateToProps = state => ({
     user: state.user,
     currentUserId: state.currentUserId,
     userLoading: state.userLoading,
-    userErrored: state.userErrored,
     userLoggedIn: state.userLoggedIn,
     projects: state.projects
 })

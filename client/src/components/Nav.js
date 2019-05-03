@@ -15,7 +15,6 @@ class Navigation extends React.Component {
     }
 
     this.Auth = new AuthService();
-    this.toggle = this.toggle.bind(this)
   }
 
   componentDidMount(){

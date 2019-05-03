@@ -152,11 +152,9 @@ const mapStateToProps = state => ({
   user: state.user,
   projects: state.projects,
   userLoading: state.userLoading,
-  userErrored: state.userErrored,
   currentUserId: state.currentUserId,
   selectedFile: state.selectedFile,
-  selectedProject: state.selectedProject,
-  socket: state.socket
+  selectedProject: state.selectedProject
 })
 
 const mapDispatchToProps = dispatch => ({

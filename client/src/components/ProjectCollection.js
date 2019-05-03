@@ -1,14 +1,6 @@
 import React from 'react'
-import {
-  TabContent,
-  TabPane,
-  Nav,
-  NavItem,
-  NavLink,
-  Row,
-  Col,
-  ListGroup
-} from 'reactstrap'
+import {TabContent, TabPane, Nav, NavItem,
+  NavLink, Row, Col, ListGroup} from 'reactstrap'
 import classnames from 'classnames'
 import ProjectInfo from './ProjectInfo.js'
 import { connect } from 'react-redux'

@@ -122,21 +122,6 @@ class ScriptArea extends Component {
             </Button>
           )}
 
-          {/* Commenting out because not implemented yet         
-    {owner &&
-             Submit For Help Button 
-              <Button
-                color="success"
-                size="sm"
-                className="float-right mr-1"
-                id="HelpingHand">
-                <i className="fa fa-hands-helping" aria-hidden="true" />
-                <UncontrolledTooltip placement="top" target="HelpingHand">
-                  Submit for help!
-                </UncontrolledTooltip>
-              </Button>
-          } */}
-
           {!owner && this.props.selectedProject.forkedFrom && (
             /* Submit As Solution Button */
             <Button
@@ -199,7 +184,4 @@ const mapDispatchToProps = dispatch => ({
   submitSolution: (originId, forkId) => dispatch(submitSolution(originId, forkId))
 })
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ScriptArea)
+export default connect(mapStateToProps,mapDispatchToProps)(ScriptArea)

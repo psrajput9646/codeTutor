@@ -48,7 +48,7 @@ export default class Home extends Component {
                     <Col sm="12">
                         {/* Heading */}
                         <div className="mt-5">
-                            <h1>Latest Projects</h1>
+                            <h1>Project Feed</h1>
                         </div>
 
                         {/* List Of All Projects*/}

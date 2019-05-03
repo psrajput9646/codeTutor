@@ -22,9 +22,6 @@ class CreateScriptModal extends Component {
             fileName: "",
             fileType: ".java"
         };
-        
-        this.toggle = this.toggle.bind(this);
-        this.submitForm = this.submitForm.bind(this);
     }
 
     handleChange = event => {
@@ -40,7 +37,7 @@ class CreateScriptModal extends Component {
         })
     }
 
-    toggle() {
+    toggle = () => {
         this.setState(prevState => ({
             modal: !prevState.modal
         }));

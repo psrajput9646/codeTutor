@@ -10,11 +10,10 @@ export default class CommentBox extends Component {
             votes: this.props.votes
         };
 
-        this.vote = this.vote.bind(this);
         this.Auth = new AuthService();
     }
 
-    vote(){
+    vote = () => {
         const { id } = this.props
         this.Auth.fetchAuth('/api/comment/vote/'+id, {
             method: 'POST'
@@ -33,9 +32,9 @@ export default class CommentBox extends Component {
 
     render() {
         const { votes, votedBy } = this.state;
-        const { user, content, currentUserId } = this.props;
+        const { user, userId, content, currentUserId } = this.props;
         const liked = votedBy.includes(currentUserId);
-
+        console.log(this.props)
         return (
         <div className="bg-light comment-box">
             <div className="ml-2">
@@ -43,7 +42,7 @@ export default class CommentBox extends Component {
                     {content}
                 </span>
                 <span className="font-weight-light text-smaller pl-2 text-primary">
-                    - <a href="/">{user.username}</a>
+                    - <a href={"/account/"+userId}>{user.username}</a>
                 </span>
                 <div>
                     {liked ?

@@ -82,7 +82,6 @@ export function fetchFavoritedProjects(favoritedProjects) {
 
 export function updateUser(data, fields) {
   return dispatch => {
-    //dispatch(userLoading(true))
     const authService = new AuthService()
 
     authService.fetchAuth('/api/user/update', {

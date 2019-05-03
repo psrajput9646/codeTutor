@@ -14,12 +14,9 @@ class CreateProjectModal extends Component {
             projectName: '',
             description: ''
         };
-
-        this.toggle = this.toggle.bind(this);
-        this.submitForm = this.submitForm.bind(this);
     }
 
-    toggle() {
+    toggle = () => {
         this.setState(prevState => ({
             modal: !prevState.modal
         }));

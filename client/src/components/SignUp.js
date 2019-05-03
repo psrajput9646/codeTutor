@@ -11,8 +11,6 @@ class SignUp extends Component {
     constructor(props){
         super(props)
         this.Auth = new AuthService();
-        this.submitForm = this.submitForm.bind(this);
-        this.createAccount = this.createAccount.bind(this);
     }
 
     state = {
@@ -25,10 +23,6 @@ class SignUp extends Component {
         emailConfirm: "",
         err: [],
         redirect: false
-    }
-
-    //Submits the form when Enter key is pressed
-    onKeyDown = (event) => {
     }
 
     // Handles values in form

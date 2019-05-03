@@ -10,9 +10,6 @@ class ScriptInput extends Component {
     }
   }
 
-  componentDidMount(){
-  }
-
   handleChange = event => {
     let value = event.target.value.replace("\n", "");
     this.setState({
@@ -58,7 +55,4 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({})
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ScriptInput)
+export default connect(mapStateToProps,mapDispatchToProps)(ScriptInput)

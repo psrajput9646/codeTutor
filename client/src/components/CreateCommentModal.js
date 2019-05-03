@@ -14,10 +14,9 @@ class CreateCommentModal extends Component {
         };
 
         this.Auth = new AuthService();
-        this.toggle = this.toggle.bind(this);
     }
 
-    toggle() {
+    toggle = () => {
         this.setState(prevState => ({
             modal: !prevState.modal
         }));

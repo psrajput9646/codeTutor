@@ -1,4 +1,3 @@
-// Provides script information
 import React, { Component } from 'react';
 import { ListGroupItem, Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input } from 'reactstrap';
 import { Link } from 'react-router-dom'

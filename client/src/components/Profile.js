@@ -15,8 +15,6 @@ class Profile extends Component {
             lastName: ""
         };
         
-        this.toggle = this.toggle.bind(this);
-        this.updateProfile = this.updateProfile.bind(this);
         this.Auth = new AuthService();
     }
 

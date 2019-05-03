@@ -20,7 +20,6 @@ class ScriptFeedback extends Component {
         };
 
         this.Auth = new AuthService();
-        this.getComments = this.getComments.bind(this);
     }
 
     componentDidUpdate(prevprops){
