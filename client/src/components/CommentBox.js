@@ -34,7 +34,7 @@ export default class CommentBox extends Component {
         const { votes, votedBy } = this.state;
         const { user, userId, content, currentUserId } = this.props;
         const liked = votedBy.includes(currentUserId);
-        console.log(this.props)
+     
         return (
         <div className="bg-light comment-box">
             <div className="ml-2">
