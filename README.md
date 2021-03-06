@@ -1,2 +1,0 @@
-# codeTutor
-Senior Software Project
